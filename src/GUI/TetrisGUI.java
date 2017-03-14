@@ -95,7 +95,7 @@ public class TetrisGUI extends JFrame implements ActionListener  {
             @Override
             public void windowClosing(WindowEvent e) {
                 startGUI.setVisible(true);
-                //  t.stop();                                                                                             //set the main gui visible again and close the current window
+                aktivForm.stop();                                                                                            //set the main gui visible again and close the current window
                 dispose();
 
             }
