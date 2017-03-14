@@ -32,7 +32,7 @@ public class StartGUI extends JFrame {
         cont.setLayout(new BorderLayout());
         btStart.addActionListener((e) -> onStart());
         cont.add(btStart, BorderLayout.CENTER);
-
+        System.out.println("Thomas is gay");
     }
 
     private void onStart() {
