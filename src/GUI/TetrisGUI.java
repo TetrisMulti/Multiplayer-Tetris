@@ -6,6 +6,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.awt.geom.RoundRectangle2D;
 
 /**
  * Created by Chris on 13.03.2017.
@@ -19,15 +20,18 @@ public class TetrisGUI extends JFrame {
     private JPanel pa;
     private int screenWidth;
     private int screenHeight;
-
+    private  Container cont;
+    private boolean [][] fields;
 
     public TetrisGUI(String nickName, JFrame startGUI) {
 
         this.nickName = nickName;
         this.startGUI = startGUI;
+        fields=new boolean[20][12];
         initialConfigs();
-        initComponents();
+      //  initComponents();
 
+      //  paintComponents(pa.getGraphics());
     }
 
 
@@ -52,11 +56,74 @@ public class TetrisGUI extends JFrame {
         });
     }
 
-    private void initComponents() {
-        Container cont = this.getContentPane();
+    @Override
+    public void paint(Graphics g) {
+        super.paint(g);
+        Graphics2D g2=(Graphics2D) g;
+        g2.setColor(Color.BLACK);
+
+        int widthOfOneField = screenWidth/12;
+        int heightOfOneField = screenHeight/20;
+        for (int i=0;i<12;i++)
+        {
+
+            g2.drawLine(widthOfOneField*i,0,widthOfOneField*i,screenHeight);
+        }
+        for (int i=0;i<20;i++)
+        {
+
+            g2.drawLine(0,heightOfOneField*i,screenWidth,heightOfOneField*i);
+        }
+        g2.setColor(Color.BLUE);
+        //RoundRectangle2D rr = new RoundRectangle2D.Float(200,200,widthOfOneField-10,heightOfOneField-10,10,10);
+        //g2.fill(rr);
+        for(int i=0;i<20;i++)
+        {
+           // System.out.println("i: "+i);
+            for(int y=0;y<12;y++)
+            {
+              //  System.out.println("y: "+y);
+
+                if(y==0||y==11)
+                {
+                    //System.out.println("drinnen bei y: "+y+" i: "+i);
+                    //System.out.println("startx: "+(screenWidth*y-10)+" starty :"+(screenHeight*i-10));
+                    fields[i][y]=true;
+                    RoundRectangle2D rr = new RoundRectangle2D.Float(widthOfOneField*y,heightOfOneField*i,widthOfOneField,heightOfOneField,10,10);
+                    g2.fill(rr);
+                }
+                if(i==19)
+                {
+                    RoundRectangle2D rr = new RoundRectangle2D.Float(widthOfOneField*y,heightOfOneField*i,widthOfOneField,heightOfOneField,10,10);
+                    g2.fill(rr);
+                }
+            }
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    /**  private void initComponents() {
+        cont = this.getContentPane();
         cont.setLayout(new GridLayout(1, 1));
         pa = new JPanel();
-        cont.add(pa, 0);
+
 
 /**        System.out.println("1");
  JPanel pa = new JPanel();
@@ -102,13 +169,29 @@ g.drawLine(0,height/20*i,width,height/20*i);
      * startGUI.setVisible(false);
      * <p>
      * }
-     */
+
     public void paint(Graphics g) {
         super.paint(g);
-        TetrisThread tt = new TetrisThread(pa,screenWidth,screenHeight);
-        Thread thread = new Thread(tt);
-        thread.start();
-        System.out.println("1");
+        //TetrisThread tt = new TetrisThread(pa,screenWidth,screenHeight);
+        //Thread thread = new Thread(tt);
+        //thread.start();
+
+
     }
 
-}
+    @Override
+    public void paintComponents(Graphics g) {
+        super.paintComponents(g);
+
+        System.out.println("2");
+        for(int i=0;i<10;i++)
+        {
+            System.out.println("width: "+screenWidth+"\n i: "+i);
+            g.setColor(Color.BLACK);
+            g.drawLine(screenWidth/10*i,0,screenWidth/10*i,screenHeight);
+            //g.fillRect(screenWidth/10*i,0,300,300);
+        }
+        cont.add(pa, 0);
+
+    }
+}*/

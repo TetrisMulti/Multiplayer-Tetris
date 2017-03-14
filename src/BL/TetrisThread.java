@@ -20,16 +20,6 @@ public class TetrisThread implements Runnable {
 
     @Override
     public void run() {
-        Graphics g = pa.getGraphics();
-        System.out.println("2");
-        for(int i=0;i<10;i++)
-        {
-            System.out.println("width: "+screenWidth+"\n i: "+i);
-            g.setColor(Color.BLACK);
-            //g.drawLine(screenWidth/10*i,0,screenWidth/10*i,screenHeight);
-            g.fillRect(screenWidth/10*i,0,300,300);
-        }
-        pa.repaint();
-        pa.revalidate();
+
     }
 }
