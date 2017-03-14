@@ -41,6 +41,7 @@ public class TetrisGUI extends JFrame {
         Rectangle winSize = GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds();                 // get Height of Taskbar
         int taskBarHeight = scrnSize.height - winSize.height;                                                           // estiminate the height of the taskbar
         this.setTitle(nickName + "'s Game");
+        this.setResizable(false);
         screenWidth = (int) Toolkit.getDefaultToolkit().getScreenSize().getWidth() / 3;                                   //set the Width to a third of the screen size
         screenHeight = ((int) Toolkit.getDefaultToolkit().getScreenSize().getHeight() - taskBarHeight);                   //set the Height of the frame without the taskbar
         this.setSize(screenWidth, screenHeight);                                                                                    //set Size of GUI
@@ -74,7 +75,7 @@ public class TetrisGUI extends JFrame {
 
             g2.drawLine(0,heightOfOneField*i,screenWidth,heightOfOneField*i);
         }
-        g2.setColor(Color.BLUE);
+        g2.setColor(Color.gray);
         //RoundRectangle2D rr = new RoundRectangle2D.Float(200,200,widthOfOneField-10,heightOfOneField-10,10,10);
         //g2.fill(rr);
         for(int i=0;i<20;i++)
@@ -89,16 +90,17 @@ public class TetrisGUI extends JFrame {
                     //System.out.println("drinnen bei y: "+y+" i: "+i);
                     //System.out.println("startx: "+(screenWidth*y-10)+" starty :"+(screenHeight*i-10));
                     fields[i][y]=true;
-                    RoundRectangle2D rr = new RoundRectangle2D.Float(widthOfOneField*y,heightOfOneField*i,widthOfOneField,heightOfOneField,10,10);
+                    RoundRectangle2D rr = new RoundRectangle2D.Float(widthOfOneField*y,heightOfOneField*i+2,widthOfOneField-2,heightOfOneField-2,10,10);
                     g2.fill(rr);
                 }
                 if(i==19)
                 {
-                    RoundRectangle2D rr = new RoundRectangle2D.Float(widthOfOneField*y,heightOfOneField*i,widthOfOneField,heightOfOneField,10,10);
+                    RoundRectangle2D rr = new RoundRectangle2D.Float(widthOfOneField*y,heightOfOneField*i+2,widthOfOneField-2,heightOfOneField-2,10,10);
                     g2.fill(rr);
                 }
             }
         }
+
     }
 
 
