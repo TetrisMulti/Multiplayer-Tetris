@@ -36,12 +36,23 @@ public class TetrisForm extends Thread {
         return yCoord;
     }
 
-    public void setxCoord(int xCoord) {
-        this.xCoord = xCoord;
+    public void setxCoord(int x) {
+        if(xCoord==2&&x>0)
+        {
+
+            this.xCoord+=x;
+        }else if(xCoord==TetrisGUI.fields[0].length&&x<0)
+        {
+            this.xCoord+=x;
+        }else
+        {
+            this.xCoord+=x;
+        }
+
     }
 
-    public void setyCoord(int yCoord) {
-        this.yCoord = yCoord;
+    public void setyCoord(int y) {
+        this.yCoord+=y;
     }
 
     @Override

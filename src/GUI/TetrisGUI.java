@@ -6,10 +6,7 @@ import Renderer.PanelRenderer;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
+import java.awt.event.*;
 import java.awt.geom.RoundRectangle2D;
 import java.util.LinkedList;
 
@@ -19,7 +16,7 @@ import java.util.LinkedList;
  * GUI from The Game
  * drawing all forms in this class
  */
-public class TetrisGUI extends JFrame implements ActionListener {
+public class TetrisGUI extends JFrame implements ActionListener  {
 
     private String nickName;
     private JFrame startGUI;
@@ -101,6 +98,26 @@ public class TetrisGUI extends JFrame implements ActionListener {
                 //  t.stop();                                                                                             //set the main gui visible again and close the current window
                 dispose();
 
+            }
+        });
+        this.addKeyListener(new KeyListener() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+
+            }
+
+            @Override
+            public void keyPressed(KeyEvent e) {
+
+            }
+
+            @Override
+            public void keyReleased(KeyEvent e) {
+                switch(e.getKeyCode())
+                {
+                    case KeyEvent.VK_A: aktivForm.setxCoord(-1);break;
+                    case KeyEvent.VK_D: aktivForm.setxCoord(1);break;
+                }
             }
         });
 
