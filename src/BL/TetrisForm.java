@@ -17,6 +17,7 @@ public class TetrisForm extends Thread {
     private int widthOfBlock;
     private int heightOfBlock;
     private boolean first;
+    private  int feld[][];
     public Forms form;
 
     public TetrisForm(int xCoord, int yCoord, int widthOfBlock, int heightOfBlock) {
@@ -28,6 +29,7 @@ public class TetrisForm extends Thread {
         this.falling = true;
         this.first=true;
         this.form=newForm();
+        this.feld=new int[2][2];
     }
 
   /*  public void draw(Graphics2D g2) {
@@ -47,13 +49,13 @@ public class TetrisForm extends Thread {
         }
         g2.setColor(form.getC());
         String str = form.getBlocks();
-       // int feld[][]=new int[2][2];
+       //
         for(int i=0;i<4;i++)
         {
             String coords=str.split("#")[i];
             int xCor=Integer.parseInt(coords.split(",")[0]);
             int yCor=Integer.parseInt(coords.split(",")[1]);
-            RoundRectangle2D rr = new RoundRectangle2D.Float((xCoord+xCor) * widthOfBlock, ((yCoord+yCor) * heightOfBlock)+2, widthOfBlock-2, heightOfBlock-2,10,10);
+            RoundRectangle2D rr = new RoundRectangle2D.Float((xCoord+xCor) * widthOfBlock, ((yCoord+yCor) * heightOfBlock)+2, widthOfBlock-2, heightOfBlock-2,30,30);
             g2.fill(rr);
         }
 
@@ -62,22 +64,11 @@ public class TetrisForm extends Thread {
     public Forms newForm()
     {
         Random rand = new Random();
-        int x=rand.nextInt(7);
+        int x=rand.nextInt(Forms.values().length);
 
-        switch (x)
-        {
-            case 0:return Forms.STICK;
-            case 1:return Forms.BLOCK;
-            case 2:return Forms.STAIRRIGHT;
-            case 3:return Forms.STAIRLEFT;
-            case 4:return Forms.LEFTL;
-            case 5:return Forms.RIGHTL;
-            case 6:return Forms.POTEST;
-            default:return Forms.BLOCK;
-        }
-
-
+        return Forms.values()[x];
     }
+
     public int getxCoord() {
         return xCoord;
     }

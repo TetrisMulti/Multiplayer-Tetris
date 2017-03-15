@@ -45,6 +45,7 @@ public class TetrisGUI extends JFrame implements ActionListener  {
         timer = new Timer(20, this);
         fertigListe = new LinkedList<>();
         initialConfigs();
+        //rend.setBackground(Color.black);
         //  initComponents();
 
         //  paintComponents(pa.getGraphics());
