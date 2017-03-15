@@ -4,6 +4,7 @@ import GUI.TetrisGUI;
 
 import java.awt.*;
 import java.awt.geom.RoundRectangle2D;
+import java.util.Random;
 
 /**
  * Created by Chris on 14.03.2017.
@@ -15,6 +16,8 @@ public class TetrisForm extends Thread {
     private int yCoord;
     private int widthOfBlock;
     private int heightOfBlock;
+    private boolean first;
+    public Forms form;
 
     public TetrisForm(int xCoord, int yCoord, int widthOfBlock, int heightOfBlock) {
         this.widthOfBlock = widthOfBlock;
@@ -23,16 +26,58 @@ public class TetrisForm extends Thread {
         this.xCoord = xCoord;
         this.yCoord = yCoord;
         this.falling = true;
+        this.first=true;
+        this.form=newForm();
     }
 
-    public void draw(Graphics2D g2) {
+  /*  public void draw(Graphics2D g2) {
         g2.setColor(Color.GREEN);
        // g2.fillRect(xCoord * widthOfBlock, yCoord * heightOfBlock, widthOfBlock, heightOfBlock);
         RoundRectangle2D rr = new RoundRectangle2D.Float(xCoord * widthOfBlock, (yCoord * heightOfBlock)+2, widthOfBlock-2, heightOfBlock-2,10,10);
         g2.fill(rr);
+    }*/
+
+    public void draw(Graphics2D g2)
+    {
+
+
+        if(form==null)
+        {
+            System.out.println("asasdf");
+        }
+        g2.setColor(form.getC());
+        String str = form.getBlocks();
+       // int feld[][]=new int[2][2];
+        for(int i=0;i<4;i++)
+        {
+            String coords=str.split("#")[i];
+            int xCor=Integer.parseInt(coords.split(",")[0]);
+            int yCor=Integer.parseInt(coords.split(",")[1]);
+            RoundRectangle2D rr = new RoundRectangle2D.Float((xCoord+xCor) * widthOfBlock, ((yCoord+yCor) * heightOfBlock)+2, widthOfBlock-2, heightOfBlock-2,10,10);
+            g2.fill(rr);
+        }
+
     }
 
+    public Forms newForm()
+    {
+        Random rand = new Random();
+        int x=rand.nextInt(7);
 
+        switch (x)
+        {
+            case 0:return Forms.STICK;
+            case 1:return Forms.BLOCK;
+            case 2:return Forms.STAIRRIGHT;
+            case 3:return Forms.STAIRLEFT;
+            case 4:return Forms.LEFTL;
+            case 5:return Forms.RIGHTL;
+            case 6:return Forms.POTEST;
+            default:return Forms.BLOCK;
+        }
+
+
+    }
     public int getxCoord() {
         return xCoord;
     }

@@ -1,7 +1,6 @@
 package GUI;
 
 import BL.TetrisForm;
-import BL.TetrisThread;
 import Renderer.PanelRenderer;
 
 import javax.swing.*;
@@ -140,8 +139,6 @@ public class TetrisGUI extends JFrame implements ActionListener  {
     @Override
     public void paint(Graphics g) {
         super.paint(g);
-
-
         //<editor-fold desc="Description">
         //
         /*
