@@ -85,7 +85,7 @@ public class TetrisGUI extends JFrame implements ActionListener  {
 
         }
 
-        printFeld();
+       // printFeld();
         timer.start();
 
     }
@@ -142,7 +142,8 @@ public class TetrisGUI extends JFrame implements ActionListener  {
         super.paint(g);
 
 
-//
+        //<editor-fold desc="Description">
+        //
         /*
         for (int i = 0; i < fields.length; i++) {
             for (int j = 0; j < fields[i].length; j++) {
@@ -202,6 +203,7 @@ public class TetrisGUI extends JFrame implements ActionListener  {
         // startGame(g2,screenWidth,screenHeight,widthOfOneField,heightOfOneField,fields);
 
         // }
+        //</editor-fold>
 
     }
 
@@ -215,10 +217,14 @@ public class TetrisGUI extends JFrame implements ActionListener  {
             for (int j = 0; j < fields[i].length; j++) {
                 if (fields[i][j]) {
                     g2.setColor(Color.BLACK);
-                    g2.fillRect(j * widthOfOneField, i * heightOfOneField, widthOfOneField, heightOfOneField);
+                    //g2.fillRect(j * widthOfOneField, i * heightOfOneField, widthOfOneField, heightOfOneField);
+                    RoundRectangle2D rr = new RoundRectangle2D.Float(widthOfOneField*j,(heightOfOneField*i)+2,widthOfOneField-2,heightOfOneField-2,10,10);
+                    g2.fill(rr);
                 } else {
                     g2.setColor(Color.DARK_GRAY);
-                    g2.fillRect(j * widthOfOneField, i * heightOfOneField, widthOfOneField, heightOfOneField);
+                    //g2.fillRect(j * widthOfOneField, i * heightOfOneField, widthOfOneField, heightOfOneField);
+                    RoundRectangle2D rr = new RoundRectangle2D.Float(widthOfOneField*j,(heightOfOneField*i)+2,widthOfOneField-2,heightOfOneField-2,10,10);
+                    g2.fill(rr);
                 }
             }
         }
