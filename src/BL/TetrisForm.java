@@ -3,6 +3,7 @@ package BL;
 import GUI.TetrisGUI;
 
 import java.awt.*;
+import java.awt.geom.RoundRectangle2D;
 
 /**
  * Created by Chris on 14.03.2017.
@@ -18,6 +19,7 @@ public class TetrisForm extends Thread {
     public TetrisForm(int xCoord, int yCoord, int widthOfBlock, int heightOfBlock) {
         this.widthOfBlock = widthOfBlock;
         this.heightOfBlock = heightOfBlock;
+        System.out.println("drinadf");
         this.xCoord = xCoord;
         this.yCoord = yCoord;
         this.falling = true;
@@ -25,8 +27,11 @@ public class TetrisForm extends Thread {
 
     public void draw(Graphics2D g2) {
         g2.setColor(Color.GREEN);
-        g2.fillRect(xCoord * widthOfBlock, yCoord * heightOfBlock, widthOfBlock, heightOfBlock);
+       // g2.fillRect(xCoord * widthOfBlock, yCoord * heightOfBlock, widthOfBlock, heightOfBlock);
+        RoundRectangle2D rr = new RoundRectangle2D.Float(xCoord * widthOfBlock, (yCoord * heightOfBlock)+2, widthOfBlock-2, heightOfBlock-2,10,10);
+        g2.fill(rr);
     }
+
 
     public int getxCoord() {
         return xCoord;
@@ -37,17 +42,22 @@ public class TetrisForm extends Thread {
     }
 
     public void setxCoord(int x) {
-        if(xCoord==2&&x>0)
+        System.out.println("drin");
+        System.out.println(x+" "+xCoord);
+        System.out.println(TetrisGUI.fields[0].length);
+        if(!TetrisGUI.fields[yCoord][xCoord+x])
+        { if(xCoord==1&&x==-1)
         {
 
-            this.xCoord+=x;
-        }else if(xCoord==TetrisGUI.fields[0].length&&x<0)
+
+        }else if(xCoord==TetrisGUI.fields[0].length-2&&x==1)
         {
-            this.xCoord+=x;
+
         }else
         {
+            System.out.println("a");
             this.xCoord+=x;
-        }
+        }}
 
     }
 
@@ -59,7 +69,7 @@ public class TetrisForm extends Thread {
     public void run() {
         while (falling) {
 
-            printFeld();
+           // printFeld();
             if (!TetrisGUI.fields[yCoord + 1][xCoord]) {
                 yCoord++;
             } else {
