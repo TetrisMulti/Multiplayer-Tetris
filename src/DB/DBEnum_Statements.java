@@ -6,7 +6,7 @@ package DB;
  */
 public enum DBEnum_Statements {
 
-    ALLSCORES("SELECT *\nFROM score;");
+    ALLSCORES("SELECT * \n FROM Score;");
 
 
 

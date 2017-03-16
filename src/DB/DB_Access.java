@@ -31,8 +31,8 @@ public class DB_Access {
 
         while(rs.next())
         {
-            String user = rs.getString("username");
-            int score = rs.getInt("score");
+            String user = rs.getString("Username");
+            int score = rs.getInt("Score");
             liScores.add(new Score(user, score));
         }
 
