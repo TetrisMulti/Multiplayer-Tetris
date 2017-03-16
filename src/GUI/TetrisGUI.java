@@ -1,5 +1,6 @@
 package GUI;
 
+import BL.Forms;
 import BL.TetrisForm;
 import Renderer.PanelRenderer;
 
@@ -8,6 +9,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.RoundRectangle2D;
 import java.util.LinkedList;
+import java.util.Random;
 
 
 /**
@@ -240,7 +242,7 @@ public class TetrisGUI extends JFrame implements ActionListener  {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (firstActive) {
-            aktivForm = new TetrisForm(6, 1, widthOfOneField, heightOfOneField);
+            aktivForm = new TetrisForm(6, 1, widthOfOneField, heightOfOneField,newForm());
             aktivForm.start();
             firstActive = false;
         }
@@ -252,6 +254,13 @@ public class TetrisGUI extends JFrame implements ActionListener  {
         }
 
         rend.repaint();
+    }
+    public Forms newForm()
+    {
+        Random rand = new Random();
+        int x=rand.nextInt(Forms.values().length);
+
+        return Forms.values()[x];
     }}
 
     //<editor-fold desc="oldCode">

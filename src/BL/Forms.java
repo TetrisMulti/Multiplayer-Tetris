@@ -8,29 +8,27 @@ import java.awt.*;
  */
 public enum Forms {
 
-    STICK(Color.GREEN,"0,0#0,1#0,2#0,3"),
-    BLOCK(Color.BLUE,"0,0#0,1#1,0#1,1"),
-    STAIRRIGHT(Color.BLUE.brighter(),"0,1#0,2#1,0#1,1"),
-    STAIRLEFT(Color.gray,"0,0#0,1#1,1#1,2"),
-    LEFTL(Color.orange,"0,0#1,0#1,1#1,2#"),
-    RIGHTL(Color.red,"0,2#1,0#1,1#1,2"),
-    POTEST(Color.yellow,"0,1#1,0#1,1#1,2")
+    STICK(Color.GREEN),
+    BLOCK(Color.BLUE),
+    STAIRRIGHT(Color.BLUE.brighter()),
+    STAIRLEFT(Color.gray),
+    LEFTL(Color.orange),
+    RIGHTL(Color.red),
+    POTEST(Color.yellow)
     ;
 
 
     private Color c;
-    private String blocks;
 
-    Forms(Color c, String blocks) {
+
+    Forms(Color c) {
         this.c = c;
-        this.blocks = blocks;
+
     }
 
     public Color getC() {
         return c;
     }
 
-    public String getBlocks() {
-        return blocks;
-    }
+
 }
