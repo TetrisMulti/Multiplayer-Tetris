@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Properties;
 
 /**
@@ -49,6 +50,20 @@ public class DB_Database {
         }
     }
 
+    public Statement getStatement() throws Exception {
+        if (cc == null)
+        {
+            throw new Exception("Not connected to database");
+        }
+        return cc.getStatement();
+
+    }
+
+    public void releaseStatement(Statement stat)
+    {
+        cc.releaseStatement(stat);
+
+    }
     /**
     public static void main(String[] args) {
         try {

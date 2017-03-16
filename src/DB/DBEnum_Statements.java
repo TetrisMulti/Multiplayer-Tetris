@@ -6,5 +6,17 @@ package DB;
  */
 public enum DBEnum_Statements {
 
+    ALLSCORES("SELECT *\nFROM score;");
 
+
+
+    private String statement;
+
+    DBEnum_Statements(String statement) {
+        this.statement = statement;
+    }
+
+    public String getStatement() {
+        return statement;
+    }
 }
