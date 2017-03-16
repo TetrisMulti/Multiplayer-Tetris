@@ -40,6 +40,15 @@ public class DB_Database {
         System.out.println("Connection to the database established");
     }
 
+    public void disconnect() throws SQLException {
+        if (con != null)
+        {
+            con.close();
+            System.out.println("disconnected");
+            con = null;
+        }
+    }
+
     /**
     public static void main(String[] args) {
         try {
