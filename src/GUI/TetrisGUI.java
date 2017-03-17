@@ -110,16 +110,17 @@ public class TetrisGUI extends JFrame implements ActionListener  {
 
             @Override
             public void keyPressed(KeyEvent e) {
-
-            }
-
-            @Override
-            public void keyReleased(KeyEvent e) {
                 switch(e.getKeyCode())
                 {
                     case KeyEvent.VK_A: aktivForm.setxCoord(-1);break;
                     case KeyEvent.VK_D: aktivForm.setxCoord(1);break;
+                    case KeyEvent.VK_S: aktivForm.setyCoord(1);break;
                 }
+            }
+
+            @Override
+            public void keyReleased(KeyEvent e) {
+
             }
         });
 
@@ -242,7 +243,7 @@ public class TetrisGUI extends JFrame implements ActionListener  {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (firstActive) {
-            aktivForm = new TetrisForm(6, 1, widthOfOneField, heightOfOneField,newForm());
+            aktivForm = new TetrisForm(5, 0, widthOfOneField, heightOfOneField,newForm());
             aktivForm.start();
             firstActive = false;
         }

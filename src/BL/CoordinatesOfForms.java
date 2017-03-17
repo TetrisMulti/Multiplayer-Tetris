@@ -1,5 +1,7 @@
 package BL;
 
+import java.awt.geom.Point2D;
+
 /**
  * Created by Christoph on 16.03.2017.
  */
@@ -26,4 +28,13 @@ public class CoordinatesOfForms {
                 default:return new int[][]{ {0,0},{0,1},{0,2},{0,3}};
         }
     }
+
+
+  /*  public static Point2D getPointCoords(Forms form)
+    {
+        switch(form)
+        {
+
+        }
+    }*/
 }

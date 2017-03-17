@@ -2,6 +2,7 @@ package BL;
 
 import GUI.TetrisGUI;
 
+
 import java.awt.*;
 import java.awt.geom.Point2D;
 import java.awt.geom.RoundRectangle2D;
@@ -35,13 +36,13 @@ public class TetrisForm extends Thread {
         this.yCoord = yCoord;
         this.falling = true;
         this.first=true;
-        this.form=form;
+        this.form=Forms.STICK;
 
         this.boolField=new boolean[4][4];
      //   this.leftCornerOffield=new Point2D.Double(xCoord,yCoord);
       //  pointList= new LinkedList<>();
 
-        int[][] feld= CoordinatesOfForms.getCords(form);
+        int[][] feld= CoordinatesOfForms.getCords(this.form);
 
 
         for(int y=0;y<feld.length;y++)
@@ -50,8 +51,18 @@ public class TetrisForm extends Thread {
             for(int x=0;x<feld[y].length;x++)
             {
                 xC[x]=feld[y][x];
+               // System.out.println(feld[y][x]);
             }
-            boolField[xC[0]][xC[1]]=true;
+            try{
+               // System.out.println("xC1= "+xC[0]+" xC2= "+xC[1]);
+                boolField[xC[0]][xC[1]]=true;
+            }
+            catch(IndexOutOfBoundsException ex)
+            {
+                ex.printStackTrace();
+                this.stop();
+            }
+
         }
     }
 
@@ -118,9 +129,9 @@ public class TetrisForm extends Thread {
     }
 
     public void setxCoord(int x) {
-        System.out.println("drin");
-        System.out.println(x+" "+xCoord);
-        System.out.println(TetrisGUI.fields[0].length);
+       // System.out.println("drin");
+        //System.out.println(x+" "+xCoord);
+       // System.out.println(TetrisGUI.fields[0].length);
         if(!TetrisGUI.fields[yCoord][xCoord+x])
         { if(xCoord==1&&x==-1)
         {
@@ -131,7 +142,7 @@ public class TetrisForm extends Thread {
 
         }else
         {
-            System.out.println("a");
+          //  System.out.println("a");
             this.xCoord+=x;
         }}
 
@@ -183,6 +194,7 @@ public class TetrisForm extends Thread {
         while (falling) {
 
            // printFeld();
+            getLowestBlockOfColum();
             for(int y = 0; y < boolField.length;y++){
                 for (int x = 0; x < boolField[y].length;x++){
                     if(boolField[y][x]) {
@@ -200,8 +212,22 @@ public class TetrisForm extends Thread {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
+
         }
 
+    }
+
+
+    public void getLowestBlockOfColum()
+    {
+      int[][] blocks = CoordinatesOfForms.getCords(form);
+      for(int y=0;y<blocks.length;y++)
+      {
+        for(int x = 0;x<blocks[y].length;x++)
+        {
+            System.out.println(blocks[y][x]+"a\n");
+        }
+      }
     }
 
     public void printFeld() {
