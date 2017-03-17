@@ -1,6 +1,5 @@
 package GUI;
 
-import Model.HighscoreListModel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -14,11 +13,10 @@ public class GameOverGUI extends JFrame{
 
     private JPanel paImgList;
     private JPanel paButtons;
-    private JList liScoreList;
+    private JTable tbTabelle;
     private JButton btExit;
     private JButton btBackToMenu;
     private JLabel lbImg;
-    private HighscoreListModel hlm;
 
     public void initComponents()
     {
@@ -36,16 +34,9 @@ public class GameOverGUI extends JFrame{
         Container cont = this.getContentPane();
         paImgList = new JPanel();
         paButtons = new JPanel();
-        liScoreList = new JList();
         btExit = new JButton();
         btBackToMenu = new JButton();
         lbImg = new JLabel();
-        try{
-            hlm = new HighscoreListModel();
-        }catch (Exception ex)
-        {
-            ex.printStackTrace();
-        }
 
 
         paImgList.setLayout(new GridLayout(2, 1));
@@ -54,9 +45,7 @@ public class GameOverGUI extends JFrame{
         String filename = System.getProperty("user.dir") + File.separator + "src" +
                 File.separator + "res" + File.separator + "Game_Over.jpg";
         lbImg.setIcon(new ImageIcon(filename));
-        liScoreList.setModel(hlm);
         paImgList.add(lbImg);
-        paImgList.add(liScoreList);
 
         btExit.setText("Exit");
         btExit.setSize(200, 500);
