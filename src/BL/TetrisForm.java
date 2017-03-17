@@ -137,18 +137,18 @@ public class TetrisForm extends Thread {
 
     }
 
-    public void setyCoord(int y) {
+    public void setyCoord(int y2) {
         for(int y = 0; y < boolField.length;y++){
             for (int x = 0; x < boolField[y].length;x++){
                 if(boolField[y][x]) {
-                    if(TetrisGUI.fields[yCoord + x + y ][xCoord + y]){
+                    if(TetrisGUI.fields[yCoord + x + y2 ][xCoord + y]){
                         return;
                     }
                 }
             }
         }
 
-        this.yCoord+=y;
+        this.yCoord+=y2;
     }
 
     //<editor-fold desc="testCollision">
