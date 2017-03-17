@@ -26,12 +26,50 @@ public class StartGUI extends JFrame {
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         this.setLocationRelativeTo(null);
 
+        JPanel gesamtPanel = new JPanel();
+        gesamtPanel.setBackground(Color.red);
+        JPanel panel1 = new JPanel();
+
+
         JButton btStart = new JButton();
         btStart.setText("Start");
+        panel1.setBackground(Color.darkGray);
+        //btStart.setSize(width/10, height/10);
+        //btStart.setLocation(width/10,height/10);
+        panel1.add(btStart);
+
+
+
+        JButton btHighScore = new JButton();
+        btHighScore.setText("HighScore");
+        panel1.add(btHighScore);
+
+
+
+        JButton btSettings = new JButton();
+        btSettings.setText("Settings");
+        panel1.add(btSettings);
+
+
+        gesamtPanel.add(panel1);
+
         Container cont = this.getContentPane();
         cont.setLayout(new BorderLayout());
+        cont.add(gesamtPanel, BorderLayout.CENTER);
+        gesamtPanel.setLayout(null);
+        gesamtPanel.setSize(width, height);
+        panel1.setSize(width/5,height/3);
+        panel1.setLocation(100,100);
+        btStart.setSize(100,100);
         btStart.addActionListener((e) -> onStart());
-        cont.add(btStart, BorderLayout.CENTER);
+
+
+        //cont.add(btStart);
+        //cont.setLayout(null);
+
+        System.out.println(width+" "+height);
+
+
         System.out.println("Thomas is gay");
     }
 
