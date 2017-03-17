@@ -58,9 +58,9 @@ public class StartGUI extends JFrame {
         cont.add(gesamtPanel, BorderLayout.CENTER);
         gesamtPanel.setLayout(null);
         gesamtPanel.setSize(width, height);
-        panel1.setSize(width/5,height/3);
-        panel1.setLocation(100,100);
-        btStart.setSize(100,100);
+        panel1.setSize(gesamtPanel.getWidth()/5,gesamtPanel.getHeight()/3);
+        panel1.setLocation(gesamtPanel.getWidth()/2-gesamtPanel.getWidth()/8,gesamtPanel.getHeight()/2-gesamtPanel.getHeight()/3);
+        btStart.setSize(30,80);
         btStart.addActionListener((e) -> onStart());
 
 
