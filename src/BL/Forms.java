@@ -10,7 +10,7 @@ public enum Forms {
 
     STICK(Color.GREEN),
     BLOCK(Color.BLUE),
-    STAIRRIGHT(Color.BLUE.brighter()),
+    STAIRRIGHT(Color.BLUE.brighter().brighter()),
     STAIRLEFT(Color.gray),
     LEFTL(Color.orange),
     RIGHTL(Color.red),
