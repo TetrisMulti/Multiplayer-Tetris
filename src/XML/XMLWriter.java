@@ -10,6 +10,9 @@ import org.xml.sax.SAXException;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.*;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 import java.io.File;
 import java.io.IOException;
 import java.util.LinkedList;
@@ -25,11 +28,37 @@ public class XMLWriter {
 
 
 
-    public static void XMLSave()
-    {
+    public static void XMLSave(LinkedList<Score> scList) throws ParserConfigurationException, TransformerException {
+        DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
+
+        Document doc = docBuilder.newDocument();
+        Element rootElement = doc.createElement("tetrisscores");
+        doc.appendChild(rootElement);
+
+        //Insert all Scores into the XML
+        for (Score sc:scList) {
+            System.out.println("HALLLOOOOO");
+            Element score = doc.createElement("score");
+            Element user = doc.createElement("username");
+            user.setTextContent(sc.getUser());
+            Element points = doc.createElement("points");
+            points.setTextContent(""+sc.getScore());
+            score.appendChild(user);
+            score.appendChild(points);
+        }
+
+        Transformer trans = TransformerFactory.newInstance().newTransformer();
+        trans.setOutputProperty(OutputKeys.INDENT, "yes");
+        DOMSource source = new DOMSource(doc);
+        StreamResult result = new StreamResult(System.out);
+
+        trans.transform(source, result);
+
+        System.out.println("Stats saved");
 
     }
-    //In this statci Method we will load the XML Scores and save it to a LinkedList<Score>
+    //In this static Method we will load the XML Scores and save it to a LinkedList<Score>
     public static LinkedList<Score> XMLLoad() throws ParserConfigurationException, IOException, SAXException {
         File fxmlFile = new File(FILENAME);
         DocumentBuilderFactory dbfactory = DocumentBuilderFactory.newInstance();
