@@ -27,7 +27,6 @@ public class XMLWriter {
             File.separator + "res" + File.separator + "Scores.xml";
 
 
-
     public static void XMLSave(LinkedList<Score> scList) throws ParserConfigurationException, TransformerException {
         DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
@@ -46,6 +45,7 @@ public class XMLWriter {
             points.setTextContent(""+sc.getScore());
             score.appendChild(user);
             score.appendChild(points);
+            rootElement.appendChild(score);
         }
 
         Transformer trans = TransformerFactory.newInstance().newTransformer();
@@ -64,6 +64,7 @@ public class XMLWriter {
         DocumentBuilderFactory dbfactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder dbuilder = dbfactory.newDocumentBuilder();
         Document doc = dbuilder.parse(fxmlFile);
+
         LinkedList<Score> liList = new LinkedList<>();
 
         doc.getDocumentElement().normalize();       //To normalize the XML Document
@@ -96,11 +97,14 @@ public class XMLWriter {
     public static void main(String[] args) {
         try {
             XMLLoad();
+            XMLSave(null);
         } catch (ParserConfigurationException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         } catch (SAXException e) {
+            e.printStackTrace();
+        } catch (TransformerException e) {
             e.printStackTrace();
         }
     }
