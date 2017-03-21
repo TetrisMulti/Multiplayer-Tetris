@@ -115,6 +115,8 @@ public class TetrisGUI extends JFrame implements ActionListener  {
                     case KeyEvent.VK_A: aktivForm.setxCoord(-1);break;
                     case KeyEvent.VK_D: aktivForm.setxCoord(1);break;
                     case KeyEvent.VK_S: aktivForm.setyCoord(1);break;
+                    case KeyEvent.VK_Q: aktivForm.rotateLeft();break;
+                    case KeyEvent.VK_E: aktivForm.rotateRight();break;
                 }
             }
 
@@ -252,7 +254,7 @@ public class TetrisGUI extends JFrame implements ActionListener  {
             fertigListe.add(aktivForm);
             //fields[aktivForm.getyCoord()][aktivForm.getxCoord()] = true;
             firstActive = true;
-            printFeld();
+            //printFeld();
         }
 
         rend.repaint();

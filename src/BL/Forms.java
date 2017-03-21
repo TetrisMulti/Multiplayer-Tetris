@@ -8,13 +8,13 @@ import java.awt.*;
  */
 public enum Forms {
 
-    STICK(Color.GREEN),
-    BLOCK(Color.BLUE),
-    STAIRRIGHT(Color.BLUE.brighter().brighter()),
+    STICK(new Color(30,255,1)),
+    BLOCK(new Color(1,0,254)),
+    STAIRRIGHT(new Color(0,199,254)),
     STAIRLEFT(Color.gray),
-    LEFTL(Color.orange),
-    RIGHTL(Color.red),
-    POTEST(Color.yellow)
+    LEFTL(new Color(255,149,10)),
+    RIGHTL(new Color(254,0,2)),
+    POTEST(new Color(255,199,0))
     ;
 
 
