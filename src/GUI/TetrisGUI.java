@@ -250,8 +250,9 @@ public class TetrisGUI extends JFrame implements ActionListener  {
 
         if (!TetrisForm.falling) {
             fertigListe.add(aktivForm);
-            fields[aktivForm.getyCoord()][aktivForm.getxCoord()] = true;
+            //fields[aktivForm.getyCoord()][aktivForm.getxCoord()] = true;
             firstActive = true;
+            printFeld();
         }
 
         rend.repaint();
