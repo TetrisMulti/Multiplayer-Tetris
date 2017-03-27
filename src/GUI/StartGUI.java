@@ -69,11 +69,9 @@ public class StartGUI extends JFrame {
 
 
         JButton btSettings = new JButton();
-        try {
-            btSettings.setIcon(new ImageIcon(ImageIO.read(Res.class.getResourceAsStream("Settings.png"))));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+
+
+
         gesamtLabel.add(btSettings);
         gesamtLabel.add(ueberschrift);
 
@@ -93,7 +91,7 @@ public class StartGUI extends JFrame {
         btHighScore.setSize(160,50);
         btHighScore.setLocation(panel1.getWidth()/2-btHighScore.getWidth()/2, panel1.getHeight()/2-btHighScore.getHeight()/2);
         btSettings.setSize(35,35);
-        btSettings.setLocation((int) (gesamtPanel.getWidth()-btSettings.getWidth()*1.5),gesamtPanel.getHeight()-btSettings.getHeight()*2);
+        btSettings.setLocation((int) (gesamtPanel.getWidth()-btSettings.getWidth()-btSettings.getWidth()/2),gesamtPanel.getHeight()-btSettings.getHeight()- btSettings.getHeight());
         btStart.addActionListener((e) -> onStart());
         ueberschrift.setText("Tetris");
         ueberschrift.setForeground(Color.yellow);
@@ -104,6 +102,15 @@ public class StartGUI extends JFrame {
         btExit.setSize(160,50);
         btExit.setLocation(panel1.getWidth()/2-btExit.getWidth()/2, panel1.getHeight()/2+btExit.getHeight());
 
+        Image img1 = null;
+        try {
+            img1 = ImageIO.read(Res.class.getResourceAsStream("Settings.png"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        Image dimg1 = img1.getScaledInstance(btSettings.getWidth(), btSettings.getHeight(), Image.SCALE_SMOOTH);
+        ImageIcon icon1 = new ImageIcon(dimg1);
+        btSettings.setIcon(icon1);
 
         btExit.addActionListener(e -> {
             try {
