@@ -17,6 +17,12 @@ public class GameOverGUI extends JFrame{
     private JButton btExit;
     private JButton btBackToMenu;
     private JLabel lbImg;
+    private int Score;
+
+    public GameOverGUI(int score) throws HeadlessException {
+        Score = score;
+        this.setSize(500,500);
+    }
 
     public void initComponents()
     {
@@ -61,11 +67,6 @@ public class GameOverGUI extends JFrame{
         cont.add(paButtons, BorderLayout.SOUTH);
     }
 
-    public static void main(String[] args) {
-        GameOverGUI gui = new GameOverGUI();
-        gui.initComponents();
-        gui.setVisible(true);
-    }
 }
 
 

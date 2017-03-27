@@ -36,7 +36,7 @@ public class TetrisGUI extends JFrame implements ActionListener  {
     public static TetrisGUI tetrisGui;
     private Timer timer;
     private boolean firstActive = true;
-    private LinkedList<TetrisForm> fertigListe;
+    private static LinkedList<TetrisForm> fertigListe;
 
     public TetrisGUI(String nickName, JFrame startGUI) {
 
@@ -97,7 +97,7 @@ public class TetrisGUI extends JFrame implements ActionListener  {
             @Override
             public void windowClosing(WindowEvent e) {
                 startGUI.setVisible(true);
-                aktivForm.stop();                                                                                            //set the main gui visible again and close the current window
+                aktivForm.interrupt();                                                                                            //set the main gui visible again and close the current window
                 dispose();
 
             }
@@ -246,7 +246,17 @@ public class TetrisGUI extends JFrame implements ActionListener  {
     public void actionPerformed(ActionEvent e) {
         if (firstActive) {
             aktivForm = new TetrisForm(5, 0, widthOfOneField, heightOfOneField,newForm());
-            aktivForm.start();
+            if(!aktivForm.collisionAvoidenceY(aktivForm.getPointField()))
+            {
+                System.out.println("sadfasdfasdf");
+                GameOverGUI g = new GameOverGUI(100);
+                g.setVisible(true);
+                this.dispose();
+            }else
+            {
+                aktivForm.start();
+            }
+
             firstActive = false;
         }
 
@@ -262,9 +272,9 @@ public class TetrisGUI extends JFrame implements ActionListener  {
     public Forms newForm()
     {
         Random rand = new Random();
-        int x=rand.nextInt(Forms.values().length);
 
-        return Forms.values()[x];
+
+        return Forms.values()[ rand.nextInt(Forms.values().length)];
     }}
 
     //<editor-fold desc="oldCode">
