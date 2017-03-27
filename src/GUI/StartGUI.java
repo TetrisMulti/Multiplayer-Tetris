@@ -38,11 +38,16 @@ public class StartGUI extends JFrame {
         gesamtLabel.setOpaque(true);
         gesamtLabel.setBackground(Color.red);
         System.out.println(width+"  "+height);
+        Image img = null;
         try {
-            gesamtLabel.setIcon(new ImageIcon(ImageIO.read(Res.class.getResourceAsStream("Tetris.jpg"))));
+            img = ImageIO.read(Res.class.getResourceAsStream("Tetris.jpg"));
+           //gesamtLabel.setIcon(new ImageIcon(ImageIO.read(Res.class.getResourceAsStream("Tetris.jpg");
         } catch (IOException e) {
             e.printStackTrace();
         }
+        Image dimg = img.getScaledInstance(width, height, Image.SCALE_SMOOTH);
+        ImageIcon icon = new ImageIcon(dimg);
+        gesamtLabel.setIcon(icon);
         gesamtPanel.add(gesamtLabel);
 
 
