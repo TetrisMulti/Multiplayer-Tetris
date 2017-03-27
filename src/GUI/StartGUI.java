@@ -91,13 +91,11 @@ public class StartGUI extends JFrame {
         btHighScore.setSize(160,50);
         btHighScore.setLocation(panel1.getWidth()/2-btHighScore.getWidth()/2, panel1.getHeight()/2-btHighScore.getHeight()/2);
         btSettings.setSize(35,35);
-        btSettings.setLocation((int) (gesamtPanel.getWidth()-btSettings.getWidth()-btSettings.getWidth()/2),gesamtPanel.getHeight()-btSettings.getHeight()- btSettings.getHeight());
+        btSettings.setLocation(panel1.getWidth()/2,panel1.getHeight()/2);
         btStart.addActionListener((e) -> onStart());
         ueberschrift.setText("Tetris");
         ueberschrift.setForeground(Color.yellow);
-        //ueberschrift.setOpaque(true);
         ueberschrift.setSize(gesamtPanel.getWidth()+100,50);
-        //ueberschrift.setLocation(gesamtPanel.getWidth()+100, gesamtPanel.getHeight()/2-150);
         ueberschrift.setFont(ueberschrift.getFont().deriveFont(40f));
         btExit.setSize(160,50);
         btExit.setLocation(panel1.getWidth()/2-btExit.getWidth()/2, panel1.getHeight()/2+btExit.getHeight());
