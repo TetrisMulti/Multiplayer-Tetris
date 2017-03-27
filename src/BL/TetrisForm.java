@@ -21,7 +21,7 @@ public class TetrisForm extends Thread {
     private int heightOfBlock;
     //private boolean first;
 
-  //  private boolean boolField[][];
+    //  private boolean boolField[][];
     //private Point2D leftCornerOffield;
     public Forms form;
     private int index;
@@ -37,12 +37,12 @@ public class TetrisForm extends Thread {
         this.xCoord = xCoord;
         this.yCoord = yCoord;
         this.falling = true;
-      //  this.first = true;
+        //  this.first = true;
         this.form = form;
-        this.index=0;
-        this.pointField= CoordinatesOfForms.getPointCoords(form);
+        this.index = 0;
+        this.pointField = CoordinatesOfForms.getPointCoords(form);
 
-       // this.boolField = new boolean[4][4];
+        // this.boolField = new boolean[4][4];
         //   this.leftCornerOffield=new Point2D.Double(xCoord,yCoord);
         //  pointList= new LinkedList<>();
 
@@ -117,26 +117,18 @@ public class TetrisForm extends Thread {
         }
     }*/
     //</editor-fold>
-    public void draw(Graphics2D g2)
-    {
+    public void draw(Graphics2D g2) {
         g2.setColor(form.getC());
 
-        for(int i =0;i<pointField.length;i++)
-        {
-            RoundRectangle2D rr = new RoundRectangle2D.Float((int)(xCoord * widthOfBlock + (pointField[i].getY() * widthOfBlock)), (int)((yCoord * heightOfBlock) + 2 + (pointField[i].getX() * heightOfBlock)),
+        for (int i = 0; i < pointField.length; i++) {
+            RoundRectangle2D rr = new RoundRectangle2D.Float((int) (xCoord * widthOfBlock + (pointField[i].getY() * widthOfBlock)), (int) ((yCoord * heightOfBlock) + 2 + (pointField[i].getX() * heightOfBlock)),
                     widthOfBlock - 2, heightOfBlock - 2, 10, 10);
             g2.fill(rr);
         }
 
     }
 
-    public int getxCoord() {
-        return xCoord;
-    }
 
-    public int getyCoord() {
-        return yCoord;
-    }
 
     public void setxCoord(int x) {
 
@@ -162,11 +154,9 @@ public class TetrisForm extends Thread {
     }*/
     //</editor-fold>
 
-    public void setyCoord(int y)
-    {
-        if(collisionAvoidenceY(y))
-        {
-            this.yCoord+=y;
+    public void setyCoord(int y) {
+        if (collisionAvoidenceY(y)) {
+            this.yCoord += y;
         }
     }
 
@@ -188,46 +178,36 @@ public class TetrisForm extends Thread {
     }*/
     //</editor-fold>
 
-    public void rotateRight()
-    {
-        if(index==3)
-        {
-            index=0;
-        }
-        else
-        {
-            index+=1;
-        }
-        System.out.println(index);
-        Point2D[] pointFieldtry=CoordinatesOfForms.rotatetForm(form,index);
-        if(collisionAvoidenceX(pointFieldtry)&&collisionAvoidenceY(pointFieldtry))
-        {
-            pointField = pointFieldtry;
-        }
-    }
-    public void rotateLeft()
-    {
-        if(index==0)
-        {
-            index=3;
-        }
-        else
-        {
-            index-=1;
+    public void rotateRight() {
+        if (index == 3) {
+            index = 0;
+        } else {
+            index += 1;
         }
 
-        Point2D[] pointFieldtry=CoordinatesOfForms.rotatetForm(form,index);
-        if(collisionAvoidenceX(pointFieldtry)&&collisionAvoidenceY(pointFieldtry))
-        {
+        Point2D[] pointFieldtry = CoordinatesOfForms.rotatetForm(form, index);
+        if (collisionAvoidenceX(pointFieldtry) && collisionAvoidenceY(pointFieldtry)) {
             pointField = pointFieldtry;
         }
     }
 
+    public void rotateLeft() {
+        if (index == 0) {
+            index = 3;
+        } else {
+            index -= 1;
+        }
+
+        Point2D[] pointFieldtry = CoordinatesOfForms.rotatetForm(form, index);
+        if (collisionAvoidenceX(pointFieldtry) && collisionAvoidenceY(pointFieldtry)) {
+            pointField = pointFieldtry;
+        }
+    }
 
 
     @Override
     public void run() {
-        while (falling) {
+        while (!interrupted()) {
 
             //<editor-fold desc="old run">
            /* // printFeld();
@@ -243,21 +223,23 @@ public class TetrisForm extends Thread {
                 }
             }*/
             //</editor-fold>
-       if(collisionAvoidenceY(1))
-       {
-           yCoord++;
-       }
-       else {
-           falling=false;
-           setFieldTrue();
-           this.stop();
-       }
+            //System.out.println("sdfasdf");
+
+            if (collisionAvoidenceY(1)) {
+                yCoord++;
+            } else {
+                falling = false;
+                setFieldTrue();
+                this.interrupt();
+            }
 
             //System.out.println("x: "+xCoord+" y: "+yCoord);
             try {
                 Thread.sleep(500);
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                //e.printStackTrace();
+                System.out.println("unten angekommen");
+                this.interrupt();
             }
 
         }
@@ -267,9 +249,9 @@ public class TetrisForm extends Thread {
     private void setFieldTrue() {
 
 
-        for(int i = 0; i< pointField.length;i++)
-        {
-            TetrisGUI.fields[(int)(yCoord+pointField[i].getX())][(int)(xCoord+pointField[i].getY())]=true;
+        for (int i = 0; i < pointField.length; i++) {
+            TetrisGUI.fields[(int) (yCoord + pointField[i].getX())][(int) (xCoord + pointField[i].getY())] = true;
+
         }
     }
 
@@ -290,30 +272,30 @@ public class TetrisForm extends Thread {
         Boolean isOk = true;
 
         for (int i = 0; i < pointField.length; i++) {
-          //  System.out.println("yCoord"+(yCoord + pointField[i].getY() + y)+" xCoord: "+(xCoord + pointField[i].getX()));
+            //  System.out.println("yCoord"+(yCoord + pointField[i].getY() + y)+" xCoord: "+(xCoord + pointField[i].getX()));
             if (TetrisGUI.fields[(int) (yCoord + pointField[i].getX() + y)][(int) (xCoord + pointField[i].getY())]) {
-               // System.out.println("yCoord"+(yCoord + pointField[i].getY() + y)+" xCoord: "+(xCoord + pointField[i].getX())+" "+isOk);
-                    isOk = false;
+                // System.out.println("yCoord"+(yCoord + pointField[i].getY() + y)+" xCoord: "+(xCoord + pointField[i].getX())+" "+isOk);
+                isOk = false;
 
             }
 
         }
-      //  System.out.println("yCollison: "+isOk);
+        //  System.out.println("yCollison: "+isOk);
         return isOk;
     }
+
     public boolean collisionAvoidenceY(Point2D[] pointfield) {
         Boolean isOk = true;
 
         for (int i = 0; i < pointfield.length; i++) {
             //  System.out.println("yCoord"+(yCoord + pointField[i].getY() + y)+" xCoord: "+(xCoord + pointField[i].getX()));
-            try{
+            try {
                 if (TetrisGUI.fields[(int) (yCoord + pointfield[i].getX())][(int) (xCoord + pointfield[i].getY())]) {
                     // System.out.println("yCoord"+(yCoord + pointField[i].getY() + y)+" xCoord: "+(xCoord + pointField[i].getX())+" "+isOk);
                     isOk = false;
 
                 }
-            }catch(ArrayIndexOutOfBoundsException ex)
-            {
+            } catch (ArrayIndexOutOfBoundsException ex) {
                 System.out.println("geth net da hin");
             }
 
@@ -322,20 +304,19 @@ public class TetrisForm extends Thread {
         //  System.out.println("yCollison: "+isOk);
         return isOk;
     }
+
     public boolean collisionAvoidenceX(Point2D[] pointfield) {
         Boolean isOk = true;
 
         for (int i = 0; i < pointfield.length; i++) {
 
             //System.out.println(xCoord + pointField[i].getX() + 1);
-            try
-            {
+            try {
                 if (TetrisGUI.fields[(int) (yCoord + pointfield[i].getX())][(int) (xCoord + pointfield[i].getY())]) {
                     isOk = false;
 
                 }
-            }catch(ArrayIndexOutOfBoundsException ex)
-            {
+            } catch (ArrayIndexOutOfBoundsException ex) {
                 System.out.println("geht net drehen");
             }
 
@@ -346,20 +327,18 @@ public class TetrisForm extends Thread {
     }
 
 
-
-
     public boolean collisionAvoidenceX(int x) {
         Boolean isOk = true;
 
         for (int i = 0; i < pointField.length; i++) {
             //System.out.println(xCoord + pointField[i].getX() + 1);
-            if (TetrisGUI.fields[(int) (yCoord + pointField[i].getX())][(int) (xCoord + pointField[i].getY()+x)]) {
+            if (TetrisGUI.fields[(int) (yCoord + pointField[i].getX())][(int) (xCoord + pointField[i].getY() + x)]) {
                 isOk = false;
 
             }
 
         }
-      //  System.out.println("xCollison: "+isOk);
+        //  System.out.println("xCollison: "+isOk);
         return isOk;
     }
 
@@ -376,5 +355,9 @@ public class TetrisForm extends Thread {
             }
             System.out.println();
         }
+    }
+
+    public Point2D[] getPointField() {
+        return pointField;
     }
 }
