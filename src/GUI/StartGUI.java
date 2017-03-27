@@ -8,7 +8,7 @@ import java.awt.*;
 import java.io.IOException;
 
 /**
- * Created by Christoph on 13.03.2017.
+ * Created by Hugo & Christoph on 13.03.2017.
  */
 public class StartGUI extends JFrame {
     protected static StartGUI gui=new StartGUI();
@@ -16,8 +16,6 @@ public class StartGUI extends JFrame {
     public StartGUI() {
         initComponents();
         this.setResizable(false);
-        this.setSize(500,500);
-
     }
 
     private void initComponents() {
@@ -39,17 +37,17 @@ public class StartGUI extends JFrame {
         gesamtLabel.setSize(width, height);
         gesamtLabel.setOpaque(true);
         gesamtLabel.setBackground(Color.red);
-        /*try {
-            gesamtLabel.setIcon(new ImageIcon(ImageIO.read(Res.class.getResourceAsStream("tetris-movie.jpg"))));
+        try {
+            gesamtLabel.setIcon(new ImageIcon(ImageIO.read(Res.class.getResourceAsStream("Tetris.jpg"))));
         } catch (IOException e) {
             e.printStackTrace();
-        }*/
+        }
         gesamtPanel.add(gesamtLabel);
 
 
         JButton btStart = new JButton();
         btStart.setText("Start");
-        panel1.setBackground(Color.darkGray);
+        panel1.setBackground(Color.black);
         //btStart.setSize(width/10, height/10);
         //btStart.setLocation(width/10,height/10);
         panel1.add(btStart);
@@ -82,14 +80,14 @@ public class StartGUI extends JFrame {
         gesamtPanel.setLayout(null);
         gesamtPanel.setSize(width, height);
         panel1.setSize(gesamtPanel.getWidth()/2,gesamtPanel.getHeight()/2);
-        panel1.setLocation(gesamtPanel.getWidth()/3-125,gesamtPanel.getHeight()/2-200);
+        panel1.setLocation(gesamtPanel.getWidth()/2-panel1.getWidth()/2,gesamtPanel.getHeight()/2-panel1.getHeight()/2);
         panel1.setLayout(null);
         btStart.setSize(160,50);
-        btStart.setLocation(panel1.getWidth()/4, panel1.getHeight()/5-20);
+        btStart.setLocation(panel1.getWidth()/2-btStart.getWidth()/2, panel1.getHeight()/5-btStart.getHeight()/2);
         btHighScore.setSize(160,50);
-        btHighScore.setLocation(panel1.getWidth()/4, panel1.getHeight()/2-25);
+        btHighScore.setLocation(panel1.getWidth()/2-btHighScore.getWidth()/2, panel1.getHeight()/2-btHighScore.getHeight()/2);
         btSettings.setSize(35,35);
-        btSettings.setLocation(gesamtPanel.getWidth()/2-btSettings.getWidth(),gesamtPanel.getHeight()+btSettings.getHeight());
+        btSettings.setLocation((int) (gesamtPanel.getWidth()-btSettings.getWidth()*1.5),gesamtPanel.getHeight()-btSettings.getHeight()*2);
         btStart.addActionListener((e) -> onStart());
         ueberschrift.setText("Tetris");
         ueberschrift.setForeground(Color.yellow);
@@ -98,7 +96,7 @@ public class StartGUI extends JFrame {
         //ueberschrift.setLocation(gesamtPanel.getWidth()+100, gesamtPanel.getHeight()/2-150);
         ueberschrift.setFont(ueberschrift.getFont().deriveFont(40f));
         btExit.setSize(160,50);
-        btExit.setLocation(panel1.getWidth()/4, panel1.getHeight()/2+50);
+        btExit.setLocation(panel1.getWidth()/2-btExit.getWidth()/2, panel1.getHeight()/2+btExit.getHeight());
 
 
         btExit.addActionListener(e -> {
