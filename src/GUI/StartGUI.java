@@ -37,6 +37,7 @@ public class StartGUI extends JFrame {
         gesamtLabel.setSize(width, height);
         gesamtLabel.setOpaque(true);
         gesamtLabel.setBackground(Color.red);
+        System.out.println(width+"  "+height);
         try {
             gesamtLabel.setIcon(new ImageIcon(ImageIO.read(Res.class.getResourceAsStream("Tetris.jpg"))));
         } catch (IOException e) {
