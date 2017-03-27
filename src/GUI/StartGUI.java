@@ -30,6 +30,13 @@ public class StartGUI extends JFrame {
         this.setLocationRelativeTo(null);
 
         JPanel gesamtPanel = new JPanel();
+
+        Container cont = this.getContentPane();
+        cont.setLayout(new BorderLayout());
+        cont.add(gesamtPanel, BorderLayout.CENTER);
+        gesamtPanel.setLayout(null);
+        gesamtPanel.setSize(width, height);
+
         JPanel panel1 = new JPanel();
         JLabel ueberschrift = new JLabel();
         gesamtPanel.setBackground(Color.lightGray);
@@ -78,11 +85,7 @@ public class StartGUI extends JFrame {
 
         gesamtLabel.add(panel1);
 
-        Container cont = this.getContentPane();
-        cont.setLayout(new BorderLayout());
-        cont.add(gesamtPanel, BorderLayout.CENTER);
-        gesamtPanel.setLayout(null);
-        gesamtPanel.setSize(width, height);
+
         panel1.setSize(gesamtPanel.getWidth()/2,gesamtPanel.getHeight()/2);
         panel1.setLocation(gesamtPanel.getWidth()/2-panel1.getWidth()/2,gesamtPanel.getHeight()/2-panel1.getHeight()/2);
         panel1.setLayout(null);
