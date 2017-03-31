@@ -1,9 +1,13 @@
 package GUI;
 
 
+import res.Res;
+
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.io.File;
+import java.io.IOException;
 
 /**
  * Created by ganleb13 on 16.03.2017.
@@ -11,17 +15,21 @@ import java.io.File;
  */
 public class GameOverGUI extends JFrame{
 
-    private JPanel paImgList;
-    private JPanel paButtons;
     private JTable tbTabelle;
     private JButton btExit;
     private JButton btBackToMenu;
     private JLabel lbImg;
+    private JScrollPane psPane;
     private int Score;
 
     public GameOverGUI(int score) throws HeadlessException {
         Score = score;
         this.setSize(500,500);
+    }
+
+    public GameOverGUI(){
+
+        initComponents();
     }
 
     public void initComponents()
@@ -30,41 +38,62 @@ public class GameOverGUI extends JFrame{
         Dimension scrnSize = Toolkit.getDefaultToolkit().getScreenSize();
         Rectangle winSize = GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds();
         int taskBarHeight = scrnSize.height - winSize.height;
-        int width = (int) Toolkit.getDefaultToolkit().getScreenSize().getWidth() / 3;
-        int height = ((int) Toolkit.getDefaultToolkit().getScreenSize().getHeight() - taskBarHeight) / 2;
+
+        int width = (int) Toolkit.getDefaultToolkit().getScreenSize().getWidth() / 4;
+        int height = (int)(((int) Toolkit.getDefaultToolkit().getScreenSize().getHeight() - taskBarHeight) / 1.5);
+
 
         this.setSize(width, height);
-        this.setDefaultCloseOperation(EXIT_ON_CLOSE);
+        this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        this.setLocationRelativeTo(null);
+
 
 
         Container cont = this.getContentPane();
-        paImgList = new JPanel();
-        paButtons = new JPanel();
         btExit = new JButton();
         btBackToMenu = new JButton();
         lbImg = new JLabel();
+        tbTabelle = new JTable();
+        psPane = new JScrollPane();
+        cont.setLayout(null);
 
 
-        paImgList.setLayout(new GridLayout(2, 1));
-        paButtons.setLayout(new GridLayout(1, 2));
 
-        String filename = System.getProperty("user.dir") + File.separator + "src" +
-                File.separator + "res" + File.separator + "Game_Over.jpg";
-        lbImg.setIcon(new ImageIcon(filename));
-        paImgList.add(lbImg);
+        //String filename = System.getProperty("user.dir") + File.separator + "src" +
+                //File.separator + "res" + File.separator + "Game_Over.jpg";
 
-        btExit.setText("Exit");
-        btExit.setSize(200, 500);
-        btBackToMenu.setText("Back to Menu");
-        btBackToMenu.setSize(200, 50);
 
-        paButtons.add(btExit);
-        paButtons.add(btBackToMenu);
-        paButtons.setSize(width, 1000);
+        Image img = null;
+        try {
+             img = ImageIO.read(Res.class.getResourceAsStream("Game_Over.jpg"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
-        cont.setLayout(new BorderLayout());
-        cont.add(paImgList, BorderLayout.CENTER);
-        cont.add(paButtons, BorderLayout.SOUTH);
+        System.out.println(width);
+        System.out.println(height);
+        lbImg.setSize(width, height/3);
+        Image simg = img.getScaledInstance(lbImg.getWidth(), lbImg.getHeight(), Image.SCALE_SMOOTH);
+
+        System.out.println(simg);
+
+        lbImg.setIcon(new ImageIcon(simg));
+        cont.add(lbImg);
+        lbImg.setLocation(0,0);
+
+        psPane.add(tbTabelle);
+        psPane.setSize((int) (width/1.2), height/3);
+        cont.add(psPane);
+        System.out.println(width/2 - psPane.getWidth()/2);
+        psPane.setLocation(width/2 - psPane.getWidth()/2, psPane.getHeight()/2);
+
+
+
+    }
+
+    public static void main(String[] args) {
+        GameOverGUI go = new GameOverGUI();
+        go.setVisible(true);
     }
 
 }

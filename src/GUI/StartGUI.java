@@ -25,6 +25,7 @@ public class StartGUI extends JFrame {
 
         int width = (int) Toolkit.getDefaultToolkit().getScreenSize().getWidth() / 3;
         int height = ((int) Toolkit.getDefaultToolkit().getScreenSize().getHeight() - taskBarHeight) / 2;
+
         this.setSize(width, height);
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         this.setLocationRelativeTo(null);
