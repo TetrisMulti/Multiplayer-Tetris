@@ -94,6 +94,17 @@ public class StartGUI extends JFrame {
         btHighScore.setSize(160,50);
         btHighScore.setLocation(panel1.getWidth()/2-btHighScore.getWidth()/2, panel1.getHeight()/2-btHighScore.getHeight()/2);
         btSettings.setSize(35,35);
+        btSettings.addActionListener(e -> {
+            try
+            {
+                SettingsGUI gui = new SettingsGUI();
+                gui.setVisible(true);
+            }
+            catch(Exception ex)
+            {
+                System.out.println("SettingsGUI konnte nicht aufgerufen werden");
+            }
+        });
         btSettings.setLocation(panel1.getWidth()/2,panel1.getHeight()/2);
         btStart.addActionListener((e) -> onStart());
         ueberschrift.setText("Tetris");
