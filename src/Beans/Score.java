@@ -8,10 +8,12 @@ public class Score {
 
     private String user;
     private int score;
+    private int rank;
 
     public Score(String user, int score) {
         this.user = user;
         this.score = score;
+        this.rank = 0;
     }
 
     @Override
@@ -19,6 +21,7 @@ public class Score {
         return "Score{" +
                 "user='" + user + '\'' +
                 ", score=" + score +
+                ", rank=" + rank +
                 '}';
     }
 
@@ -36,5 +39,13 @@ public class Score {
 
     public void setScore(int score) {
         this.score = score;
+    }
+
+    public int getRank() {
+        return rank;
+    }
+
+    public void setRank(int rank) {
+        this.rank = rank;
     }
 }
