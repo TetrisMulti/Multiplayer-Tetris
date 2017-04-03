@@ -94,12 +94,23 @@ public class StartGUI extends JFrame {
         btStart.setLocation(panel1.getWidth()/2-btStart.getWidth()/2, panel1.getHeight()/5-btStart.getHeight()/2);
         btHighScore.setSize(160,50);
         btHighScore.setLocation(panel1.getWidth()/2-btHighScore.getWidth()/2, panel1.getHeight()/2-btHighScore.getHeight()/2);
+        btHighScore.addActionListener(e -> {
+            try
+            {
+                HighScoreGUI gui = new HighScoreGUI();
+                gui.setVisible(true);
+            }
+            catch(Exception ex)
+            {
+                System.out.println("HighScoreGUI konnte nicht aufgerufen werden");
+            }
+        });
         btSettings.setSize(35,35);
         btSettings.addActionListener(e -> {
             try
             {
-                SettingsGUI gui = new SettingsGUI();
-                gui.setVisible(true);
+                SettingsGUI gui1 = new SettingsGUI();
+                gui1.setVisible(true);
             }
             catch(Exception ex)
             {

@@ -31,6 +31,7 @@ public class SettingsGUI extends JFrame{
 
 
         JPanel gesamtPanel = new JPanel();
+        gesamtPanel.setBackground(Color.white);
         Container cont = this.getContentPane();
         cont.setLayout(new BorderLayout());
         cont.add(gesamtPanel, BorderLayout.CENTER);
@@ -79,6 +80,7 @@ public class SettingsGUI extends JFrame{
 
 
         JPanel steuerung = new JPanel(new GridLayout(5,2));
+        steuerung.setBackground(Color.lightGray);
         steuerung.setBorder(new TitledBorder("Steuerung"));
         steuerung.setSize(gesamtPanel.getWidth()/2, gesamtPanel.getHeight()/2);
         steuerung.setLocation(gesamtPanel.getWidth()/2-steuerung.getWidth()+steuerung.getWidth()/8, gesamtPanel.getHeight()/2-steuerung.getHeight()+steuerung.getHeight()/2);
@@ -136,6 +138,7 @@ public class SettingsGUI extends JFrame{
                 String slinksdrehen = tflinksdrehen.getText();
                 String srechtsdrehen = tfrechtsdrehen.getText();
                 String[] steuerungfeld = new String[5];
+                Boolean isok=true;
                 steuerungfeld[0] = slinks;
                 steuerungfeld[1] = srechts;
                 steuerungfeld[2] = srunter;
@@ -145,11 +148,13 @@ public class SettingsGUI extends JFrame{
                 {
                     if(steuerungfeld[i].equals(steuerungfeld[i+1]))
                     {
+                        isok = false;
                         JOptionPane.showMessageDialog(this, "Zwei Werte sind gleich!");
                     }
-                    else
+                    else if(isok == true)
                     {
                         System.out.println("GUI");
+                        this.dispose();
                     }
                 }
             } catch (Exception ex) {
