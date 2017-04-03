@@ -24,7 +24,7 @@ import java.util.LinkedList;
 public class XMLWriter {
 
     private static final String FILENAME = System.getProperty("user.dir") + File.separator + "src" +
-            File.separator + "res" + File.separator + "Scores.xml";
+            File.separator + "res" + File.separator + "Xmlfile.xml";
 
 
     public static void XMLSave(LinkedList<Score> scList) throws ParserConfigurationException, TransformerException {
