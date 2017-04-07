@@ -13,7 +13,6 @@ import java.awt.*;
 public class HighScoreGUI extends JFrame{
 
 
-        protected static GUI.HighScoreGUI gui2 = new GUI.HighScoreGUI();
 
         public HighScoreGUI() {
             initComponents();
@@ -91,8 +90,8 @@ public class HighScoreGUI extends JFrame{
 
 
         public static void main(String[] args) {
+            new HighScoreGUI().setVisible(true);
 
-            gui2.setVisible(true);
         }
     }
 
