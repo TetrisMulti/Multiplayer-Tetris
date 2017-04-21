@@ -7,6 +7,7 @@ import Renderer.PanelRenderer;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.awt.geom.Point2D;
 import java.awt.geom.RoundRectangle2D;
 import java.util.LinkedList;
 import java.util.Random;
@@ -32,11 +33,12 @@ public class TetrisGUI extends JFrame implements ActionListener {
     public int heightOfOneField;
     //private boolean falling = true;
     private TetrisForm aktivForm;
-    private PanelRenderer rend;
+    private static PanelRenderer rend;
     public static TetrisGUI tetrisGui;
     private Timer timer;
     private boolean firstActive = true;
     private static LinkedList<TetrisForm> fertigListe;
+    private static Graphics2D g2;
 
     public TetrisGUI(String nickName, JFrame startGUI) {
 
@@ -97,7 +99,9 @@ public class TetrisGUI extends JFrame implements ActionListener {
             public void windowClosing(WindowEvent e) {
                 startGUI.setVisible(true);
                 aktivForm.interrupt();                                                                                            //set the main gui visible again and close the current window
+                //onClose();
                 dispose();
+
 
             }
         });
@@ -136,6 +140,16 @@ public class TetrisGUI extends JFrame implements ActionListener {
 
     }
 
+   /* private void onClose() {
+        for(TetrisForm t : fertigListe)
+        {
+            t.interrupt();
+            t=null;
+            System.out.println("a");
+        }
+        fertigListe=null;
+    }*/
+
 
     public void printFeld() {
         for (int i = 0; i < fields.length; i++) {
@@ -150,6 +164,56 @@ public class TetrisGUI extends JFrame implements ActionListener {
         }
     }
 
+    public static void updateFertigListe1(int y) {
+        for (TetrisForm t : fertigListe)
+        {
+            //System.out.println(y);
+            Point2D[] p = t.getPointField();
+            for (int i=0;i<p.length;i++)
+            {
+               //System.out.println(p[i].getY()+t.getyCoord());
+                //System.out.println(p[i].getY()+" "+p[i].getX());
+                if(p[i].getY()+t.getyCoord()+1==y)
+                {
+                    System.out.println("adsf");
+                    p[i].setLocation(-1,-1);
+                }
+                else{
+                    System.out.println("a");
+                p[i].setLocation(p[i].getX(),p[i].getY()+1);}
+            }
+            t.repaintForms(g2);
+
+        }
+
+        //rend.repaint();
+    }
+    public static void updateFertigListe(int y) {
+        for (TetrisForm t : fertigListe)
+        {
+            //System.out.println(y);
+            Point2D[] p = t.getPointField();
+            for (int i=0;i<p.length;i++)
+            {
+                //System.out.println(p[i].getY()+t.getyCoord());
+                //System.out.println(p[i].getY()+" "+p[i].getX());
+                for(int x=0;x<fields[0].length;x++)
+                {
+                if(!fields[(int)(p[i].getY()+t.getyCoord()-1)][x])
+                {
+                    System.out.println("adsf");
+                    p[i].setLocation(-1,-1);
+                }
+                else{
+                    System.out.println("a");
+                    p[i].setLocation(p[i].getX(),p[i].getY()+1);}}
+            }
+            t.repaintForms(g2);
+
+        }
+
+        //rend.repaint();
+    }
     @Override
     public void paint(Graphics g) {
         super.paint(g);
@@ -220,7 +284,7 @@ public class TetrisGUI extends JFrame implements ActionListener {
 
 
     public void repaint(Graphics g) {
-        Graphics2D g2 = (Graphics2D) g;
+         g2 = (Graphics2D) g;
 
 
         g.setColor(Color.BLACK);
@@ -257,6 +321,7 @@ public class TetrisGUI extends JFrame implements ActionListener {
             if (!aktivForm.collisionAvoidenceY(aktivForm.getPointField())) {
                 System.out.println("gameover");
                 gameOver();
+                aktivForm.interrupt();
             } else {
                 aktivForm.start();
             }
@@ -275,17 +340,18 @@ public class TetrisGUI extends JFrame implements ActionListener {
     }
 
     private void gameOver() {
-        JOptionPane.showMessageDialog(this,"Gameover");
+        JOptionPane.showMessageDialog(this, "Gameover");
         GameOverGUI g = new GameOverGUI(100);
         g.setVisible(true);
-        this.dispose();
+        //this.dispose();
     }
 
     public Forms newForm() {
         Random rand = new Random();
 
 
-        return Forms.values()[rand.nextInt(Forms.values().length)];
+        //return Forms.values()[rand.nextInt(Forms.values().length)];
+        return Forms.BLOCK;
     }
 }
 
