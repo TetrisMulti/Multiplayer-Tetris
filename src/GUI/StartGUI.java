@@ -71,28 +71,29 @@ public class StartGUI extends JFrame {
         JButton btHighScore = new JButton();
         btHighScore.setText("HighScore");
         panel1.add(btHighScore);
+        JButton btSettings = new JButton();
         JButton btExit = new JButton();
         btExit.setText("Beenden");
         panel1.add(btExit);
 
 
-        JButton btSettings = new JButton();
-
 
 
         gesamtLabel.add(btSettings);
         gesamtLabel.add(ueberschrift);
-
-
         gesamtLabel.add(panel1);
 
 
         panel1.setSize(gesamtPanel.getWidth()/2,gesamtPanel.getHeight()/2);
         panel1.setLocation(gesamtPanel.getWidth()/2-panel1.getWidth()/2,gesamtPanel.getHeight()/2-panel1.getHeight()/2);
         panel1.setLayout(null);
-        btStart.setSize(160,50);
-        btStart.setLocation(panel1.getWidth()/2-btStart.getWidth()/2, panel1.getHeight()/5-btStart.getHeight()/2);
-        btHighScore.setSize(160,50);
+
+        btStart.setSize(panel1.getWidth()/2,panel1.getHeight()/6);
+        btStart.setLocation(panel1.getWidth()/2-btStart.getWidth()/2, panel1.getHeight()/2-btStart.getHeight()-btStart.getHeight());
+        btStart.addActionListener((e) -> onStart());
+        btStart.setFont(new Font("Arial", Font.BOLD, 20));
+
+        btHighScore.setSize(panel1.getWidth()/2,panel1.getHeight()/6);
         btHighScore.setLocation(panel1.getWidth()/2-btHighScore.getWidth()/2, panel1.getHeight()/2-btHighScore.getHeight()/2);
         btHighScore.addActionListener(e -> {
             try
@@ -105,7 +106,9 @@ public class StartGUI extends JFrame {
                 System.out.println("HighScoreGUI konnte nicht aufgerufen werden");
             }
         });
-        btSettings.setSize(35,35);
+        btHighScore.setFont(new Font("Arial", Font.BOLD, 20));
+
+        btSettings.setSize(gesamtPanel.getWidth()/18,gesamtPanel.getHeight()/15);
         btSettings.addActionListener(e -> {
             try
             {
@@ -118,13 +121,22 @@ public class StartGUI extends JFrame {
             }
         });
         btSettings.setLocation(panel1.getWidth()/2,panel1.getHeight()/2);
-        btStart.addActionListener((e) -> onStart());
+
         ueberschrift.setText("Tetris");
         ueberschrift.setForeground(Color.yellow);
         ueberschrift.setSize(gesamtPanel.getWidth()+100,50);
         ueberschrift.setFont(ueberschrift.getFont().deriveFont(40f));
-        btExit.setSize(160,50);
+
+        btExit.setSize(panel1.getWidth()/2,panel1.getHeight()/6);
         btExit.setLocation(panel1.getWidth()/2-btExit.getWidth()/2, panel1.getHeight()/2+btExit.getHeight());
+        btExit.addActionListener(e -> {
+            try {
+                onExit();
+            } catch (Exception ex) {
+                System.out.println("Programm konnte nicht beendet werden");
+            }
+        });
+        btExit.setFont(new Font("Arial", Font.BOLD, 20));
 
         Image img1 = null;
         try {
@@ -136,21 +148,12 @@ public class StartGUI extends JFrame {
         ImageIcon icon1 = new ImageIcon(dimg1);
         btSettings.setIcon(icon1);
 
-        btExit.addActionListener(e -> {
-            try {
-                onExit();
-            } catch (Exception ex) {
-                System.out.println("Programm konnte nicht beendet werden");
-            }
-        });
+
 
         //cont.add(btStart);
         //cont.setLayout(null);
 
         System.out.println(width+" "+height);
-
-
-        System.out.println("Thomas is gay");
     }
 
     private void onStart() {
