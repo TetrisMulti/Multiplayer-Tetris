@@ -1,11 +1,15 @@
 package GUI;
 
+import res.Res;
+
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableColumnModel;
 import javax.swing.table.JTableHeader;
 import java.awt.*;
+import java.io.IOException;
 
 /**
  * Created by Hugo on 03.04.2017.
@@ -44,12 +48,26 @@ public class HighScoreGUI extends JFrame{
             ueberschrift.setText("HighScore");
             ueberschrift.setSize(gesamtPanel.getWidth(),gesamtPanel.getHeight()/10);
             ueberschrift.setFont(new Font("Arial", Font.BOLD, ueberschrift.getHeight()-ueberschrift.getHeight()/10));
+            ueberschrift.setForeground(Color.yellow);
             gesamtPanel.add(ueberschrift);
 
+            JLabel gesamtLabel = new JLabel();
+            gesamtLabel.setSize(width, height);
+            gesamtLabel.setOpaque(true);
+            Image img = null;
+            try {
+                img = ImageIO.read(Res.class.getResourceAsStream("Tetris.jpg"));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            Image dimg = img.getScaledInstance(width, height, Image.SCALE_SMOOTH);
+            ImageIcon icon = new ImageIcon(dimg);
+            gesamtLabel.setIcon(icon);
+            gesamtPanel.add(gesamtLabel);
 
 
             JButton btSchliessen = new JButton();
-            btSchliessen.setText("Abbrechen");
+            btSchliessen.setText("Schließen");
             btSchliessen.setSize(gesamtPanel.getWidth()/4,gesamtPanel.getHeight()/10);
             btSchliessen.setLocation(gesamtPanel.getWidth()/2+btSchliessen.getWidth()-btSchliessen.getWidth()/3, gesamtPanel.getHeight()-2*btSchliessen.getHeight());
             btSchliessen.addActionListener(e -> {
@@ -60,7 +78,7 @@ public class HighScoreGUI extends JFrame{
                 }
             });
             btSchliessen.setFont(new Font("Arial", Font.BOLD, btSchliessen.getHeight()/3));
-            gesamtPanel.add(btSchliessen);
+            //gesamtPanel.add(btSchliessen);
 
 
             JPanel anzeige = new JPanel(new GridLayout(1,1));
@@ -73,12 +91,13 @@ public class HighScoreGUI extends JFrame{
             JTable highscore = new JTable(10,2);
             highscore.setRowHeight(anzeige.getHeight()/11);
             highscore.setOpaque(true);
-            highscore.setBorder(new LineBorder(Color.black, 3));
 
 
 
             anzeige.add(highscore);
-            gesamtPanel.add(anzeige);
+            gesamtLabel.add(btSchliessen);
+            gesamtLabel.add(anzeige);
+            //gesamtPanel.add(anzeige);
         }
 
         private void onExit() {

@@ -1,10 +1,13 @@
 package GUI;
 
 import javafx.beans.property.adapter.JavaBeanObjectProperty;
+import res.Res;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
+import java.io.IOException;
 
 /**
  * Created by Hugo on 27.03.2017.
@@ -38,13 +41,27 @@ public class SettingsGUI extends JFrame{
         cont.add(gesamtPanel, BorderLayout.CENTER);
         gesamtPanel.setLayout(null);
         gesamtPanel.setSize(width, height);
+        JLabel gesamtLabel = new JLabel();
+        gesamtLabel.setSize(width, height);
+        gesamtLabel.setOpaque(true);
+        Image img = null;
+        try {
+            img = ImageIO.read(Res.class.getResourceAsStream("Tetris.jpg"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        Image dimg = img.getScaledInstance(width, height, Image.SCALE_SMOOTH);
+        ImageIcon icon = new ImageIcon(dimg);
+        gesamtLabel.setIcon(icon);
+        gesamtPanel.add(gesamtLabel);
 
 
         JLabel ueberschrift = new JLabel();
         ueberschrift.setText("Einstellungen");
+        ueberschrift.setForeground(Color.yellow);
         ueberschrift.setSize(gesamtPanel.getWidth(),gesamtPanel.getHeight()/10);
         ueberschrift.setFont(new Font("Arial", Font.BOLD, ueberschrift.getHeight()-ueberschrift.getHeight()/10));
-        gesamtPanel.add(ueberschrift);
+        //gesamtPanel.add(ueberschrift);
         /*
         JButton btExit = new JButton();
         btExit.setText("X");
@@ -67,7 +84,7 @@ public class SettingsGUI extends JFrame{
         btUebernehmen.setSize(gesamtPanel.getWidth()/4,gesamtPanel.getHeight()/10);
         btUebernehmen.setLocation(gesamtPanel.getWidth()/2-btUebernehmen.getWidth()/2, gesamtPanel.getHeight()-2*btUebernehmen.getHeight());
         btUebernehmen.setFont(new Font("Arial", Font.BOLD, btUebernehmen.getHeight()/3));
-        gesamtPanel.add(btUebernehmen);
+        //gesamtPanel.add(btUebernehmen);
 
         btAbbrechen.setText("Abbrechen");
         btAbbrechen.setSize(gesamtPanel.getWidth()/4,gesamtPanel.getHeight()/10);
@@ -80,7 +97,7 @@ public class SettingsGUI extends JFrame{
             }
         });
         btAbbrechen.setFont(new Font("Arial", Font.BOLD, btAbbrechen.getHeight()/3));
-        gesamtPanel.add(btAbbrechen);
+        //gesamtPanel.add(btAbbrechen);
 
 
         JPanel steuerung = new JPanel(new GridLayout(5,2));
@@ -88,6 +105,7 @@ public class SettingsGUI extends JFrame{
         steuerung.setBorder(new TitledBorder("Steuerung"));
         steuerung.setSize(gesamtPanel.getWidth()/2, gesamtPanel.getHeight()/2);
         steuerung.setLocation(gesamtPanel.getWidth()/2-steuerung.getWidth()+steuerung.getWidth()/8, gesamtPanel.getHeight()/2-steuerung.getHeight()+steuerung.getHeight()/2);
+
         JLabel links = new JLabel();
         links.setText("Links:");
         JLabel rechts = new JLabel();
@@ -131,8 +149,12 @@ public class SettingsGUI extends JFrame{
         steuerung.add(rechtsdrehen);
         steuerung.add(tfrechtsdrehen);
 
-        gesamtPanel.add(steuerung);
+        //gesamtPanel.add(steuerung);
 
+        gesamtLabel.add(steuerung);
+        gesamtLabel.add(ueberschrift);
+        gesamtLabel.add(btAbbrechen);
+        gesamtLabel.add(btUebernehmen);
 
         btUebernehmen.addActionListener(e -> {
             try {
@@ -164,6 +186,8 @@ public class SettingsGUI extends JFrame{
             } catch (Exception ex) {
                 System.out.println("Programm konnte nicht beendet werden");
             }
+
+
         });
     }
 

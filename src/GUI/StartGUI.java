@@ -76,7 +76,6 @@ public class StartGUI extends JFrame {
         btExit.setText("Beenden");
         panel1.add(btExit);
         panel1.setBackground(Color.black);
-
         panel1.setOpaque(false);
 
         panel1.setSize(gesamtPanel.getWidth()/2,gesamtPanel.getHeight()/2);
@@ -120,7 +119,6 @@ public class StartGUI extends JFrame {
         ueberschrift.setText("Tetris");
         ueberschrift.setForeground(Color.yellow);
         ueberschrift.setSize(gesamtPanel.getWidth()+100,50);
-        ueberschrift.setFont(ueberschrift.getFont().deriveFont(40f));
         ueberschrift.setFont(new Font("Arial", Font.BOLD, ueberschrift.getHeight()));
 
         btExit.setSize(panel1.getWidth()/2,panel1.getHeight()/6);
