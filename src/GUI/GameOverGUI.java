@@ -8,6 +8,7 @@ import Renderer.ScoreRenderer;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableColumnModel;
 import javax.swing.table.TableColumn;
 import javax.xml.parsers.ParserConfigurationException;
@@ -31,6 +32,7 @@ public class GameOverGUI extends JFrame{
     private String[] sname = {"Rank", "User", "Score"};
     private DefaultTableColumnModel dtcm = new DefaultTableColumnModel();
     private ScoreRenderer sc = new ScoreRenderer();
+    private DefaultTableCellRenderer dtcr = new DefaultTableCellRenderer();
 
     public GameOverGUI(int score) throws HeadlessException {
         Score = score;
@@ -93,12 +95,23 @@ public class GameOverGUI extends JFrame{
         initTableColumns();
         stm.loadScores();
         //lbBackground.setLocation(-15,-15);
-        tbTabelle.setSize(new Dimension(dtcm.getTotalColumnWidth()*2, (int) (stm.getRowCount()*tbTabelle.getRowHeight()*1.3)));
-        psPane.setSize(new Dimension(dtcm.getTotalColumnWidth()*2, (int) (stm.getRowCount()*tbTabelle.getRowHeight()*1.3)));
+        tbTabelle.setSize(new Dimension(dtcm.getTotalColumnWidth()*3, (int) (stm.getRowCount()*tbTabelle.getRowHeight()*2.5)));
+        psPane.setSize(new Dimension(dtcm.getTotalColumnWidth()*3, (int) (stm.getRowCount()*tbTabelle.getRowHeight()*2.5)));
         System.out.println("TableWidth: "+tbTabelle.getWidth());
         System.out.println("TableHeight: "+tbTabelle.getHeight());
         System.out.println("PsPaneWidth: "+psPane.getWidth());
         System.out.println("PsPaneHeight: "+psPane.getHeight());
+
+
+        tbTabelle.setOpaque(false);
+        ((DefaultTableCellRenderer)tbTabelle.getDefaultRenderer(Object.class)).setOpaque(false);
+        psPane.setOpaque(false);
+        psPane.getViewport().setOpaque(false);
+        tbTabelle.setShowGrid(false);
+        tbTabelle.setFont(new Font("Courier New", Font.BOLD, 23));                                              //BITTE SKALIEREN
+        tbTabelle.getTableHeader().setReorderingAllowed(false);
+        tbTabelle.getTableHeader().setOpaque(false);
+        //tbTabelle.getTableHeader().setDefaultRenderer(new Op);
 
         psPane.setLocation(width/2 - psPane.getWidth()/2, height/3);
         cont.add(psPane);
@@ -133,11 +146,15 @@ public class GameOverGUI extends JFrame{
         for(String s:sname)
         {
             TableColumn tc = new TableColumn(cnt, spalten[cnt++]);
+            tc.setCellRenderer(dtcr);
             tc.setHeaderValue(s);
             tc.setResizable(false);
             tc.setCellRenderer(sc);
             dtcm.addColumn(tc);
         }
+        dtcr.setFont(new Font("Courier New", Font.BOLD, 25));                                                    //BITTE SKALIEREN
+        dtcr.setBackground(new Color(0, 0, 0, 0));
+        dtcr.setForeground(new Color(206, 68, 68));
         tbTabelle.setColumnModel(dtcm);
     }
 
