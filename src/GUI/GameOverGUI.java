@@ -4,6 +4,7 @@ package GUI;
 import BL.ScoreTableModel;
 import org.xml.sax.SAXException;
 import res.Res;
+import Renderer.ScoreRenderer;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -29,6 +30,7 @@ public class GameOverGUI extends JFrame{
     private ScoreTableModel stm = new ScoreTableModel();
     private String[] sname = {"Rank", "User", "Score"};
     private DefaultTableColumnModel dtcm = new DefaultTableColumnModel();
+    private ScoreRenderer sc = new ScoreRenderer();
 
     public GameOverGUI(int score) throws HeadlessException {
         Score = score;
@@ -38,12 +40,10 @@ public class GameOverGUI extends JFrame{
     public GameOverGUI() throws ParserConfigurationException, SAXException, IOException {
 
         initComponents();
-        initTableColumns();
-        stm.loadScores();
+
     }
 
-    public void initComponents()
-    {
+    public void initComponents() throws ParserConfigurationException, SAXException, IOException {
 
         Dimension scrnSize = Toolkit.getDefaultToolkit().getScreenSize();
         Rectangle winSize = GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds();
@@ -53,9 +53,10 @@ public class GameOverGUI extends JFrame{
         int height = (int)(((int) Toolkit.getDefaultToolkit().getScreenSize().getHeight() - taskBarHeight) / 1.5);
 
 
-        this.setSize(width+25, height+25);
+        this.setSize(width, height);
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         this.setLocationRelativeTo(null);
+        this.setResizable(false);
 
 
 
@@ -81,26 +82,26 @@ public class GameOverGUI extends JFrame{
         }
 
         tbTabelle.setModel(stm);
-        //tbTabelle.setDefaultRenderer(Object.class, );
-        System.out.println(width);
-        System.out.println(height);
+        System.out.println("PanelWidth: "+width);
+        System.out.println("Panelheight: "+height);
         lbBackground.setSize(width, height);
         lbBackground.setLayout(new BorderLayout());
         lbBackground.setOpaque(true);
         Image simg = img.getScaledInstance(width, height, Image.SCALE_SMOOTH);
-
-        System.out.println(simg);
-        System.out.println(lbBackground.getWidth());
         lbBackground.setIcon(new ImageIcon(simg));
 
+        initTableColumns();
+        stm.loadScores();
         //lbBackground.setLocation(-15,-15);
-        tbTabelle.setFillsViewportHeight(true);
+        tbTabelle.setSize(new Dimension(dtcm.getTotalColumnWidth()*2, (int) (stm.getRowCount()*tbTabelle.getRowHeight()*1.3)));
+        psPane.setSize(new Dimension(dtcm.getTotalColumnWidth()*2, (int) (stm.getRowCount()*tbTabelle.getRowHeight()*1.3)));
+        System.out.println("TableWidth: "+tbTabelle.getWidth());
+        System.out.println("TableHeight: "+tbTabelle.getHeight());
+        System.out.println("PsPaneWidth: "+psPane.getWidth());
+        System.out.println("PsPaneHeight: "+psPane.getHeight());
 
-        psPane.setSize(tbTabelle.getPreferredScrollableViewportSize());
-        cont.add(psPane);
-        System.out.println(width/2 - psPane.getWidth()/2);
         psPane.setLocation(width/2 - psPane.getWidth()/2, height/3);
-        cont.add(lbBackground);
+        cont.add(psPane);
 
         btExit.setText("Exit");
         btBackToMenu.setText("Back to Menu");
@@ -116,6 +117,8 @@ public class GameOverGUI extends JFrame{
         btExit.addActionListener(e -> {
             System.exit(0);
         });
+        cont.add(lbBackground);
+
 
         btBackToMenu.addActionListener(e -> {
             //Back to Menu einfach mit neuem Object und set visible true oderwas?
@@ -132,6 +135,7 @@ public class GameOverGUI extends JFrame{
             TableColumn tc = new TableColumn(cnt, spalten[cnt++]);
             tc.setHeaderValue(s);
             tc.setResizable(false);
+            tc.setCellRenderer(sc);
             dtcm.addColumn(tc);
         }
         tbTabelle.setColumnModel(dtcm);

@@ -10,14 +10,17 @@ import java.awt.*;
  */
 public class ScoreRenderer extends DefaultTableCellRenderer {
 
+    public ScoreRenderer() {
+        setOpaque(true);
+    }
+
     @Override
     public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
         Component comp = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-        int col = table.convertColumnIndexToModel(column);
+        comp.setBackground(row%2==0?new Color(195, 198, 199):Color.white);
 
-        if (col % 2 == 0) {
-            comp.setBackground(new Color(195, 198, 199));
-        }
+
+
         return comp;
     }
 }

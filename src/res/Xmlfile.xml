@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tetrisscores>
+	<score>
+		<username>leo</username>
+		<points>500</points>
+	</score>
+	<score>
+		<username>lio</username>
+		<points>600</points>
+	</score>
+	<score>
+		<username>löe</username>
+		<points>700</points>
+	</score>
+	<score>
+		<username>seas</username>
+		<points>800</points>
+	</score>
+	<score>
+		<username>hallo</username>
+		<points>900</points>
+	</score>
+	<score>
+		<username>dere</username>
+		<points>100</points>
+	</score>
+	
+</tetrisscores>
