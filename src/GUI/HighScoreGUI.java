@@ -27,7 +27,7 @@ public class HighScoreGUI extends JFrame{
             int width = (int) Toolkit.getDefaultToolkit().getScreenSize().getWidth() / 4;
             int height = ((int) Toolkit.getDefaultToolkit().getScreenSize().getHeight() - taskBarHeight) / 3;
             this.setSize(width, height);
-            this.setDefaultCloseOperation(EXIT_ON_CLOSE);
+            this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
             this.setLocationRelativeTo(null);
 
 
@@ -42,35 +42,32 @@ public class HighScoreGUI extends JFrame{
 
             JLabel ueberschrift = new JLabel();
             ueberschrift.setText("HighScore");
-            ueberschrift.setSize(gesamtPanel.getWidth()+100,50);
-            ueberschrift.setFont(ueberschrift.getFont().deriveFont(40f));
+            ueberschrift.setSize(gesamtPanel.getWidth(),gesamtPanel.getHeight()/10);
+            ueberschrift.setFont(new Font("Arial", Font.BOLD, ueberschrift.getHeight()-ueberschrift.getHeight()/10));
             gesamtPanel.add(ueberschrift);
 
 
-            JButton btUebernehmen = new JButton();
-            JButton btAbbrechen = new JButton();
-            btUebernehmen.setText("Übernehmen");
-            btUebernehmen.setSize(gesamtPanel.getWidth()/4,gesamtPanel.getHeight()/10);
-            btUebernehmen.setLocation(gesamtPanel.getWidth()/2-btUebernehmen.getWidth()/2, gesamtPanel.getHeight()-2*btUebernehmen.getHeight());
-            gesamtPanel.add(btUebernehmen);
-            btAbbrechen.setText("Abbrechen");
-            btAbbrechen.setSize(gesamtPanel.getWidth()/4,gesamtPanel.getHeight()/10);
-            btAbbrechen.setLocation(gesamtPanel.getWidth()/2+btAbbrechen.getWidth()-btAbbrechen.getWidth()/3, gesamtPanel.getHeight()-2*btAbbrechen.getHeight());
-            btAbbrechen.addActionListener(e -> {
+
+            JButton btSchliessen = new JButton();
+            btSchliessen.setText("Abbrechen");
+            btSchliessen.setSize(gesamtPanel.getWidth()/4,gesamtPanel.getHeight()/10);
+            btSchliessen.setLocation(gesamtPanel.getWidth()/2+btSchliessen.getWidth()-btSchliessen.getWidth()/3, gesamtPanel.getHeight()-2*btSchliessen.getHeight());
+            btSchliessen.addActionListener(e -> {
                 try {
                     onExit();
                 } catch (Exception ex) {
                     System.out.println("Programm konnte nicht beendet werden");
                 }
             });
-            gesamtPanel.add(btAbbrechen);
+            btSchliessen.setFont(new Font("Arial", Font.BOLD, btSchliessen.getHeight()/3));
+            gesamtPanel.add(btSchliessen);
 
 
             JPanel anzeige = new JPanel(new GridLayout(1,1));
             anzeige.setBorder(new TitledBorder("Highscore"));
             anzeige.setBackground(Color.lightGray);
             anzeige.setSize(gesamtPanel.getWidth()/2, gesamtPanel.getHeight()/2+gesamtPanel.getHeight()/10);
-            anzeige.setLocation(gesamtPanel.getWidth()/2-anzeige.getWidth()/2, gesamtPanel.getHeight()/2-anzeige.getHeight()/2);
+            anzeige.setLocation(gesamtPanel.getWidth()/2-anzeige.getWidth()/2, gesamtPanel.getHeight()/2-gesamtPanel.getHeight()/3);
 
 
             JTable highscore = new JTable(10,2);

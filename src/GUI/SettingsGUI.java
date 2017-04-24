@@ -15,6 +15,7 @@ public class SettingsGUI extends JFrame{
 
     public SettingsGUI() {
         initComponents();
+        this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         this.setResizable(false);
     }
 
@@ -41,8 +42,8 @@ public class SettingsGUI extends JFrame{
 
         JLabel ueberschrift = new JLabel();
         ueberschrift.setText("Einstellungen");
-        ueberschrift.setSize(gesamtPanel.getWidth()+100,50);
-        ueberschrift.setFont(ueberschrift.getFont().deriveFont(40f));
+        ueberschrift.setSize(gesamtPanel.getWidth(),gesamtPanel.getHeight()/10);
+        ueberschrift.setFont(new Font("Arial", Font.BOLD, ueberschrift.getHeight()-ueberschrift.getHeight()/10));
         gesamtPanel.add(ueberschrift);
         /*
         JButton btExit = new JButton();
@@ -65,7 +66,9 @@ public class SettingsGUI extends JFrame{
         btUebernehmen.setText("Übernehmen");
         btUebernehmen.setSize(gesamtPanel.getWidth()/4,gesamtPanel.getHeight()/10);
         btUebernehmen.setLocation(gesamtPanel.getWidth()/2-btUebernehmen.getWidth()/2, gesamtPanel.getHeight()-2*btUebernehmen.getHeight());
+        btUebernehmen.setFont(new Font("Arial", Font.BOLD, btUebernehmen.getHeight()/3));
         gesamtPanel.add(btUebernehmen);
+
         btAbbrechen.setText("Abbrechen");
         btAbbrechen.setSize(gesamtPanel.getWidth()/4,gesamtPanel.getHeight()/10);
         btAbbrechen.setLocation(gesamtPanel.getWidth()/2+btAbbrechen.getWidth()-btAbbrechen.getWidth()/3, gesamtPanel.getHeight()-2*btAbbrechen.getHeight());
@@ -76,6 +79,7 @@ public class SettingsGUI extends JFrame{
                 System.out.println("Programm konnte nicht beendet werden");
             }
         });
+        btAbbrechen.setFont(new Font("Arial", Font.BOLD, btAbbrechen.getHeight()/3));
         gesamtPanel.add(btAbbrechen);
 
 
@@ -95,25 +99,25 @@ public class SettingsGUI extends JFrame{
         JLabel rechtsdrehen = new JLabel();
         rechtsdrehen.setText("Rechts drehen:");
 
-        JFormattedTextField tflinks = new JFormattedTextField();
+        JTextField tflinks = new JTextField();
         tflinks.setHorizontalAlignment(tflinks.CENTER);
-        tflinks.setFont(new Font("New Courier",Font.BOLD, 30));
+        tflinks.setFont(new Font("Arial",Font.BOLD, 30));
         tflinks.setText("A");
         JTextField tfrechts = new JTextField();
         tfrechts.setHorizontalAlignment(tfrechts.CENTER);
-        tfrechts.setFont(new Font("New Courier",Font.BOLD, 30));
+        tfrechts.setFont(new Font("Arial",Font.BOLD, 30));
         tfrechts.setText("D");
         JTextField tfrunter = new JTextField();
         tfrunter.setHorizontalAlignment(tfrunter.CENTER);
-        tfrunter.setFont(new Font("New Courier",Font.BOLD, 30));
+        tfrunter.setFont(new Font("Arial",Font.BOLD, 30));
         tfrunter.setText("S");
         JTextField tflinksdrehen = new JTextField();
         tflinksdrehen.setHorizontalAlignment(tflinksdrehen.CENTER);
-        tflinksdrehen.setFont(new Font("New Courier",Font.BOLD, 30));
+        tflinksdrehen.setFont(new Font("Arial",Font.BOLD, 30));
         tflinksdrehen.setText("Q");
         JTextField tfrechtsdrehen = new JTextField();
         tfrechtsdrehen.setHorizontalAlignment(tfrechtsdrehen.CENTER);
-        tfrechtsdrehen.setFont(new Font("New Courier",Font.BOLD, 30));
+        tfrechtsdrehen.setFont(new Font("Arial",Font.BOLD, 30));
         tfrechtsdrehen.setText("E");
 
         steuerung.add(links);
