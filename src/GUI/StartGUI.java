@@ -75,14 +75,9 @@ public class StartGUI extends JFrame {
         JButton btExit = new JButton();
         btExit.setText("Beenden");
         panel1.add(btExit);
+        panel1.setBackground(Color.black);
 
-
-
-
-        gesamtLabel.add(btSettings);
-        gesamtLabel.add(ueberschrift);
-        gesamtLabel.add(panel1);
-
+        panel1.setOpaque(false);
 
         panel1.setSize(gesamtPanel.getWidth()/2,gesamtPanel.getHeight()/2);
         panel1.setLocation(gesamtPanel.getWidth()/2-panel1.getWidth()/2,gesamtPanel.getHeight()/2-panel1.getHeight()/2);
@@ -91,7 +86,7 @@ public class StartGUI extends JFrame {
         btStart.setSize(panel1.getWidth()/2,panel1.getHeight()/6);
         btStart.setLocation(panel1.getWidth()/2-btStart.getWidth()/2, panel1.getHeight()/2-btStart.getHeight()-btStart.getHeight());
         btStart.addActionListener((e) -> onStart());
-        btStart.setFont(new Font("Arial", Font.BOLD, 20));
+        btStart.setFont(new Font("Arial", Font.BOLD, btStart.getHeight()/2));
 
         btHighScore.setSize(panel1.getWidth()/2,panel1.getHeight()/6);
         btHighScore.setLocation(panel1.getWidth()/2-btHighScore.getWidth()/2, panel1.getHeight()/2-btHighScore.getHeight()/2);
@@ -106,7 +101,7 @@ public class StartGUI extends JFrame {
                 System.out.println("HighScoreGUI konnte nicht aufgerufen werden");
             }
         });
-        btHighScore.setFont(new Font("Arial", Font.BOLD, 20));
+        btHighScore.setFont(new Font("Arial", Font.BOLD, btHighScore.getHeight()/2));
 
         btSettings.setSize(gesamtPanel.getWidth()/18,gesamtPanel.getHeight()/15);
         btSettings.addActionListener(e -> {
@@ -126,6 +121,7 @@ public class StartGUI extends JFrame {
         ueberschrift.setForeground(Color.yellow);
         ueberschrift.setSize(gesamtPanel.getWidth()+100,50);
         ueberschrift.setFont(ueberschrift.getFont().deriveFont(40f));
+        ueberschrift.setFont(new Font("Arial", Font.BOLD, ueberschrift.getHeight()));
 
         btExit.setSize(panel1.getWidth()/2,panel1.getHeight()/6);
         btExit.setLocation(panel1.getWidth()/2-btExit.getWidth()/2, panel1.getHeight()/2+btExit.getHeight());
@@ -136,7 +132,7 @@ public class StartGUI extends JFrame {
                 System.out.println("Programm konnte nicht beendet werden");
             }
         });
-        btExit.setFont(new Font("Arial", Font.BOLD, 20));
+        btExit.setFont(new Font("Arial", Font.BOLD, btExit.getHeight()/2));
 
         Image img1 = null;
         try {
@@ -149,6 +145,9 @@ public class StartGUI extends JFrame {
         btSettings.setIcon(icon1);
 
 
+        gesamtLabel.add(btSettings);
+        gesamtLabel.add(ueberschrift);
+        gesamtLabel.add(panel1);
 
         //cont.add(btStart);
         //cont.setLayout(null);
