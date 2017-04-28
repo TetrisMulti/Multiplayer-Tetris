@@ -17,7 +17,6 @@ import java.io.IOException;
 public class HighScoreGUI extends JFrame{
 
 
-
         public HighScoreGUI() {
             initComponents();
             this.setResizable(false);
