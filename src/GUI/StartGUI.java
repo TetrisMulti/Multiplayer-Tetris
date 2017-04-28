@@ -118,8 +118,11 @@ public class StartGUI extends JFrame {
 
         ueberschrift.setText("Tetris");
         ueberschrift.setForeground(Color.yellow);
-        ueberschrift.setSize(gesamtPanel.getWidth()+100,50);
+        ueberschrift.setSize(gesamtPanel.getWidth(),gesamtPanel.getHeight()/10);
         ueberschrift.setFont(new Font("Arial", Font.BOLD, ueberschrift.getHeight()));
+        //ueberschrift.setOpaque(true);
+        //ueberschrift.setBackground(Color.red);
+        ueberschrift.setHorizontalAlignment(JLabel.CENTER);
 
         btExit.setSize(panel1.getWidth()/2,panel1.getHeight()/6);
         btExit.setLocation(panel1.getWidth()/2-btExit.getWidth()/2, panel1.getHeight()/2+btExit.getHeight());
@@ -143,6 +146,27 @@ public class StartGUI extends JFrame {
         btSettings.setIcon(icon1);
 
 
+
+        JButton btCredits = new JButton();
+        btCredits.setSize(panel1.getWidth()/4,panel1.getHeight()/10);
+        btCredits.setLocation(gesamtLabel.getWidth()-btCredits.getWidth(), 0);
+        btCredits.setText("Credits");
+        btCredits.setFont(new Font("Arial", Font.BOLD, btHighScore.getHeight()/4));
+        btCredits.addActionListener(e -> {
+            try
+            {
+                CreditsGUI gui1 = new CreditsGUI();
+                gui1.setVisible(true);
+            }
+            catch(Exception ex)
+            {
+                System.out.println("CreditsGUI konnte nicht aufgerufen werden");
+            }
+        });
+
+
+
+        gesamtLabel.add(btCredits);
         gesamtLabel.add(btSettings);
         gesamtLabel.add(ueberschrift);
         gesamtLabel.add(panel1);

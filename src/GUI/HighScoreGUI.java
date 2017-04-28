@@ -49,6 +49,7 @@ public class HighScoreGUI extends JFrame{
             ueberschrift.setSize(gesamtPanel.getWidth(),gesamtPanel.getHeight()/10);
             ueberschrift.setFont(new Font("Arial", Font.BOLD, ueberschrift.getHeight()-ueberschrift.getHeight()/10));
             ueberschrift.setForeground(Color.yellow);
+            ueberschrift.setHorizontalAlignment(JLabel.CENTER);
             gesamtPanel.add(ueberschrift);
 
             JLabel gesamtLabel = new JLabel();
