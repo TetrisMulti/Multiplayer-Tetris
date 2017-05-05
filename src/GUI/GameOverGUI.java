@@ -119,7 +119,7 @@ public class GameOverGUI extends JFrame{
         psPane.getViewport().setOpaque(false);
 
         tbTabelle.setShowGrid(false);
-        tbTabelle.setFont(new Font("Courier New", Font.BOLD, 23));                                              //BITTE SKALIEREN
+        tbTabelle.setFont(new Font("Courier New", Font.BOLD, 14));                                              //BITTE SKALIEREN
         tbTabelle.getTableHeader().setReorderingAllowed(false);
         tbTabelle.getTableHeader().setOpaque(true);
         tbTabelle.setColumnSelectionAllowed(false);
@@ -175,10 +175,10 @@ public class GameOverGUI extends JFrame{
 
 
         }
-        dtcr.setFont(new Font("Courier New", Font.BOLD, 25));                                                    //BITTE SKALIEREN
+        dtcr.setFont(new Font("Courier New", Font.BOLD, 14));                                                    //BITTE SKALIEREN
         dtcr.setBackground(new Color(0, true));
         dtcr.setForeground(new Color(206, 68, 68));
-         tbTabelle.setColumnModel(dtcm);
+        tbTabelle.setColumnModel(dtcm);
     }
 
     public static void main(String[] args) {
