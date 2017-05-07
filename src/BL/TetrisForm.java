@@ -1,13 +1,13 @@
 package BL;
 
+import Beans.CoordinatesOfForms;
+import Beans.Forms;
 import GUI.TetrisGUI;
 
 
 import java.awt.*;
 import java.awt.geom.Point2D;
 import java.awt.geom.RoundRectangle2D;
-import java.util.LinkedList;
-import java.util.Random;
 
 /**
  * Created by Chris on 14.03.2017.
@@ -27,11 +27,14 @@ public class TetrisForm extends Thread {
     private int index;
     private Point2D[] pointField;
     private int[] removeRows;
+    private int formindex;
 
 
     // private LinkedList<Point2D> pointList;
 
-    public TetrisForm(int xCoord, int yCoord, int widthOfBlock, int heightOfBlock, Forms form) {
+
+
+    public TetrisForm(int xCoord, int yCoord, int widthOfBlock, int heightOfBlock, Forms form, int formindex) {
         this.widthOfBlock = widthOfBlock;
         this.heightOfBlock = heightOfBlock;
         //System.out.println("drinadf");
@@ -43,6 +46,8 @@ public class TetrisForm extends Thread {
         this.index = 0;
         this.pointField = CoordinatesOfForms.getPointCoords(form);
         removeRows = new int[4];
+        this.formindex=formindex;
+       // System.out.println(index);
 
         // this.boolField = new boolean[4][4];
         //   this.leftCornerOffield=new Point2D.Double(xCoord,yCoord);
@@ -119,15 +124,22 @@ public class TetrisForm extends Thread {
         }
     }*/
     //</editor-fold>
+    public int getIndex() {
+        return formindex;
+    }
     public void draw(Graphics2D g2) {
         g2.setColor(form.getC());
 
         for (int i = 0; i < pointField.length; i++) {
             if(pointField[i].getX()!=-1){
-                System.out.println("1");
+                //System.out.println("yes");
             RoundRectangle2D rr = new RoundRectangle2D.Float((int) (xCoord * widthOfBlock + (pointField[i].getY() * widthOfBlock)), (int) ((yCoord * heightOfBlock) + 2 + (pointField[i].getX() * heightOfBlock)),
                     widthOfBlock - 2, heightOfBlock - 2, 10, 10);
             g2.fill(rr);}
+            else
+            {
+               // System.out.println("no");
+            }
         }
 
     }
@@ -234,6 +246,7 @@ public class TetrisForm extends Thread {
                 falling = false;
                 setFieldTrue();
                 this.interrupt();
+                //System.out.println("asdf");
                 detectRowFalling();
             }
 
@@ -252,8 +265,10 @@ public class TetrisForm extends Thread {
 
     private void detectRowFalling() {
         if (test1Row()[0] != -1) {
+            System.out.println("dortdrinne");
             reWriteField(test1Row());
-            System.out.println("adfasdf");
+
+           // System.out.println("adfasdf");
         }
     }
 
@@ -284,9 +299,9 @@ public class TetrisForm extends Thread {
                 TetrisGUI.fields[help][j] = false;
             }
         }
-        System.out.println("------------------------------------------");
+        //.println("------------------------------------------");
        // printFeld();
-        
+        System.out.println("before update");
         TetrisGUI.updateFertigListe(maxy);
     }
 
@@ -305,6 +320,7 @@ public class TetrisForm extends Thread {
             }
             if (isOk) {
                 //System.out.println("adadsfasd");
+                TetrisGUI.removedRows++;
                 removes[counter++] = y;
             }
             isOk = true;
@@ -365,7 +381,7 @@ public class TetrisForm extends Thread {
 
                 }
             } catch (ArrayIndexOutOfBoundsException ex) {
-                System.out.println("geth net da hin");
+               // System.out.println("geth net da hin");
             }
 
 
@@ -425,6 +441,7 @@ public class TetrisForm extends Thread {
         return pointField;
     }
 
+    //<editor-fold desc="old Repaint">
  /*   public void repaintForms(Graphics2D g2) {
         g2.setColor(form.getC());
         //System.out.println("dafsdfasdfsadasdfsadfsadfasdfasdfasd");
@@ -446,6 +463,7 @@ public class TetrisForm extends Thread {
 
         }
     }*/
+    //</editor-fold>
 
     public void repaintForms(Graphics2D g2) {
         for (int y = 0; y < TetrisGUI.fields.length; y++) {
@@ -458,7 +476,7 @@ public class TetrisForm extends Thread {
                 } else {
                     for(int i=0;i<pointField.length;i++)
                     {
-                        System.out.println(pointField[i].getY()+" "+pointField[i].getX());
+                       // System.out.println(pointField[i].getY()+" "+pointField[i].getX());
                         if(pointField[i].getX()!=-1)
                         {
                             g2.setColor(form.getC());

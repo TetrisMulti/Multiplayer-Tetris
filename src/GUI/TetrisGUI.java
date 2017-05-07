@@ -1,14 +1,17 @@
 package GUI;
 
-import BL.Forms;
+import Beans.Forms;
 import BL.TetrisForm;
 import Renderer.PanelRenderer;
+import org.xml.sax.SAXException;
 
 import javax.swing.*;
+import javax.xml.parsers.ParserConfigurationException;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.Point2D;
 import java.awt.geom.RoundRectangle2D;
+import java.io.IOException;
 import java.util.LinkedList;
 import java.util.Random;
 
@@ -39,16 +42,20 @@ public class TetrisGUI extends JFrame implements ActionListener {
     private boolean firstActive = true;
     private static LinkedList<TetrisForm> fertigListe;
     private static Graphics2D g2;
+    private static int counter;
+    public static int removedRows;
 
     public TetrisGUI(String nickName, JFrame startGUI) {
 
         this.nickName = nickName;
         this.startGUI = startGUI;
+        counter = 0;
         fields = new boolean[20][12];
         tetrisGui = this;
         timer = new Timer(20, this);
         fertigListe = new LinkedList<>();
         initialConfigs();
+        removedRows=0;
         //rend.setBackground(Color.black);
         //  initComponents();
 
@@ -132,6 +139,7 @@ public class TetrisGUI extends JFrame implements ActionListener {
                 }
             }
 
+
             @Override
             public void keyReleased(KeyEvent e) {
 
@@ -165,48 +173,19 @@ public class TetrisGUI extends JFrame implements ActionListener {
     }
 
     public static void updateFertigListe1(int y) {
-        for (TetrisForm t : fertigListe)
-        {
+        for (TetrisForm t : fertigListe) {
             //System.out.println(y);
             Point2D[] p = t.getPointField();
-            for (int i=0;i<p.length;i++)
-            {
-               //System.out.println(p[i].getY()+t.getyCoord());
-                //System.out.println(p[i].getY()+" "+p[i].getX());
-                if(p[i].getY()+t.getyCoord()+1==y)
-                {
-                    System.out.println("adsf");
-                    p[i].setLocation(-1,-1);
-                }
-                else{
-                    System.out.println("a");
-                p[i].setLocation(p[i].getX(),p[i].getY()+1);}
-            }
-            t.repaintForms(g2);
-
-        }
-
-        //rend.repaint();
-    }
-    public static void updateFertigListe(int y) {
-        for (TetrisForm t : fertigListe)
-        {
-            //System.out.println(y);
-            Point2D[] p = t.getPointField();
-            for (int i=0;i<p.length;i++)
-            {
+            for (int i = 0; i < p.length; i++) {
                 //System.out.println(p[i].getY()+t.getyCoord());
                 //System.out.println(p[i].getY()+" "+p[i].getX());
-                for(int x=0;x<fields[0].length;x++)
-                {
-                if(!fields[(int)(p[i].getY()+t.getyCoord()-1)][x])
-                {
-                    System.out.println("adsf");
-                    p[i].setLocation(-1,-1);
-                }
-                else{
+                if (p[i].getY() + t.getyCoord() + 1 == y) {
+                    // System.out.println("adsf");
+                    p[i].setLocation(-1, -1);
+                } else {
                     System.out.println("a");
-                    p[i].setLocation(p[i].getX(),p[i].getY()+1);}}
+                    p[i].setLocation(p[i].getX(), p[i].getY() + 1);
+                }
             }
             t.repaintForms(g2);
 
@@ -214,6 +193,34 @@ public class TetrisGUI extends JFrame implements ActionListener {
 
         //rend.repaint();
     }
+
+    public static void updateFertigListe(int y) {
+        for (TetrisForm t : fertigListe) {
+            //System.out.println(y);
+            Point2D[] p = t.getPointField();
+            for (int i = 0; i < p.length; i++) {
+                //System.out.println(p[i].getY()+t.getyCoord());
+                //System.out.println(p[i].getY()+" "+p[i].getX());
+                for (int x = 0; x < fields[0].length; x++) {
+                    if (!fields[(int) (p[i].getY() + t.getyCoord() - 1)][x]) {
+                        System.out.println("adsf");
+                        p[i].setLocation(-1, -1);
+                    } else {
+                        System.out.println("a");
+                        p[i].setLocation(p[i].getX(), p[i].getY() + 1);
+                        //emovedRows=0;
+                    }
+                }
+            }
+            t.repaintForms(g2);
+
+
+        }
+       // printPoints();
+
+        //rend.repaint();
+    }
+
     @Override
     public void paint(Graphics g) {
         super.paint(g);
@@ -284,7 +291,7 @@ public class TetrisGUI extends JFrame implements ActionListener {
 
 
     public void repaint(Graphics g) {
-         g2 = (Graphics2D) g;
+        g2 = (Graphics2D) g;
 
 
         g.setColor(Color.BLACK);
@@ -303,21 +310,54 @@ public class TetrisGUI extends JFrame implements ActionListener {
                 }
             }
         }
+        int count =0;
+        synchronized (fertigListe) {
+            boolean isThere = false;
 
-        for (TetrisForm tf : fertigListe) {
-            tf.draw(g2);
+            for (TetrisForm tf : fertigListe) {
+                Point2D[] field = tf.getPointField();
+                isThere = false;
+                for (int i = 0; i < field.length; i++) {
+                    if (field[i].getX() == -1) {
+                        isThere = true;
+                        count++;
+                        // System.out.println(tf.getIndex());
+                        // System.out.println("true");
+                    }
+                }
+                //System.out.println(count);
+                // printPoints();
+                if (count>0) {
+                    //System.out.println(tf.getIndex());
+                    tf.interrupt();
+                    //tf = null;
+                    System.out.println("asdfasdfasdf");
+                    fertigListe.remove(tf);
+
+                    isThere=false;
+                    count=0;
+                    break;
+
+                }
+                count=0;
+                tf.draw(g2);
+                // System.out.println("drinne");
+            }
+
+            if (!firstActive) {
+                aktivForm.draw(g2);
+            }
+
         }
 
-        if (!firstActive) {
-            aktivForm.draw(g2);
-        }
-
+        count=0;
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
         if (firstActive) {
-            aktivForm = new TetrisForm(5, 0, widthOfOneField, heightOfOneField, newForm());
+            System.out.println("new Form");
+            aktivForm = new TetrisForm(5, 0, widthOfOneField, heightOfOneField, newForm(), counter++);
             if (!aktivForm.collisionAvoidenceY(aktivForm.getPointField())) {
                 System.out.println("gameover");
                 gameOver();
@@ -333,6 +373,7 @@ public class TetrisGUI extends JFrame implements ActionListener {
             fertigListe.add(aktivForm);
             //fields[aktivForm.getyCoord()][aktivForm.getxCoord()] = true;
             firstActive = true;
+            printPoints();
             //printFeld();
         }
 
@@ -341,8 +382,18 @@ public class TetrisGUI extends JFrame implements ActionListener {
 
     private void gameOver() {
         JOptionPane.showMessageDialog(this, "Gameover");
-        GameOverGUI g = new GameOverGUI(100);
-        g.setVisible(true);
+        try {
+            GameOverGUI g = new GameOverGUI();
+            g.setVisible(true);
+        } catch (ParserConfigurationException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (SAXException e) {
+            e.printStackTrace();
+        }
+
+
         //this.dispose();
     }
 
@@ -352,6 +403,19 @@ public class TetrisGUI extends JFrame implements ActionListener {
 
         //return Forms.values()[rand.nextInt(Forms.values().length)];
         return Forms.BLOCK;
+    }
+
+
+    public static void printPoints() {
+        System.out.println("-----------------------");
+        for (TetrisForm tf : fertigListe) {
+            //System.out.println(tf.getPointField());
+
+            System.out.println(tf.getIndex());
+
+           // System.out.println("............."+counter);
+        }
+        System.out.println("-----------");
     }
 }
 
