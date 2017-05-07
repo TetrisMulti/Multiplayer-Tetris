@@ -56,7 +56,7 @@ public class GameOverGUI extends JFrame{
         Rectangle winSize = GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds();
         int taskBarHeight = scrnSize.height - winSize.height;
 
-        int width = (int) Toolkit.getDefaultToolkit().getScreenSize().getWidth() / 4;
+        int width = (int) Toolkit.getDefaultToolkit().getScreenSize().getWidth() / 2;
         int height = (int)(((int) Toolkit.getDefaultToolkit().getScreenSize().getHeight() - taskBarHeight) / 1.5);
 
 
