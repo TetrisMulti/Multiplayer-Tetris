@@ -1,4 +1,4 @@
-package BL;
+package Beans;
 
 import java.awt.geom.Point2D;
 

@@ -1,14 +1,17 @@
 package GUI;
 
-import BL.Forms;
+import Beans.Forms;
 import BL.TetrisForm;
 import Renderer.PanelRenderer;
+import org.xml.sax.SAXException;
 
 import javax.swing.*;
+import javax.xml.parsers.ParserConfigurationException;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.Point2D;
 import java.awt.geom.RoundRectangle2D;
+import java.io.IOException;
 import java.util.LinkedList;
 import java.util.Random;
 
@@ -22,37 +25,35 @@ public class TetrisGUI extends JFrame implements ActionListener {
 
     private String nickName;
     private JFrame startGUI;
-    // private JPanel pa;
     private int screenWidth;
     private int screenHeight;
-    //private Container cont;
     public static boolean[][] fields;
-    //private boolean first=true;
-    //private   Thread t;
     public int widthOfOneField;
     public int heightOfOneField;
-    //private boolean falling = true;
     private TetrisForm aktivForm;
     private static PanelRenderer rend;
     public static TetrisGUI tetrisGui;
     private Timer timer;
     private boolean firstActive = true;
-    private static LinkedList<TetrisForm> fertigListe;
-    private static Graphics2D g2;
+    public static LinkedList<TetrisForm> fertigListe;
+    public static Graphics2D g2;
+    public static int counter;
+    public static int removedRows;
+    public static Color[][] colorField;
 
     public TetrisGUI(String nickName, JFrame startGUI) {
 
         this.nickName = nickName;
         this.startGUI = startGUI;
+        counter = 0;
         fields = new boolean[20][12];
+        colorField = new Color[20][12];
         tetrisGui = this;
         timer = new Timer(20, this);
         fertigListe = new LinkedList<>();
         initialConfigs();
-        //rend.setBackground(Color.black);
-        //  initComponents();
+        removedRows=0;
 
-        //  paintComponents(pa.getGraphics());
     }
 
 
@@ -76,16 +77,25 @@ public class TetrisGUI extends JFrame implements ActionListener {
         this.add(rend);
 
         for (int i = 0; i < fields.length; i++) {
-
             fields[i][fields[i].length - 1] = true;
             fields[i][0] = true;
+            colorField[i][colorField[i].length - 1] = Color.BLACK;
+            colorField[i][0] = Color.BLACK;
 
         }
 
         for (int i = 0; i < fields[0].length; i++) {
 
             fields[fields.length - 1][i] = true;
+            colorField[colorField.length-1][i] = Color.BLACK;
 
+
+        }
+
+        for (int y = 0; y < colorField.length-1;y++){
+            for(int x = 1; x <colorField[y].length-1;x++){
+                colorField[y][x] = Color.DARK_GRAY;
+            }
         }
 
         // printFeld();
@@ -98,7 +108,8 @@ public class TetrisGUI extends JFrame implements ActionListener {
             @Override
             public void windowClosing(WindowEvent e) {
                 startGUI.setVisible(true);
-                aktivForm.interrupt();                                                                                            //set the main gui visible again and close the current window
+                aktivForm.interrupt();
+                //set the main gui visible again and close the current window
                 //onClose();
                 dispose();
 
@@ -124,13 +135,14 @@ public class TetrisGUI extends JFrame implements ActionListener {
                         aktivForm.setyCoord(1);
                         break;
                     case KeyEvent.VK_Q:
-                        aktivForm.rotateLeft();
+                        aktivForm.rotate(-1);
                         break;
                     case KeyEvent.VK_E:
-                        aktivForm.rotateRight();
+                        aktivForm.rotate(1);
                         break;
                 }
             }
+
 
             @Override
             public void keyReleased(KeyEvent e) {
@@ -140,18 +152,8 @@ public class TetrisGUI extends JFrame implements ActionListener {
 
     }
 
-   /* private void onClose() {
-        for(TetrisForm t : fertigListe)
-        {
-            t.interrupt();
-            t=null;
-            System.out.println("a");
-        }
-        fertigListe=null;
-    }*/
-
-
-    public void printFeld() {
+    public static void printFeld() {
+        System.out.println("printFeld: Ausgabe Binärfeld");
         for (int i = 0; i < fields.length; i++) {
             for (int j = 0; j < fields[i].length; j++) {
 
@@ -164,309 +166,77 @@ public class TetrisGUI extends JFrame implements ActionListener {
         }
     }
 
-    public static void updateFertigListe1(int y) {
-        for (TetrisForm t : fertigListe)
-        {
-            //System.out.println(y);
-            Point2D[] p = t.getPointField();
-            for (int i=0;i<p.length;i++)
-            {
-               //System.out.println(p[i].getY()+t.getyCoord());
-                //System.out.println(p[i].getY()+" "+p[i].getX());
-                if(p[i].getY()+t.getyCoord()+1==y)
-                {
-                    System.out.println("adsf");
-                    p[i].setLocation(-1,-1);
-                }
-                else{
-                    System.out.println("a");
-                p[i].setLocation(p[i].getX(),p[i].getY()+1);}
-            }
-            t.repaintForms(g2);
-
-        }
-
-        //rend.repaint();
-    }
-    public static void updateFertigListe(int y) {
-        for (TetrisForm t : fertigListe)
-        {
-            //System.out.println(y);
-            Point2D[] p = t.getPointField();
-            for (int i=0;i<p.length;i++)
-            {
-                //System.out.println(p[i].getY()+t.getyCoord());
-                //System.out.println(p[i].getY()+" "+p[i].getX());
-                for(int x=0;x<fields[0].length;x++)
-                {
-                if(!fields[(int)(p[i].getY()+t.getyCoord()-1)][x])
-                {
-                    System.out.println("adsf");
-                    p[i].setLocation(-1,-1);
-                }
-                else{
-                    System.out.println("a");
-                    p[i].setLocation(p[i].getX(),p[i].getY()+1);}}
-            }
-            t.repaintForms(g2);
-
-        }
-
-        //rend.repaint();
-    }
     @Override
     public void paint(Graphics g) {
         super.paint(g);
-        //<editor-fold desc="Description">
-        //
-        /*
-        for (int i = 0; i < fields.length; i++) {
-            for (int j = 0; j < fields[i].length; j++) {
-
-                g2.setColor(Color.WHITE);
-                g2.drawRect(j * widthOfOneField, i * heightOfOneField, widthOfOneField, heightOfOneField);
-
-            }
-
-        }*/
-
-
-        /*
-        for (int i=0;i<12;i++)
-        {
-
-            g2.drawLine(widthOfOneField*i,0,widthOfOneField*i,screenHeight);
-        }
-        for (int i=0;i<20;i++)
-        {
-
-            g2.drawLine(0,heightOfOneField*i,screenWidth,heightOfOneField*i);
-        }
-        g2.setColor(Color.gray);
-        //RoundRectangle2D rr = new RoundRectangle2D.Float(200,200,widthOfOneField-10,heightOfOneField-10,10,10);
-        //g2.fill(rr);
-        for(int i=0;i<20;i++)
-        {
-           // System.out.println("i: "+i);
-            for(int y=0;y<12;y++)
-            {
-              //  System.out.println("y: "+y);
-
-                if(y==0||y==11)
-                {
-                    //System.out.println("drinnen bei y: "+y+" i: "+i);
-                    //System.out.println("startx: "+(screenWidth*y-10)+" starty :"+(screenHeight*i-10));
-                    fields[i][y]=true;
-                    RoundRectangle2D rr = new RoundRectangle2D.Float(widthOfOneField*y,heightOfOneField*i+2,widthOfOneField-2,heightOfOneField-2,10,10);
-                    g2.fill(rr);
-                }
-                if(i==19)
-                {
-                    RoundRectangle2D rr = new RoundRectangle2D.Float(widthOfOneField*y,heightOfOneField*i+2,widthOfOneField-2,heightOfOneField-2,10,10);
-                    g2.fill(rr);
-                }
-            }
-        }
-        */
-        //
-        //  if(first)
-        //{
-        //TetrisThread tt = new TetrisThread(g2,screenWidth,screenHeight,widthOfOneField,heightOfOneField,fields);
-        //t = new Thread(tt);
-        //t.start();
-        //first=false;
-        // startGame(g2,screenWidth,screenHeight,widthOfOneField,heightOfOneField,fields);
-
-        // }
-        //</editor-fold>
-
     }
 
 
     public void repaint(Graphics g) {
-         g2 = (Graphics2D) g;
+        g2 = (Graphics2D) g;
 
 
-        g.setColor(Color.BLACK);
-        for (int i = 0; i < fields.length; i++) {
-            for (int j = 0; j < fields[i].length; j++) {
-                if (fields[i][j]) {
-                    g2.setColor(Color.BLACK);
-                    //g2.fillRect(j * widthOfOneField, i * heightOfOneField, widthOfOneField, heightOfOneField);
+        for (int i = 0; i < colorField.length; i++) {
+            for (int j = 0; j < colorField[i].length; j++) {
+                    g2.setColor(colorField[i][j]);
                     RoundRectangle2D rr = new RoundRectangle2D.Float(widthOfOneField * j, (heightOfOneField * i) + 2, widthOfOneField - 2, heightOfOneField - 2, 10, 10);
                     g2.fill(rr);
-                } else {
-                    g2.setColor(Color.DARK_GRAY);
-                    //g2.fillRect(j * widthOfOneField, i * heightOfOneField, widthOfOneField, heightOfOneField);
-                    RoundRectangle2D rr = new RoundRectangle2D.Float(widthOfOneField * j, (heightOfOneField * i) + 2, widthOfOneField - 2, heightOfOneField - 2, 10, 10);
-                    g2.fill(rr);
-                }
             }
         }
 
-        for (TetrisForm tf : fertigListe) {
-            tf.draw(g2);
-        }
 
         if (!firstActive) {
             aktivForm.draw(g2);
         }
+
+
 
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
         if (firstActive) {
-            aktivForm = new TetrisForm(5, 0, widthOfOneField, heightOfOneField, newForm());
-            if (!aktivForm.collisionAvoidenceY(aktivForm.getPointField())) {
-                System.out.println("gameover");
-                gameOver();
-                aktivForm.interrupt();
-            } else {
-                aktivForm.start();
+            try {
+                aktivForm = new TetrisForm(5, 0, widthOfOneField, heightOfOneField, newForm(), counter++);
+            } catch (Exception e1) {
+              this.gameOver();
             }
-
+            aktivForm.start();
             firstActive = false;
         }
 
         if (!TetrisForm.falling) {
             fertigListe.add(aktivForm);
-            //fields[aktivForm.getyCoord()][aktivForm.getxCoord()] = true;
             firstActive = true;
-            //printFeld();
         }
-
         rend.repaint();
     }
 
+
     private void gameOver() {
-        JOptionPane.showMessageDialog(this, "Gameover");
-        GameOverGUI g = new GameOverGUI(100);
-        g.setVisible(true);
+
+        JOptionPane.showMessageDialog(tetrisGui, "Gameover");
+        try {
+            GameOverGUI g = new GameOverGUI();
+            g.setVisible(true);
+        } catch (ParserConfigurationException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (SAXException e) {
+            e.printStackTrace();
+        }
+
+
         //this.dispose();
     }
 
     public Forms newForm() {
+        System.out.println("newForm: Setzt neue Form");
         Random rand = new Random();
 
-
-        //return Forms.values()[rand.nextInt(Forms.values().length)];
-        return Forms.BLOCK;
+       return Forms.values()[rand.nextInt(Forms.values().length)];
     }
-}
-
-//<editor-fold desc="oldCode">
- /*   private void startGame(Graphics2D g2, int screenWidth, int screenHeight, int widthOfOneField, int heightOfOneField, boolean[][] fields) {
-
-        //new Thread(()->{
-            int i=0;
-            int y=5;
-            System.out.println("adsf");
-            System.out.println("width: "+widthOfOneField+" heihgth: "+heightOfOneField);
-            while(fields[i][y]==false)
-            {
-                i++;
-                if(fields[i+1][y]==true)
-                {
-                    fields[i][y]=true;
-                    break;
-                }
-
-                RoundRectangle2D rr = new RoundRectangle2D.Float(widthOfOneField*y,(heightOfOneField*i)+2,widthOfOneField-2,heightOfOneField-2,10,10);
-                g2.fill(rr);
-                printFeld();
-                System.out.println("startx: "+widthOfOneField*y+" starty :"+((heightOfOneField*i)+2));
-                try {
-                    Thread.sleep(2000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-
-
-            }
-       // }
-        //).start();
-    }
-
-*/
-//</editor-fold>
-
-
-//<editor-fold desc="oldCode">
-    /*  private void initComponents() {
-     cont = this.getContentPane();
-     cont.setLayout(new GridLayout(1, 1));
-     pa = new JPanel();
-
-
-     /**        System.out.println("1");
-     JPanel pa = new JPanel();
-     System.out.println("2");
-     cont.add(pa,0);
-     System.out.println("3");
-     Graphics g = pa.getGraphics();
-     System.out.println("4");
-     g.setColor(Color.BLACK);
-     System.out.println("5");
-     g.fillRect(10,10,10,10);
-
-     JPanel pa = new JPanel(){
-
-    @Override protected void paintComponent(Graphics g) {
-    super.paintComponent(g);
-    g.setColor(Color.BLACK);
-    int width = pa.getWidth();
-    int height = pa.getHeight();
-    for (int i=0;i<10;i++)
-    {
-    //g.drawLine(0,width/10*i,height,width/10*i);
-    g.drawLine(width/10*i,0,width/10*i,height);
-    }
-    for (int i=0;i<20;i++)
-    {
-    //g.drawLine(0,width/10*i,height,width/10*i);
-    g.drawLine(0,height/20*i,width,height/20*i);
-    }
-    }
-    };
-     cont.add(pa,0);
-
-
 
 }
 
-
-
- * private void onClose() {
- * <p>
- * startGUI.setTitle("normalerweise zu");
- * startGUI.setVisible(false);
- * <p>
- * }
- * <p>
- * public void paint(Graphics g) {
- * super.paint(g);
- * //TetrisThread tt = new TetrisThread(pa,screenWidth,screenHeight);
- * //Thread thread = new Thread(tt);
- * //thread.start();
- * <p>
- * <p>
- * }
- *
- * @Override public void paintComponents(Graphics g) {
- * super.paintComponents(g);
- * <p>
- * System.out.println("2");
- * for(int i=0;i<10;i++)
- * {
- * System.out.println("width: "+screenWidth+"\n i: "+i);
- * g.setColor(Color.BLACK);
- * g.drawLine(screenWidth/10*i,0,screenWidth/10*i,screenHeight);
- * //g.fillRect(screenWidth/10*i,0,300,300);
- * }
- * cont.add(pa, 0);
- * <p>
- * }
- * }
- */
-//</editor-fold>
