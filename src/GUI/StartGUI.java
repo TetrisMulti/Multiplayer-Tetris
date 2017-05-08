@@ -34,6 +34,7 @@ public class StartGUI extends JFrame {
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         this.setLocationRelativeTo(null);
 
+
         //Ein Panel für den ganzen Bildschirm erstellen (mit Layout, Background-Farbe und Größe
         JPanel gesamtPanel = new JPanel();
         gesamtPanel.setLayout(null);
@@ -151,7 +152,6 @@ public class StartGUI extends JFrame {
         ImageIcon icon1 = new ImageIcon(dimg1);
         btSettings.setIcon(icon1);
         gesamtLabel.add(btSettings);
-
 
 
         //Credits Button, bei Klicken -> Einen Action Listener in dem ein neues Objekt der Klasse CreditsGUI erstellt wird
