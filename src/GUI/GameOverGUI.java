@@ -5,6 +5,7 @@ import BL.ScoreTableModel;
 import org.xml.sax.SAXException;
 import res.Res;
 import Renderer.ScoreRenderer;
+import Beans.Score;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -21,7 +22,7 @@ import Renderer.ScoreTableCellRenderer;
  * Created by ganleb13 on 16.03.2017.
  * In this class we will define the GameOver-Screen
  */
-public class GameOverGUI extends JFrame{
+public class GameOverGUI extends JDialog{
 
     private JTable tbTabelle;
     private JButton btExit;
@@ -38,17 +39,21 @@ public class GameOverGUI extends JFrame{
     private Border nullBorder = BorderFactory.createCompoundBorder(
             BorderFactory.createMatteBorder(0,0,1,0,Color.BLACK),
             BorderFactory.createEmptyBorder(2,2,1,2));
+    private StartGUI sgui;
 
-    public GameOverGUI(int score) throws HeadlessException {
-        Score = score;
-        this.setSize(500,500);
+    public GameOverGUI(Score score, StartGUI sgui) throws HeadlessException {
+        stm.addScore(score);
+        this.sgui = sgui;
     }
+
+
 
     public GameOverGUI() throws ParserConfigurationException, SAXException, IOException {
 
         initComponents();
 
     }
+
 
     public void initComponents() throws ParserConfigurationException, SAXException, IOException {
 
@@ -66,8 +71,6 @@ public class GameOverGUI extends JFrame{
         this.setResizable(false);
         this.setTitle("Game Over");
 
-
-
         Container cont = this.getContentPane();
         btExit = new JButton();
         btBackToMenu = new JButton();
@@ -77,11 +80,8 @@ public class GameOverGUI extends JFrame{
         pnTable = new JPanel();
         cont.setLayout(null);
 
-
-
         //String filename = System.getProperty("user.dir") + File.separator + "src" +
                 //File.separator + "res" + File.separator + "Game_Over.jpg";
-
 
         Image img = null;
         try {
@@ -102,11 +102,12 @@ public class GameOverGUI extends JFrame{
         initTableColumns();
         stm.loadScores();
         //lbBackground.setLocation(-15,-15);
-        tbTabelle.setSize(new Dimension(dtcm.getTotalColumnWidth()*3, (int) (stm.getRowCount()*tbTabelle.getRowHeight()*2.5)));
-        pnTable.setSize(new Dimension(dtcm.getTotalColumnWidth()*3, (int) (stm.getRowCount()*tbTabelle.getRowHeight()*2.5)));
+        System.out.println(width-width/2);
+        tbTabelle.setSize(new Dimension(width-width/2, (int) (stm.getRowCount()*tbTabelle.getRowHeight()*2.5)));
+        pnTable.setSize(new Dimension(width-width/2, (int) (stm.getRowCount()*tbTabelle.getRowHeight()*2.5)));
         //tbTabelle.setPreferredScrollableViewportSize(new Dimension
                 //(dtcm.getTotalColumnWidth()*3, (int) (stm.getRowCount()*tbTabelle.getRowHeight()*2.5)));
-        psPane.setSize(new Dimension(dtcm.getTotalColumnWidth()*3, (int) (stm.getRowCount()*tbTabelle.getRowHeight()*2.5)));
+        psPane.setSize(new Dimension(width-width/2, (int) (stm.getRowCount()*tbTabelle.getRowHeight()*2.5)));
         System.out.println("TableWidth: "+tbTabelle.getWidth());
         System.out.println("TableHeight: "+tbTabelle.getHeight());
         System.out.println("PsPaneWidth: "+psPane.getWidth());
@@ -154,6 +155,7 @@ public class GameOverGUI extends JFrame{
 
         btBackToMenu.addActionListener(e -> {
             //Back to Menu einfach mit neuem Object und set visible true oderwas?
+
         });
 
     }
