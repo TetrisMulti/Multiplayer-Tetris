@@ -89,6 +89,7 @@ public class GameOverGUI extends JDialog{
 
         tbTabelle.initTableColumns(new int[]{50,70,70});
         tbTabelle.getStm().loadScores();
+        tbTabelle.getTableHeader().setBackground(new Color(48,54,44));
 
 
         /*Skalierung klappt noch nicht ganz */

@@ -18,7 +18,7 @@ public class ScoreTableCellRenderer extends JLabel implements TableCellRenderer 
     public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
         this.setText(value!=null?value.toString():"");
         this.setHorizontalAlignment(JLabel.CENTER);
-        this.setBackground(new Color(48,54,44));
+
         //this.setBackground(alphaZero);
         this.setForeground(Color.WHITE);
         this.setBorder(b);
