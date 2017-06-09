@@ -7,13 +7,15 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.io.IOException;
 
 /**
  * Created by Hugo on 27.03.2017.
  */
 
-public class SettingsGUI extends JFrame{
+public class SettingsGUI extends JDialog{
     protected static SettingsGUI gui1 = new SettingsGUI();
 
     public SettingsGUI() {
@@ -35,7 +37,7 @@ public class SettingsGUI extends JFrame{
 
         //Größe, Location und Methode zum Schliessen setzen
         this.setSize(width, height);
-        this.setDefaultCloseOperation(EXIT_ON_CLOSE);
+        //this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         this.setLocationRelativeTo(null);
 
 
@@ -113,46 +115,167 @@ public class SettingsGUI extends JFrame{
         //Label Links hinzufügen
         JLabel links = new JLabel();
         links.setText("Links:");
-        JTextField tflinks = new JTextField();
+        JTextField tflinks = new JTextField("A");
+        tflinks.addKeyListener(new KeyListener() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+
+            }
+
+            @Override
+            public void keyPressed(KeyEvent e) {
+
+            }
+
+            @Override
+            public void keyReleased(KeyEvent e) {
+                String text = tflinks.getText().toUpperCase();
+                if(tflinks.getText().length() > 1)
+                {
+                    tflinks.getText();
+                    tflinks.setText("");
+                }
+                else
+                {
+                    tflinks.setText(text);
+                }
+            }});
         tflinks.setHorizontalAlignment(tflinks.CENTER);
         tflinks.setFont(new Font("Arial",Font.BOLD, 30));
-        tflinks.setText("A");
+
 
 
         //Label Rechts hinzufügen
         JLabel rechts = new JLabel();
         rechts.setText("Rechts:");
-        JTextField tfrechts = new JTextField();
+        JTextField tfrechts = new JTextField("D");
+        tfrechts.addKeyListener(new KeyListener() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+
+            }
+
+            @Override
+            public void keyPressed(KeyEvent e) {
+
+            }
+
+            @Override
+            public void keyReleased(KeyEvent e) {
+                String text = tfrechts.getText().toUpperCase();
+                if(tfrechts.getText().length() > 1)
+                {
+                    tfrechts.getText();
+                    tfrechts.setText("");
+                }
+                else
+                {
+                    tfrechts.setText(text);
+                }
+            }});
         tfrechts.setHorizontalAlignment(tfrechts.CENTER);
         tfrechts.setFont(new Font("Arial",Font.BOLD, 30));
-        tfrechts.setText("D");
+
 
 
         //Label Runter hinzufügen
         JLabel runter = new JLabel();
         runter.setText("Hinunter:");
-        JTextField tfrunter = new JTextField();
+        JTextField tfrunter = new JTextField("S");
+        tfrunter.addKeyListener(new KeyListener() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+
+            }
+
+            @Override
+            public void keyPressed(KeyEvent e) {
+
+            }
+
+            @Override
+            public void keyReleased(KeyEvent e) {
+                String text = tfrunter.getText().toUpperCase();
+                if(tfrunter.getText().length() > 1)
+                {
+                    tfrunter.getText();
+                    tfrunter.setText("");
+                }
+                else
+                {
+                    tfrunter.setText(text);
+                }
+
+            }});
         tfrunter.setHorizontalAlignment(tfrunter.CENTER);
         tfrunter.setFont(new Font("Arial",Font.BOLD, 30));
-        tfrunter.setText("S");
+
 
 
         //Label Links Drehen hinzufügen
         JLabel linksdrehen = new JLabel();
         linksdrehen.setText("Links drehen:");
-        JTextField tflinksdrehen = new JTextField();
+        JTextField tflinksdrehen = new JTextField("W");
+        tflinksdrehen.addKeyListener(new KeyListener() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+
+            }
+
+            @Override
+            public void keyPressed(KeyEvent e) {
+
+            }
+
+            @Override
+            public void keyReleased(KeyEvent e) {
+                String text = tflinksdrehen.getText().toUpperCase();
+                if(tflinksdrehen.getText().length() > 1)
+                {
+                    tflinksdrehen.getText();
+                    tflinksdrehen.setText("");
+                }
+                else
+                {
+                    tflinksdrehen.setText(text);
+                }
+            }});
         tflinksdrehen.setHorizontalAlignment(tflinksdrehen.CENTER);
         tflinksdrehen.setFont(new Font("Arial",Font.BOLD, 30));
-        tflinksdrehen.setText("Q");
+
 
 
         //Label Rechts Drehen hinzufügen
         JLabel rechtsdrehen = new JLabel();
         rechtsdrehen.setText("Rechts drehen:");
-        JTextField tfrechtsdrehen = new JTextField();
+        JTextField tfrechtsdrehen = new JTextField("E");
+        tfrechtsdrehen.addKeyListener(new KeyListener() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+
+            }
+
+            @Override
+            public void keyPressed(KeyEvent e) {
+
+            }
+
+            @Override
+            public void keyReleased(KeyEvent e) {
+                String text = tfrechtsdrehen.getText().toUpperCase();
+                if(tfrechtsdrehen.getText().length() > 1)
+                {
+                    tfrechtsdrehen.getText();
+                    tfrechtsdrehen.setText("");
+                }
+                else
+                {
+                    tfrechtsdrehen.setText(text);
+                }
+            }});
         tfrechtsdrehen.setHorizontalAlignment(tfrechtsdrehen.CENTER);
         tfrechtsdrehen.setFont(new Font("Arial",Font.BOLD, 30));
-        tfrechtsdrehen.setText("E");
+
 
 
         //Labels und Textfelder in das Panel hinzufügen
@@ -177,7 +300,18 @@ public class SettingsGUI extends JFrame{
                 String srunter = tfrunter.getText();
                 String slinksdrehen = tflinksdrehen.getText();
                 String srechtsdrehen = tfrechtsdrehen.getText();
-                String[] steuerungfeld = new String[5];
+
+                if(slinks.length()<2&&srechts.length()<2&&srunter.length()<2&&slinksdrehen.length()<2&&srechtsdrehen.length()>0&&slinks.length()>0&&srechts.length()>0&&srunter.length()>0&&slinksdrehen.length()>0&&srechtsdrehen.length()>0)
+                {
+
+                    this.dispose();
+                    System.out.println("ok");
+                }
+                else
+                {
+                    JOptionPane.showMessageDialog(this, "Man muss genau einen Buchstaben in ein Feld schreiben!");
+                }
+                /*String[] steuerungfeld = new String[5];
                 Boolean isok=true;
                 steuerungfeld[0] = slinks;
                 steuerungfeld[1] = srechts;
@@ -197,6 +331,7 @@ public class SettingsGUI extends JFrame{
                         this.dispose();
                     }
                 }
+                */
             } catch (Exception ex) {
                 System.out.println("Programm konnte nicht beendet werden");
             }

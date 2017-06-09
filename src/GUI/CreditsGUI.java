@@ -11,7 +11,7 @@ import java.io.IOException;
 /**
  * Created by Hugo on 28.04.2017.
  */
-public class CreditsGUI extends JFrame{
+public class CreditsGUI extends JDialog{
     public CreditsGUI() {
         initComponents();
         this.setResizable(false);
