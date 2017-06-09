@@ -12,6 +12,8 @@ import java.awt.event.*;
 import java.awt.geom.Point2D;
 import java.awt.geom.RoundRectangle2D;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Random;
 
@@ -40,8 +42,9 @@ public class TetrisGUI extends JFrame implements ActionListener {
     public static int counter;
     public static int removedRows;
     public static Color[][] colorField;
+    private HashMap<String, Integer> hmKeys;
 
-    public TetrisGUI(String nickName, JFrame startGUI) {
+    public TetrisGUI(String nickName, JFrame startGUI, HashMap<String, Integer> hmKeys) {
 
         this.nickName = nickName;
         this.startGUI = startGUI;
@@ -53,6 +56,7 @@ public class TetrisGUI extends JFrame implements ActionListener {
         fertigListe = new LinkedList<>();
         initialConfigs();
         removedRows=0;
+        this.hmKeys = hmKeys;
 
     }
 
@@ -122,24 +126,35 @@ public class TetrisGUI extends JFrame implements ActionListener {
 
             }
 
-            @Override
+            @Override                                       // Mit switch die KeyCodes mit dem Event vergleichen
             public void keyPressed(KeyEvent e) {
-                switch (e.getKeyCode()) {
-                    case KeyEvent.VK_A:
-                        aktivForm.setxCoord(-1);
-                        break;
-                    case KeyEvent.VK_D:
-                        aktivForm.setxCoord(1);
-                        break;
-                    case KeyEvent.VK_S:
-                        aktivForm.setyCoord(1);
-                        break;
-                    case KeyEvent.VK_Q:
-                        aktivForm.rotate(-1);
-                        break;
-                    case KeyEvent.VK_E:
-                        aktivForm.rotate(1);
-                        break;
+
+                for (Iterator it = hmKeys.keySet().iterator(); it.hasNext();) {
+                    String key = (String) it.next();
+                    if (e.getKeyCode() == hmKeys.get((key) ))
+                    {
+                        switch (key)
+                        {
+                            case "down":
+                                aktivForm.setyCoord(1);
+                                break;
+                            case "left":
+                                aktivForm.setxCoord(-1);
+                                break;
+                            case "right":
+                                aktivForm.setxCoord(1);
+                                break;
+                            case "rotateLeft":
+                                aktivForm.rotate(-1);
+                                break;
+                            case "rotateRight":
+                                aktivForm.rotate(1);
+                                break;
+                            default:
+                                System.out.println("Error in void keyPressed");
+                                break;
+                        }
+                    }
                 }
             }
 
