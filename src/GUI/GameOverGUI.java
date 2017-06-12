@@ -1,23 +1,17 @@
 package GUI;
 
 
-import BL.ScoreTableModel;
+
 import Beans.ScoreTable;
 import org.xml.sax.SAXException;
 import res.Res;
-import Renderer.ScoreRenderer;
 import Beans.Score;
-
 import javax.imageio.ImageIO;
 import javax.swing.*;
-import javax.swing.border.Border;
-import javax.swing.table.DefaultTableCellRenderer;
-import javax.swing.table.DefaultTableColumnModel;
-import javax.swing.table.TableColumn;
 import javax.xml.parsers.ParserConfigurationException;
 import java.awt.*;
 import java.io.IOException;
-import Renderer.ScoreTableCellRenderer;
+
 
 /**
  * Created by ganleb13 on 16.03.2017.
@@ -159,36 +153,12 @@ public class GameOverGUI extends JDialog{
 
         btBackToMenu.addActionListener(e -> {
             //Back to Menu einfach mit neuem Object und set visible true oderwas?
+            sgui.setVisible(true);
+            this.dispose();
 
         });
 
     }
-
-    /*
-    public void initTableColumns()
-    {
-        int cnt = 0;
-        int[] spalten = {90, 70, 70};
-        for(String s:sname)
-        {
-            TableColumn tc = new TableColumn(cnt, spalten[cnt++]);
-            tc.setHeaderRenderer(dtcr);
-
-            tc.setHeaderValue(s);
-            tc.setResizable(false);
-            tc.setCellRenderer(sc);
-
-            dtcm.addColumn(tc);
-
-
-        }
-        dtcr.setFont(new Font("Courier New", Font.BOLD, 14));                                                    //BITTE SKALIEREN
-        dtcr.setBackground(new Color(0, true));
-        dtcr.setForeground(new Color(206, 68, 68));
-        tbTabelle.setColumnModel(dtcm);
-    }
-
-    */
 
     public static void main(String[] args) {
         GameOverGUI go = null;

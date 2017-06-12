@@ -124,14 +124,17 @@ public class SettingsGUI extends JDialog {
 
         //Panel um 5 Labels und 5 Textfelder hinzuzufügen in dem man Änderungen vornehmen kann
         JPanel steuerung = new JPanel(new GridLayout(5, 2));
-        steuerung.setBackground(Color.lightGray);
-        steuerung.setBorder(new TitledBorder("Steuerung"));
+        steuerung.setBackground(Color.black);
+        TitledBorder tb = new TitledBorder("Steuerung");
+        tb.setTitleColor(Color.white);
+        steuerung.setBorder(tb);
         steuerung.setSize(gesamtPanel.getWidth() / 2, gesamtPanel.getHeight() / 2);
         steuerung.setLocation(gesamtPanel.getWidth() / 2 - steuerung.getWidth() + steuerung.getWidth() / 8, gesamtPanel.getHeight() / 2 - steuerung.getHeight() + steuerung.getHeight() / 2);
 
 
         //Label Links hinzufügen
         JLabel links = new JLabel();
+        links.setForeground(Color.white);
         links.setText("Links:");
         JTextField tflinks = new JTextField(KeyEvent.getKeyText(hmKeys.get("left")));
         tflinks.addKeyListener(new KeyListener() {
@@ -163,6 +166,7 @@ public class SettingsGUI extends JDialog {
         //Label Rechts hinzufügen
         JLabel rechts = new JLabel();
         rechts.setText("Rechts:");
+        rechts.setForeground(Color.white);
         JTextField tfrechts = new JTextField(KeyEvent.getKeyText(hmKeys.get("right")));
         tfrechts.addKeyListener(new KeyListener() {
             @Override
@@ -193,6 +197,7 @@ public class SettingsGUI extends JDialog {
         //Label Runter hinzufügen
         JLabel runter = new JLabel();
         runter.setText("Hinunter:");
+        runter.setForeground(Color.white);
         JTextField tfrunter = new JTextField(KeyEvent.getKeyText(hmKeys.get("down")));
         tfrunter.addKeyListener(new KeyListener() {
             @Override
@@ -224,6 +229,7 @@ public class SettingsGUI extends JDialog {
         //Label Links Drehen hinzufügen
         JLabel linksdrehen = new JLabel();
         linksdrehen.setText("Links drehen:");
+        linksdrehen.setForeground(Color.white);
         JTextField tflinksdrehen = new JTextField(KeyEvent.getKeyText(hmKeys.get("rotateLeft")));
         tflinksdrehen.addKeyListener(new KeyListener() {
             @Override
@@ -254,6 +260,7 @@ public class SettingsGUI extends JDialog {
         //Label Rechts Drehen hinzufügen
         JLabel rechtsdrehen = new JLabel();
         rechtsdrehen.setText("Rechts drehen:");
+        rechtsdrehen.setForeground(Color.white);
         JTextField tfrechtsdrehen = new JTextField(KeyEvent.getKeyText(hmKeys.get("rotateRight")));
         tfrechtsdrehen.addKeyListener(new KeyListener() {
             @Override
