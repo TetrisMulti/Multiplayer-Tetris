@@ -34,9 +34,10 @@ public class GameOverGUI extends JDialog{
     private JPanel pnTable;
     private StartGUI sgui;
 
-    public GameOverGUI(Score score, StartGUI sgui) throws HeadlessException {
+    public GameOverGUI(Score score, JFrame sgui) throws HeadlessException, IOException, SAXException, ParserConfigurationException {
+        initComponents();
         tbTabelle.addScore(score);
-        this.sgui = sgui;
+        this.sgui = (StartGUI) sgui;
     }
 
 

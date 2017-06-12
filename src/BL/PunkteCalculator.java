@@ -12,6 +12,12 @@ public class PunkteCalculator {
 
     public static int calculateRowPoints(int rows)
     {
+
+        if(rows==1)
+        {
+            return (int) PunkteEnum.FIXPUNKTE.getPoints();
+        }
+        else
         return (int) (PunkteEnum.FIXPUNKTE.getPoints() * PunkteEnum.MULTIPLICATOR.getPoints()*rows);
     }
 

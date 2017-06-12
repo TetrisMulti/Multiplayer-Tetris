@@ -10,9 +10,6 @@ import java.awt.*;
 import java.awt.geom.Point2D;
 import java.awt.geom.RoundRectangle2D;
 
-
-// erst bei collision
-
 /**
  * Created by Chris on 14.03.2017.
  */
@@ -26,10 +23,10 @@ public class TetrisForm extends Thread {
     public Forms form;
     private int index;
     private Point2D[] pointField;
-    private int formindex;
+    private Color[][] colorField;
 
 
-    public TetrisForm(int xCoord, int yCoord, int widthOfBlock, int heightOfBlock, Forms form, int formindex) throws Exception {
+    public TetrisForm(int xCoord, int yCoord, int widthOfBlock, int heightOfBlock, Forms form,Color[][] colorField) throws Exception {
         this.widthOfBlock = widthOfBlock;
         this.heightOfBlock = heightOfBlock;
 
@@ -40,27 +37,25 @@ public class TetrisForm extends Thread {
         this.form = form;
         this.index = 0;
         this.pointField = CoordinatesOfForms.getPointCoords(form);
-        this.formindex = formindex;
+        this.colorField=colorField;
         if(collisionAvoidence(xCoord, yCoord+1)){
            throw  new Exception();
         }
+
+
     }
 
-    public int getIndex() {
-        return formindex;
-    }
+
 
     public void draw(Graphics2D g2) {
         g2.setColor(form.getC());
 
         for (int i = 0; i < pointField.length; i++) {
             if (pointField[i].getX() != -1) {
-                //System.out.println("yes");
                 RoundRectangle2D rr = new RoundRectangle2D.Float((int) (xCoord * widthOfBlock + (pointField[i].getY() * widthOfBlock)), (int) ((yCoord * heightOfBlock) + 2 + (pointField[i].getX() * heightOfBlock)),
                         widthOfBlock - 2, heightOfBlock - 2, 10, 10);
                 g2.fill(rr);
             } else {
-                // System.out.println("no");
             }
         }
 
@@ -70,8 +65,7 @@ public class TetrisForm extends Thread {
     // Überprüft Collision
     public boolean collisionAvoidence(int x, int y){
         for (Point2D p : pointField) {
-          //  System.out.println("collisionAvoidence: p.getX -> " + p.getY() + " y -> " + y + "  p.getY -> " + p.getY() + " + -> " + x + " ->"+ TetrisGUI.fields[(int)p.getX() + y][(int)p.getY()+ x]);
-            if(TetrisGUI.fields[(int)p.getX() + y][(int)p.getY()+ x] == true ){
+            if(colorField[(int)p.getX() + y][(int)p.getY()+ x] != Color.DARK_GRAY ){
                 return  true;
             }
         }
@@ -125,7 +119,6 @@ public class TetrisForm extends Thread {
     @Override
     public void run() {
         while (!interrupted()) {
-
             setyCoord(1);
 
             try {
@@ -141,8 +134,7 @@ public class TetrisForm extends Thread {
 
     private void setFieldTrue() {
         for (int i = 0; i < pointField.length; i++) {
-            TetrisGUI.fields[(int) (yCoord + pointField[i].getX())][(int) (xCoord + pointField[i].getY())] = true;
-            TetrisGUI.colorField[(int) (yCoord + pointField[i].getX())][(int) (xCoord + pointField[i].getY())] = form.getC();
+            colorField[(int) (yCoord + pointField[i].getX())][(int) (xCoord + pointField[i].getY())] = form.getC();
         }
         System.out.println("setFieldTrue: updated Binärfeld");
 
@@ -152,16 +144,14 @@ public class TetrisForm extends Thread {
     }
 
     private void clearRows(){
-
-        TetrisGUI.printFeld();
         boolean foundRow = false;
         int countDeleRows = 0;
 
-        for(int y = TetrisGUI.fields.length - 2; y > 0; y--){
+        for(int y = colorField.length - 2; y > 0; y--){
             foundRow = false;
 
-            for(int x = 1; x < TetrisGUI.fields[y].length - 1; x++){
-                if (TetrisGUI.fields[y][x] == false) {
+            for(int x = 1; x < colorField[y].length - 1; x++){
+                if (colorField[y][x] == Color.DARK_GRAY) {
                         foundRow = true;
                         break;
                 }
@@ -173,27 +163,16 @@ public class TetrisForm extends Thread {
                 countDeleRows++;
             }
         }
-
-        System.out.println("clearRows: deleted Rows -> " + countDeleRows);
-        TetrisGUI.printFeld();
+        if(countDeleRows>0)
+        TetrisGUI.calculateScore(countDeleRows);
 
     }
 
     public  void deleteRow(int y) {
         for (int j = y -1; j > 0; j--){
-            for(int i = 1;i< TetrisGUI.fields[j].length - 1;i++ ){
-                TetrisGUI.fields[j+1][i]= TetrisGUI.fields[j][i];
-                TetrisGUI.colorField[j+1][i] = TetrisGUI.colorField[j][i];
+            for(int i = 1;i< colorField[j].length - 1;i++ ){
+                colorField[j+1][i] = colorField[j][i];
             }
         }
-    }
-
-    public Point2D[] getPointField() {
-        return pointField;
-    }
-
-
-    public int getyCoord() {
-        return yCoord;
     }
 }

@@ -1,7 +1,9 @@
 package GUI;
 
+import BL.PunkteCalculator;
 import Beans.Forms;
 import BL.TetrisForm;
+import Beans.Score;
 import Renderer.PanelRenderer;
 import org.xml.sax.SAXException;
 
@@ -9,11 +11,8 @@ import javax.swing.*;
 import javax.xml.parsers.ParserConfigurationException;
 import java.awt.*;
 import java.awt.event.*;
-import java.awt.geom.Point2D;
 import java.awt.geom.RoundRectangle2D;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Random;
 
@@ -29,7 +28,6 @@ public class TetrisGUI extends JFrame implements ActionListener {
     private JFrame startGUI;
     private int screenWidth;
     private int screenHeight;
-    public static boolean[][] fields;
     public int widthOfOneField;
     public int heightOfOneField;
     private TetrisForm aktivForm;
@@ -37,60 +35,62 @@ public class TetrisGUI extends JFrame implements ActionListener {
     public static TetrisGUI tetrisGui;
     private Timer timer;
     private boolean firstActive = true;
-    public static LinkedList<TetrisForm> fertigListe;
-    public static Graphics2D g2;
-    public static int counter;
-    public static int removedRows;
-    public static Color[][] colorField;
-    private HashMap<String, Integer> hmKeys;
+    public LinkedList<TetrisForm> fertigListe;
+    public Graphics2D g2;
+    public int counter;
+    public Color[][] colorField;
+    private Forms[] formsQueue;
+    private Boolean firstTime;
+    private NewFormAndScoreDialog dialog;
+    public static Score score;
 
-    public TetrisGUI(String nickName, JFrame startGUI, HashMap<String, Integer> hmKeys) {
+
+    public TetrisGUI(String nickName, JFrame startGUI) {
 
         this.nickName = nickName;
         this.startGUI = startGUI;
         counter = 0;
-        fields = new boolean[20][12];
         colorField = new Color[20][12];
         tetrisGui = this;
         timer = new Timer(20, this);
         fertigListe = new LinkedList<>();
+        formsQueue=new Forms[2];
+        firstTime=true;
+        score = new Score(nickName,0);
         initialConfigs();
-        removedRows=0;
-        this.hmKeys = hmKeys;
+
 
     }
 
 
     private void initialConfigs() {
-        Dimension scrnSize = Toolkit.getDefaultToolkit().getScreenSize();                                               //get Screensize to set the application size dynamic
-        Rectangle winSize = GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds();                 // get Height of Taskbar
-        int taskBarHeight = scrnSize.height - winSize.height;                                                           // estiminate the height of the taskbar
+        Dimension scrnSize = Toolkit.getDefaultToolkit().getScreenSize();
+        Rectangle winSize = GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds();
+        int taskBarHeight = scrnSize.height - winSize.height;
         this.setTitle(nickName + "'s Game");
         this.setResizable(false);
-        screenWidth = (int) Toolkit.getDefaultToolkit().getScreenSize().getWidth() / 3;                                   //set the Width to a third of the screen size
-        screenHeight = ((int) Toolkit.getDefaultToolkit().getScreenSize().getHeight() - taskBarHeight);                   //set the Height of the frame without the taskbar
+        screenWidth = (int) Toolkit.getDefaultToolkit().getScreenSize().getWidth() / 3;
+        screenHeight = ((int) Toolkit.getDefaultToolkit().getScreenSize().getHeight() - taskBarHeight);
         widthOfOneField = screenWidth / 12;
         heightOfOneField = screenHeight / 20;
-        this.setSize(screenWidth, screenHeight);                                                                                    //set Size of GUI
-        this.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);                                                             //disable the default close operation
-        this.setLocationRelativeTo(null);                                                                           //
+        this.setSize(screenWidth, screenHeight);
+        this.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+        this.setLocationRelativeTo(null);
+
         addListener();
 
 
         this.rend = new PanelRenderer();
         this.add(rend);
 
-        for (int i = 0; i < fields.length; i++) {
-            fields[i][fields[i].length - 1] = true;
-            fields[i][0] = true;
+        for (int i = 0; i < colorField.length; i++) {
             colorField[i][colorField[i].length - 1] = Color.BLACK;
             colorField[i][0] = Color.BLACK;
 
         }
 
-        for (int i = 0; i < fields[0].length; i++) {
+        for (int i = 0; i < colorField[0].length; i++) {
 
-            fields[fields.length - 1][i] = true;
             colorField[colorField.length-1][i] = Color.BLACK;
 
 
@@ -115,6 +115,9 @@ public class TetrisGUI extends JFrame implements ActionListener {
                 aktivForm.interrupt();
                 //set the main gui visible again and close the current window
                 //onClose();
+                timer.stop();
+                dialog.dispose();
+                dialog=null;
                 dispose();
 
 
@@ -126,35 +129,24 @@ public class TetrisGUI extends JFrame implements ActionListener {
 
             }
 
-            @Override                                       // Mit switch die KeyCodes mit dem Event vergleichen
+            @Override
             public void keyPressed(KeyEvent e) {
-
-                for (Iterator it = hmKeys.keySet().iterator(); it.hasNext();) {
-                    String key = (String) it.next();
-                    if (e.getKeyCode() == hmKeys.get((key) ))
-                    {
-                        switch (key)
-                        {
-                            case "down":
-                                aktivForm.setyCoord(1);
-                                break;
-                            case "left":
-                                aktivForm.setxCoord(-1);
-                                break;
-                            case "right":
-                                aktivForm.setxCoord(1);
-                                break;
-                            case "rotateLeft":
-                                aktivForm.rotate(-1);
-                                break;
-                            case "rotateRight":
-                                aktivForm.rotate(1);
-                                break;
-                            default:
-                                System.out.println("Error in void keyPressed");
-                                break;
-                        }
-                    }
+                switch (e.getKeyCode()) {
+                    case KeyEvent.VK_A:
+                        aktivForm.setxCoord(-1);
+                        break;
+                    case KeyEvent.VK_D:
+                        aktivForm.setxCoord(1);
+                        break;
+                    case KeyEvent.VK_S:
+                        aktivForm.setyCoord(1);
+                        break;
+                    case KeyEvent.VK_Q:
+                        aktivForm.rotate(-1);
+                        break;
+                    case KeyEvent.VK_E:
+                        aktivForm.rotate(1);
+                        break;
                 }
             }
 
@@ -165,20 +157,6 @@ public class TetrisGUI extends JFrame implements ActionListener {
             }
         });
 
-    }
-
-    public static void printFeld() {
-        System.out.println("printFeld: Ausgabe Binärfeld");
-        for (int i = 0; i < fields.length; i++) {
-            for (int j = 0; j < fields[i].length; j++) {
-
-                if (fields[i][j])
-                    System.out.print(1);
-                else
-                    System.out.print(0);
-            }
-            System.out.println();
-        }
     }
 
     @Override
@@ -212,11 +190,15 @@ public class TetrisGUI extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if (firstActive) {
             try {
-                aktivForm = new TetrisForm(5, 0, widthOfOneField, heightOfOneField, newForm(), counter++);
-            } catch (Exception e1) {
+                newForm();
+                System.out.println("1");
+                aktivForm = new TetrisForm(5, 0, widthOfOneField, heightOfOneField, formsQueue[0],colorField);
+                System.out.println("2");
+                aktivForm.start();
+
+            } catch (Exception ex) {
               this.gameOver();
             }
-            aktivForm.start();
             firstActive = false;
         }
 
@@ -230,27 +212,50 @@ public class TetrisGUI extends JFrame implements ActionListener {
 
     private void gameOver() {
 
-        JOptionPane.showMessageDialog(tetrisGui, "Gameover");
-        try {
-            GameOverGUI g = new GameOverGUI();
-            g.setVisible(true);
-        } catch (ParserConfigurationException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (SAXException e) {
-            e.printStackTrace();
-        }
+        JOptionPane.showMessageDialog(this, "Gameover");
+        this.timer.stop();
+
+           try {
+               GameOverGUI g = new GameOverGUI(score, startGUI);
+               g.setVisible(true);
+           }catch(Exception ex)
+           {
+               ex.printStackTrace();
+           }
 
 
         //this.dispose();
     }
 
-    public Forms newForm() {
+    public static void calculateScore(int x)
+    {
+        score.setScore(score.getScore()+ PunkteCalculator.calculateRowPoints(x));
+
+    }
+
+    public void newForm() {
         System.out.println("newForm: Setzt neue Form");
         Random rand = new Random();
+         if(firstTime)
+        {
+            formsQueue[0]=Forms.values()[rand.nextInt(Forms.values().length)];
+            formsQueue[1]=Forms.values()[rand.nextInt(Forms.values().length)];
+            int dialogLocation = (int) (Toolkit.getDefaultToolkit().getScreenSize().getWidth()/2+screenWidth/2);
+            dialog=new NewFormAndScoreDialog(widthOfOneField*6,screenHeight,formsQueue[1],widthOfOneField,heightOfOneField,dialogLocation,score);
+            System.out.println("newForm: -> erstes mal");
+            firstTime=false;
+            this.setAutoRequestFocus(true);
+        }
+        else
+        {
+            System.out.println("else");
+            formsQueue[0]=formsQueue[1];
+            formsQueue[1]=Forms.values()[rand.nextInt(Forms.values().length)];
+            dialog.setForm(formsQueue[1]);
+            dialog.setScore(score);
+        }
 
-       return Forms.values()[rand.nextInt(Forms.values().length)];
+
     }
 
 }
