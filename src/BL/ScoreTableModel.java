@@ -37,7 +37,7 @@ public class ScoreTableModel extends AbstractTableModel {
 
     public void sortAndRankList()
     {
-        scList.sort(Comparator.comparing(Score::getScore));
+        scList.sort(Comparator.comparing(Score::getScore).reversed());
         int counter = 1;
         for (Score sc:scList) {
             sc.setRank(counter++);
