@@ -27,26 +27,28 @@ public class SettingsLoader {
         String line = "";
         while ((line = br.readLine()) != null)
         {
+            System.out.println(line);
             String[] splittedLine = line.split("=");
             switch (splittedLine[0])
             {
-                case "down": hmKeys.put("down", Integer.parseInt(splittedLine[1]));
-                case "left": hmKeys.put("left", Integer.parseInt(splittedLine[1]));
-                case "right": hmKeys.put("right", Integer.parseInt(splittedLine[1]));
-                case "rotateLeft": hmKeys.put("rotateLeft", Integer.parseInt(splittedLine[1]));
-                case "rotateRight": hmKeys.put("rotateRight", Integer.parseInt(splittedLine[1]));
+                case "down": hmKeys.put("down", Integer.parseInt(splittedLine[1]));break;
+                case "left": hmKeys.put("left", Integer.parseInt(splittedLine[1]));break;
+                case "right": hmKeys.put("right", Integer.parseInt(splittedLine[1]));break;
+                case "rotateLeft": hmKeys.put("rotateLeft", Integer.parseInt(splittedLine[1]));break;
+                case "rotateRight": hmKeys.put("rotateRight", Integer.parseInt(splittedLine[1]));break;
             }
         }
+        outKeys();
     }
 
-    public void WriteSettings() throws IOException {
+    public void WriteSettings(HashMap<String, Integer> hmNewKeys) throws IOException {
         FileWriter fw = new FileWriter(new File(Path));
         BufferedWriter bw = new BufferedWriter(fw);
 
-        for (Iterator it = hmKeys.keySet().iterator();it.hasNext();) {
+        for (Iterator it = hmNewKeys.keySet().iterator();it.hasNext();) {
             String key = (String) it.next();
-            int value = (int) hmKeys.get(key);
-            bw.write(key+"="+value);
+            int value = (int) hmNewKeys.get(key);
+            bw.write(key+"="+value+"\n");
         }
         bw.flush();
         bw.close();
@@ -74,6 +76,12 @@ public class SettingsLoader {
         }
     }
 
-
-
+    public HashMap<String, Integer> getHmKeys() {
+        try {
+            ReadSettings();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return hmKeys;
+    }
 }

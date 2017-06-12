@@ -1,17 +1,21 @@
 package GUI;
 
+import BL.SettingsLoader;
 import res.Res;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
+import java.util.HashMap;
 
 /**
  * Created by Hugo & Christoph on 13.03.2017.
  */
 public class StartGUI extends JFrame {
     protected static StartGUI gui=new StartGUI();
+    private SettingsLoader sl = new SettingsLoader();
+    private HashMap<String, Integer> hmKeys = sl.getHmKeys();
 
     public StartGUI() {
         initComponents();
@@ -130,7 +134,7 @@ public class StartGUI extends JFrame {
         btSettings.addActionListener(e -> {
             try
             {
-                SettingsGUI gui1 = new SettingsGUI();
+                SettingsGUI gui1 = new SettingsGUI(sl);
                 gui1.setVisible(true);
             }
             catch(Exception ex)
@@ -190,7 +194,7 @@ public class StartGUI extends JFrame {
 
     private void onStart() {
         String nickname=JOptionPane.showInputDialog(this,"Bitte Nicknamen eingeben!");
-        TetrisGUI tGui = new TetrisGUI(nickname,gui);
+        TetrisGUI tGui = new TetrisGUI(nickname,gui, hmKeys);
         tGui.setVisible(true);
         this.setVisible(false);
     }

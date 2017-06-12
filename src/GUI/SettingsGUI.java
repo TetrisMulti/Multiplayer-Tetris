@@ -1,5 +1,6 @@
 package GUI;
 
+import BL.SettingsLoader;
 import javafx.beans.property.adapter.JavaBeanObjectProperty;
 import res.Res;
 
@@ -10,18 +11,35 @@ import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Iterator;
 
 /**
  * Created by Hugo on 27.03.2017.
  */
 
-public class SettingsGUI extends JDialog{
-    protected static SettingsGUI gui1 = new SettingsGUI();
+public class SettingsGUI extends JDialog {
+    private HashMap<String, Integer> hmNewKeys = new HashMap<>();
+    private HashMap<String, Integer> hmKeys = new HashMap<>();
+    private SettingsLoader sl;
 
-    public SettingsGUI() {
+
+
+    public SettingsGUI(SettingsLoader sl) {
+        this.sl = sl;
+        try {
+            sl.ReadSettings();
+            hmKeys = sl.getHmKeys();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         initComponents();
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         this.setResizable(false);
+
+    }
+    public SettingsGUI() {
     }
 
     private void initComponents() {
@@ -74,25 +92,25 @@ public class SettingsGUI extends JDialog{
         JLabel ueberschrift = new JLabel();
         ueberschrift.setText("Einstellungen");
         ueberschrift.setForeground(Color.yellow);
-        ueberschrift.setSize(gesamtPanel.getWidth(),gesamtPanel.getHeight()/10);
-        ueberschrift.setFont(new Font("Arial", Font.BOLD, ueberschrift.getHeight()-ueberschrift.getHeight()/10));
+        ueberschrift.setSize(gesamtPanel.getWidth(), gesamtPanel.getHeight() / 10);
+        ueberschrift.setFont(new Font("Arial", Font.BOLD, ueberschrift.getHeight() - ueberschrift.getHeight() / 10));
         gesamtLabel.add(ueberschrift);
 
 
         //Button um die Settings zu übernehmen
         JButton btUebernehmen = new JButton();
         btUebernehmen.setText("Übernehmen");
-        btUebernehmen.setSize(gesamtPanel.getWidth()/4,gesamtPanel.getHeight()/10);
-        btUebernehmen.setLocation(gesamtPanel.getWidth()/2-btUebernehmen.getWidth()/2, gesamtPanel.getHeight()-2*btUebernehmen.getHeight());
-        btUebernehmen.setFont(new Font("Arial", Font.BOLD, btUebernehmen.getHeight()/3));
+        btUebernehmen.setSize(gesamtPanel.getWidth() / 4, gesamtPanel.getHeight() / 10);
+        btUebernehmen.setLocation(gesamtPanel.getWidth() / 2 - btUebernehmen.getWidth() / 2, gesamtPanel.getHeight() - 2 * btUebernehmen.getHeight());
+        btUebernehmen.setFont(new Font("Arial", Font.BOLD, btUebernehmen.getHeight() / 3));
         gesamtLabel.add(btUebernehmen);
 
 
         //Button um dieses Fenster zu schliessen
         JButton btAbbrechen = new JButton();
         btAbbrechen.setText("Abbrechen");
-        btAbbrechen.setSize(gesamtPanel.getWidth()/4,gesamtPanel.getHeight()/10);
-        btAbbrechen.setLocation(gesamtPanel.getWidth()/2+btAbbrechen.getWidth()-btAbbrechen.getWidth()/3, gesamtPanel.getHeight()-2*btAbbrechen.getHeight());
+        btAbbrechen.setSize(gesamtPanel.getWidth() / 4, gesamtPanel.getHeight() / 10);
+        btAbbrechen.setLocation(gesamtPanel.getWidth() / 2 + btAbbrechen.getWidth() - btAbbrechen.getWidth() / 3, gesamtPanel.getHeight() - 2 * btAbbrechen.getHeight());
         btAbbrechen.addActionListener(e -> {
             try {
                 onExit();
@@ -100,22 +118,22 @@ public class SettingsGUI extends JDialog{
                 System.out.println("Programm konnte nicht beendet werden");
             }
         });
-        btAbbrechen.setFont(new Font("Arial", Font.BOLD, btAbbrechen.getHeight()/3));
+        btAbbrechen.setFont(new Font("Arial", Font.BOLD, btAbbrechen.getHeight() / 3));
         gesamtLabel.add(btAbbrechen);
 
 
         //Panel um 5 Labels und 5 Textfelder hinzuzufügen in dem man Änderungen vornehmen kann
-        JPanel steuerung = new JPanel(new GridLayout(5,2));
+        JPanel steuerung = new JPanel(new GridLayout(5, 2));
         steuerung.setBackground(Color.lightGray);
         steuerung.setBorder(new TitledBorder("Steuerung"));
-        steuerung.setSize(gesamtPanel.getWidth()/2, gesamtPanel.getHeight()/2);
-        steuerung.setLocation(gesamtPanel.getWidth()/2-steuerung.getWidth()+steuerung.getWidth()/8, gesamtPanel.getHeight()/2-steuerung.getHeight()+steuerung.getHeight()/2);
+        steuerung.setSize(gesamtPanel.getWidth() / 2, gesamtPanel.getHeight() / 2);
+        steuerung.setLocation(gesamtPanel.getWidth() / 2 - steuerung.getWidth() + steuerung.getWidth() / 8, gesamtPanel.getHeight() / 2 - steuerung.getHeight() + steuerung.getHeight() / 2);
 
 
         //Label Links hinzufügen
         JLabel links = new JLabel();
         links.setText("Links:");
-        JTextField tflinks = new JTextField("A");
+        JTextField tflinks = new JTextField(KeyEvent.getKeyText(hmKeys.get("left")));
         tflinks.addKeyListener(new KeyListener() {
             @Override
             public void keyTyped(KeyEvent e) {
@@ -130,25 +148,22 @@ public class SettingsGUI extends JDialog{
             @Override
             public void keyReleased(KeyEvent e) {
                 String text = tflinks.getText().toUpperCase();
-                if(tflinks.getText().length() > 1)
-                {
+                if (tflinks.getText().length() > 1) {
                     tflinks.getText();
                     tflinks.setText("");
-                }
-                else
-                {
+                } else {
                     tflinks.setText(text);
                 }
-            }});
+            }
+        });
         tflinks.setHorizontalAlignment(tflinks.CENTER);
-        tflinks.setFont(new Font("Arial",Font.BOLD, 30));
-
+        tflinks.setFont(new Font("Arial", Font.BOLD, 30));
 
 
         //Label Rechts hinzufügen
         JLabel rechts = new JLabel();
         rechts.setText("Rechts:");
-        JTextField tfrechts = new JTextField("D");
+        JTextField tfrechts = new JTextField(KeyEvent.getKeyText(hmKeys.get("right")));
         tfrechts.addKeyListener(new KeyListener() {
             @Override
             public void keyTyped(KeyEvent e) {
@@ -163,25 +178,22 @@ public class SettingsGUI extends JDialog{
             @Override
             public void keyReleased(KeyEvent e) {
                 String text = tfrechts.getText().toUpperCase();
-                if(tfrechts.getText().length() > 1)
-                {
+                if (tfrechts.getText().length() > 1) {
                     tfrechts.getText();
                     tfrechts.setText("");
-                }
-                else
-                {
+                } else {
                     tfrechts.setText(text);
                 }
-            }});
+            }
+        });
         tfrechts.setHorizontalAlignment(tfrechts.CENTER);
-        tfrechts.setFont(new Font("Arial",Font.BOLD, 30));
-
+        tfrechts.setFont(new Font("Arial", Font.BOLD, 30));
 
 
         //Label Runter hinzufügen
         JLabel runter = new JLabel();
         runter.setText("Hinunter:");
-        JTextField tfrunter = new JTextField("S");
+        JTextField tfrunter = new JTextField(KeyEvent.getKeyText(hmKeys.get("down")));
         tfrunter.addKeyListener(new KeyListener() {
             @Override
             public void keyTyped(KeyEvent e) {
@@ -196,26 +208,23 @@ public class SettingsGUI extends JDialog{
             @Override
             public void keyReleased(KeyEvent e) {
                 String text = tfrunter.getText().toUpperCase();
-                if(tfrunter.getText().length() > 1)
-                {
+                if (tfrunter.getText().length() > 1) {
                     tfrunter.getText();
                     tfrunter.setText("");
-                }
-                else
-                {
+                } else {
                     tfrunter.setText(text);
                 }
 
-            }});
+            }
+        });
         tfrunter.setHorizontalAlignment(tfrunter.CENTER);
-        tfrunter.setFont(new Font("Arial",Font.BOLD, 30));
-
+        tfrunter.setFont(new Font("Arial", Font.BOLD, 30));
 
 
         //Label Links Drehen hinzufügen
         JLabel linksdrehen = new JLabel();
         linksdrehen.setText("Links drehen:");
-        JTextField tflinksdrehen = new JTextField("W");
+        JTextField tflinksdrehen = new JTextField(KeyEvent.getKeyText(hmKeys.get("rotateLeft")));
         tflinksdrehen.addKeyListener(new KeyListener() {
             @Override
             public void keyTyped(KeyEvent e) {
@@ -230,25 +239,22 @@ public class SettingsGUI extends JDialog{
             @Override
             public void keyReleased(KeyEvent e) {
                 String text = tflinksdrehen.getText().toUpperCase();
-                if(tflinksdrehen.getText().length() > 1)
-                {
+                if (tflinksdrehen.getText().length() > 1) {
                     tflinksdrehen.getText();
                     tflinksdrehen.setText("");
-                }
-                else
-                {
+                } else {
                     tflinksdrehen.setText(text);
                 }
-            }});
+            }
+        });
         tflinksdrehen.setHorizontalAlignment(tflinksdrehen.CENTER);
-        tflinksdrehen.setFont(new Font("Arial",Font.BOLD, 30));
-
+        tflinksdrehen.setFont(new Font("Arial", Font.BOLD, 30));
 
 
         //Label Rechts Drehen hinzufügen
         JLabel rechtsdrehen = new JLabel();
         rechtsdrehen.setText("Rechts drehen:");
-        JTextField tfrechtsdrehen = new JTextField("E");
+        JTextField tfrechtsdrehen = new JTextField(KeyEvent.getKeyText(hmKeys.get("rotateRight")));
         tfrechtsdrehen.addKeyListener(new KeyListener() {
             @Override
             public void keyTyped(KeyEvent e) {
@@ -263,19 +269,16 @@ public class SettingsGUI extends JDialog{
             @Override
             public void keyReleased(KeyEvent e) {
                 String text = tfrechtsdrehen.getText().toUpperCase();
-                if(tfrechtsdrehen.getText().length() > 1)
-                {
+                if (tfrechtsdrehen.getText().length() > 1) {
                     tfrechtsdrehen.getText();
                     tfrechtsdrehen.setText("");
-                }
-                else
-                {
+                } else {
                     tfrechtsdrehen.setText(text);
                 }
-            }});
+            }
+        });
         tfrechtsdrehen.setHorizontalAlignment(tfrechtsdrehen.CENTER);
-        tfrechtsdrehen.setFont(new Font("Arial",Font.BOLD, 30));
-
+        tfrechtsdrehen.setFont(new Font("Arial", Font.BOLD, 30));
 
 
         //Labels und Textfelder in das Panel hinzufügen
@@ -294,49 +297,23 @@ public class SettingsGUI extends JDialog{
 
         //Methode zum Überprüfen der eingegebenen Sachen
         btUebernehmen.addActionListener(e -> {
+            hmNewKeys.clear();
+            hmNewKeys.put("left", KeyEvent.getExtendedKeyCodeForChar(tflinks.getText().charAt(0)));
+            hmNewKeys.put("right", KeyEvent.getExtendedKeyCodeForChar(tfrechts.getText().charAt(0)));
+            hmNewKeys.put("down", KeyEvent.getExtendedKeyCodeForChar(tfrunter.getText().charAt(0)));
+            hmNewKeys.put("rotateLeft", KeyEvent.getExtendedKeyCodeForChar(tflinksdrehen.getText().charAt(0)));
+            hmNewKeys.put("rotateRight", KeyEvent.getExtendedKeyCodeForChar(tfrechtsdrehen.getText().charAt(0)));
+
             try {
-                String slinks = tflinks.getText();
-                String srechts = tfrechts.getText();
-                String srunter = tfrunter.getText();
-                String slinksdrehen = tflinksdrehen.getText();
-                String srechtsdrehen = tfrechtsdrehen.getText();
-
-                if(slinks.length()<2&&srechts.length()<2&&srunter.length()<2&&slinksdrehen.length()<2&&srechtsdrehen.length()>0&&slinks.length()>0&&srechts.length()>0&&srunter.length()>0&&slinksdrehen.length()>0&&srechtsdrehen.length()>0)
-                {
-
-                    this.dispose();
-                    System.out.println("ok");
-                }
-                else
-                {
-                    JOptionPane.showMessageDialog(this, "Man muss genau einen Buchstaben in ein Feld schreiben!");
-                }
-                /*String[] steuerungfeld = new String[5];
-                Boolean isok=true;
-                steuerungfeld[0] = slinks;
-                steuerungfeld[1] = srechts;
-                steuerungfeld[2] = srunter;
-                steuerungfeld[3] = slinksdrehen;
-                steuerungfeld[4] = srechtsdrehen;
-                for(int i = 0; i < steuerungfeld.length-1; i++)
-                {
-                    if(steuerungfeld[i].equals(steuerungfeld[i+1]))
-                    {
-                        isok = false;
-                        JOptionPane.showMessageDialog(this, "Zwei Werte sind gleich!");
-                    }
-                    else if(isok == true)
-                    {
-                        System.out.println("GUI");
-                        this.dispose();
-                    }
-                }
-                */
-            } catch (Exception ex) {
-                System.out.println("Programm konnte nicht beendet werden");
+                sl.WriteSettings(hmNewKeys);
+                hmKeys.clear();
+                sl.ReadSettings();
+                hmKeys = sl.getHmKeys();
+            } catch (IOException e1) {
+                e1.printStackTrace();
             }
 
-
+            this.dispose();
         });
     }
 
@@ -346,7 +323,12 @@ public class SettingsGUI extends JDialog{
 
 
     public static void main(String[] args) {
+        SettingsGUI gui = new SettingsGUI();
+        gui.setVisible(true);
+    }
 
-        gui1.setVisible(true);
+
+    public HashMap<String, Integer> getHmKeys() {
+        return hmKeys;
     }
 }
