@@ -39,11 +39,7 @@ public class TetrisForm extends Thread {
         if(collisionAvoidence(xCoord, yCoord+1)){
            throw  new Exception();
         }
-
-
     }
-
-
     /**
      *  draw new Forms  with Graphics 2D
      * @param g2
@@ -96,7 +92,6 @@ public class TetrisForm extends Thread {
         if (!collisionAvoidence(xCoord  , yCoord  + y)) {
             this.yCoord += y;
         }else {
-            //System.out.println("setYCord: Collision -> Thread interrupt");
             falling = false;
             setFieldTrue();
             this.interrupt();
@@ -108,8 +103,6 @@ public class TetrisForm extends Thread {
      * @param i -> index for form
      */
     public  void rotate(int i){
-        System.out.println("rotate: Rotiert");
-
         int newindex = (index + i) % 4;
 
         if(newindex < 0){
@@ -120,11 +113,9 @@ public class TetrisForm extends Thread {
         pointField = CoordinatesOfForms.rotatetForm(form, newindex);
 
         if (collisionAvoidence(xCoord, yCoord)) {
-           // System.out.println("rotate: Rotate failed");
             pointField = pointFieldtry;
 
         }else {
-          //  System.out.println("rotate: Rotate sucess");
             index = newindex;
         }
     }
@@ -142,9 +133,7 @@ public class TetrisForm extends Thread {
             } catch (InterruptedException e) {
                 this.interrupt();
             }
-
         }
-
     }
 
     /**
@@ -154,8 +143,6 @@ public class TetrisForm extends Thread {
         for (int i = 0; i < pointField.length; i++) {
             colorField[(int) (yCoord + pointField[i].getX())][(int) (xCoord + pointField[i].getY())] = form.getC();
         }
-        //System.out.println("setFieldTrue: updated Binärfeld");
-
         clearRows();
 
 

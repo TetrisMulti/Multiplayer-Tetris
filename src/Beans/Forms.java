@@ -4,7 +4,7 @@ import java.awt.*;
 
 /**
  * Created by Christoph on 14.03.2017.
- * Enum Klasse für die einzelnen Tetris Formen
+ * Enum Klasse für die einzelnen Tetris Formen mit Farben
  */
 public enum Forms {
 
