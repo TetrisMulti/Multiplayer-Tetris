@@ -10,6 +10,9 @@ import java.awt.*;
  */
 public class PanelRenderer extends JPanel {
     @Override
+    /**
+     * renderer for the panel in the TetrisGUI
+     */
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         TetrisGUI.tetrisGui.repaint(g);

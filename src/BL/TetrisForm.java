@@ -29,11 +29,9 @@ public class TetrisForm extends Thread {
     public TetrisForm(int xCoord, int yCoord, int widthOfBlock, int heightOfBlock, Forms form,Color[][] colorField) throws Exception {
         this.widthOfBlock = widthOfBlock;
         this.heightOfBlock = heightOfBlock;
-
         this.xCoord = xCoord;
         this.yCoord = yCoord;
         this.falling = true;
-
         this.form = form;
         this.index = 0;
         this.pointField = CoordinatesOfForms.getPointCoords(form);
@@ -46,7 +44,10 @@ public class TetrisForm extends Thread {
     }
 
 
-
+    /**
+     *  draw new Forms  with Graphics 2D
+     * @param g2
+     */
     public void draw(Graphics2D g2) {
         g2.setColor(form.getC());
 
@@ -55,14 +56,18 @@ public class TetrisForm extends Thread {
                 RoundRectangle2D rr = new RoundRectangle2D.Float((int) (xCoord * widthOfBlock + (pointField[i].getY() * widthOfBlock)), (int) ((yCoord * heightOfBlock) + 2 + (pointField[i].getX() * heightOfBlock)),
                         widthOfBlock - 2, heightOfBlock - 2, 10, 10);
                 g2.fill(rr);
-            } else {
             }
         }
 
     }
 
 
-    // Überprüft Collision
+    /**
+     *   Proove Collision
+     * @param x -> xCoord of Form
+     * @param y -> yCoord of Form
+     * @return boolean for collision
+     */
     public boolean collisionAvoidence(int x, int y){
         for (Point2D p : pointField) {
             if(colorField[(int)p.getX() + y][(int)p.getY()+ x] != Color.DARK_GRAY ){
@@ -72,7 +77,10 @@ public class TetrisForm extends Thread {
         return  false;
     }
 
-    // Setzt die X Coord
+    /**
+     * set X Coord and proove collision
+     * @param x
+     */
     public void setxCoord(int x) {
         if (!collisionAvoidence(xCoord + x , yCoord ))
             this.xCoord += x;
@@ -80,19 +88,25 @@ public class TetrisForm extends Thread {
     }
 
 
-    // Setz die Y Coord
+    /**
+     *    set Y Coord and detect if form is on the bottom
+     * @param y
+     */
     public void setyCoord(int y) {
         if (!collisionAvoidence(xCoord  , yCoord  + y)) {
             this.yCoord += y;
         }else {
-            System.out.println("setYCord: Collision -> Thread interrupt");
+            //System.out.println("setYCord: Collision -> Thread interrupt");
             falling = false;
             setFieldTrue();
             this.interrupt();
         }
     }
 
-    // Rotiert
+    /**
+     * rotated forms
+     * @param i -> index for form
+     */
     public  void rotate(int i){
         System.out.println("rotate: Rotiert");
 
@@ -106,16 +120,18 @@ public class TetrisForm extends Thread {
         pointField = CoordinatesOfForms.rotatetForm(form, newindex);
 
         if (collisionAvoidence(xCoord, yCoord)) {
-            System.out.println("rotate: Rotate failed");
+           // System.out.println("rotate: Rotate failed");
             pointField = pointFieldtry;
 
         }else {
-            System.out.println("rotate: Rotate sucess");
+          //  System.out.println("rotate: Rotate sucess");
             index = newindex;
         }
     }
 
-
+    /**
+     *     run method, increase yCoord for falling
+     */
     @Override
     public void run() {
         while (!interrupted()) {
@@ -131,18 +147,23 @@ public class TetrisForm extends Thread {
 
     }
 
-
+    /**
+     *   update colorfield with the new form for collision detection
+     */
     private void setFieldTrue() {
         for (int i = 0; i < pointField.length; i++) {
             colorField[(int) (yCoord + pointField[i].getX())][(int) (xCoord + pointField[i].getY())] = form.getC();
         }
-        System.out.println("setFieldTrue: updated Binärfeld");
+        //System.out.println("setFieldTrue: updated Binärfeld");
 
         clearRows();
 
 
     }
 
+    /**
+     * detect if row is full and needs to be deleted + gives the deleted rows to TetrisGUI for Score calculating
+     */
     private void clearRows(){
         boolean foundRow = false;
         int countDeleRows = 0;
@@ -168,6 +189,10 @@ public class TetrisForm extends Thread {
 
     }
 
+    /**
+     * delete rows
+     * @param y -> row
+     */
     public  void deleteRow(int y) {
         for (int j = y -1; j > 0; j--){
             for(int i = 1;i< colorField[j].length - 1;i++ ){
