@@ -191,7 +191,6 @@ public class TetrisGUI extends JFrame implements ActionListener {
     public void repaint(Graphics g) {
         g2 = (Graphics2D) g;
 
-
         for (int i = 0; i < colorField.length; i++) {
             for (int j = 0; j < colorField[i].length; j++) {
                     g2.setColor(colorField[i][j]);

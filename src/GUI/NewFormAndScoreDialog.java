@@ -19,7 +19,6 @@ public class NewFormAndScoreDialog extends JFrame {
     private JPanel newFormPanel;
     private JPanel scorePanel;
     private Forms form;
-    private Image img;
     private Color[][] colorField;
     private int widthOfOneField;
     private int heightOfOneField;

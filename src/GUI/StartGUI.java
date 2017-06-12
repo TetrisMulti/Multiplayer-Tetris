@@ -194,7 +194,7 @@ public class StartGUI extends JFrame {
 
     private void onStart() {
         String nickname=JOptionPane.showInputDialog(this,"Bitte Nicknamen eingeben!");
-        TetrisGUI tGui = new TetrisGUI(nickname,gui);
+        TetrisGUI tGui = new TetrisGUI(nickname,gui,hmKeys);
         tGui.setVisible(true);
         this.setVisible(false);
     }
