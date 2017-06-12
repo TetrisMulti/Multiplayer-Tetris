@@ -33,7 +33,7 @@ public class NewFormAndScoreDialog extends JFrame {
         this.screenHeight = height;
         this.setLocation(location,0);
 
-        this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        this.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         this.form = form;
         this.setResizable(false);
         this.colorField = new Color[10][6];
