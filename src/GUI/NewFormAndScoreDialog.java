@@ -27,12 +27,12 @@ public class NewFormAndScoreDialog extends JFrame {
     private JLabel lbscorePoints;
 
 
+
     public NewFormAndScoreDialog(int width, int height, Forms form,int widthOfOneField, int heightOfOneField,int location,Score score) {
         this.setAutoRequestFocus(false);
         this.screenWidth = width;
         this.screenHeight = height;
         this.setLocation(location,0);
-
         this.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         this.form = form;
         this.setResizable(false);
@@ -40,13 +40,15 @@ public class NewFormAndScoreDialog extends JFrame {
         this.widthOfOneField=widthOfOneField;
         this.heightOfOneField=heightOfOneField;
         this.score=score;
-        System.out.println("1");
         initComponents();
         setForm(form);
         setScore(score);
 
     }
 
+    /**
+     * initialize Colorfield
+     */
     private void initField() {
         for(int i=0;i<colorField.length;i++)
         {
@@ -57,6 +59,10 @@ public class NewFormAndScoreDialog extends JFrame {
         }
     }
 
+    /**
+     * adds newFormPanel and scorepanel to the dialog
+     * scorepanel contains nickname label and score label
+     */
     private void initComponents() {
         Container cont = this.getContentPane();
         newFormPanel = new JPanel();
@@ -78,7 +84,6 @@ public class NewFormAndScoreDialog extends JFrame {
         lbNickName.setText(score.getUser());
         lbNickName.setHorizontalAlignment(JLabel.CENTER);
 
-        System.out.println(score.getUser());
         scorePanel.add(lbNickName);
         scorePanel.add(lbscorePoints);
         lbNickName.setFont(new Font("Comic Sans Ms",Font.PLAIN, (int) (Toolkit.getDefaultToolkit().getScreenSize().getWidth()/100)));
@@ -87,17 +92,17 @@ public class NewFormAndScoreDialog extends JFrame {
         cont.setLayout(new GridLayout(2,1));
         cont.add(newFormPanel);
         cont.add(scorePanel);
-        System.out.println("width->"+screenWidth+" height->"+screenHeight);
         this.setVisible(true);
-
-
     }
 
+    /**
+     * update colorfield with the next form
+     * @param form -> form thats set
+     */
     public void setForm(Forms form) {
         this.form = form;
         Point2D[] pointField = CoordinatesOfForms.getPointCoords(form);
         initField();
-        System.out.println("1mal");
         for(int i=0;i<pointField.length;i++)
         {
             if(form == Forms.STICK)
@@ -108,21 +113,21 @@ public class NewFormAndScoreDialog extends JFrame {
             {
                 colorField[(int)(4+pointField[i].getX())][(int)(2+pointField[i].getY())] = form.getC();
             }
-
         }
 
         repaint();
     }
 
 
-
-
-
+    /**
+     * paintmethod
+     * paints the colorfield to the newFormPanel
+     * @param g
+     */
     @Override
     public void paint(Graphics g) {
         super.paint(g);
         Graphics2D g2 = (Graphics2D) newFormPanel.getGraphics();
-        //System.out.println(Arrays.deepToString(colorField));
 
         for (int i = 0; i < colorField.length; i++) {
             for (int j = 0; j < colorField[i].length; j++) {
@@ -133,17 +138,13 @@ public class NewFormAndScoreDialog extends JFrame {
         }
     }
 
+    /**
+     * sets score on the scorelabel
+     * @param score
+     */
     public void setScore(Score score) {
         this.score = score;
         lbscorePoints.setText(score.getScore()+"");
 
     }
-
-
-    //public static void main(String[] args) {
-      //  new NewFormAndScoreDialog(500,1000, Forms.BLOCK,50,50,1700,new Score("asdf",0));
-    //}
-
-
-
 }

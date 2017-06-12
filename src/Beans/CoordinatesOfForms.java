@@ -90,8 +90,6 @@ public class CoordinatesOfForms {
     }
 
     private static Point2D[] getCoordsofStick(int index) {
-        //new Point2D[]{new Point2D.Double(0,0),new Point2D.Double(0,1),new Point2D.Double(0,2),new Point2D.Double(0,3)};
-
         switch (index)
         {
             case 0:return new Point2D[]{new Point2D.Double(0,0),new Point2D.Double(0,1),new Point2D.Double(0,2),new Point2D.Double(0,3)};
