@@ -52,12 +52,12 @@ public class ScoreTable extends JTable {
         stm.addScore(sc);
     }
 
-    public void initTableColumns(int[] columnwidth)
+    public void initTableColumns(int columnwidth)
     {
         int cnt = 0;
         for (String s:sname)
         {
-            TableColumn tc = new TableColumn(cnt, columnwidth[cnt++]);
+            TableColumn tc = new TableColumn(cnt++, columnwidth);
             tc.setHeaderRenderer(stcr);
             tc.setHeaderValue(s);
             tc.setResizable(false);

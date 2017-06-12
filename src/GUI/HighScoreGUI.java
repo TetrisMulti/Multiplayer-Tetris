@@ -98,13 +98,6 @@ public class HighScoreGUI extends JDialog{
 
 
             //Panel um eine Tabelle einzufügen
-            JPanel anzeige = new JPanel(new GridLayout(1,1));
-            anzeige.setBorder(new TitledBorder("Highscore"));
-            anzeige.setBackground(Color.lightGray);
-            anzeige.setSize(gesamtPanel.getWidth()/2, gesamtPanel.getHeight()/2+gesamtPanel.getHeight()/10);
-            anzeige.setLocation(gesamtPanel.getWidth()/2-anzeige.getWidth()/2, gesamtPanel.getHeight()/2-gesamtPanel.getHeight()/3);
-            gesamtLabel.add(anzeige);
-
 
             //Tabelle in der die HighScores angezeigt werden, wird dann in das Panel hinzugefügt
             ScoreTable scoreTable = new ScoreTable();
