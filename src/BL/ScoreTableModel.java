@@ -24,6 +24,13 @@ public class ScoreTableModel extends AbstractTableModel {
     {
         scList.add(sc);
         sortAndRankList();
+        try {
+            saveScores();
+        } catch (TransformerException e) {
+            e.printStackTrace();
+        } catch (ParserConfigurationException e) {
+            e.printStackTrace();
+        }
     }
 
     public void loadScores() throws IOException, SAXException, ParserConfigurationException {

@@ -12,7 +12,6 @@ import java.util.Iterator;
 public class SettingsLoader {
 
     private final String Path;
-    private String WholeSettings;
     private HashMap<String, Integer> hmKeys;             //In dieser Map sind die Keywerte zu den Bewegungen gespeichert #HashtagMap
 
     public SettingsLoader() {
