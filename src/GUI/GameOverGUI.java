@@ -33,6 +33,7 @@ public class GameOverGUI extends JDialog{
     private JLabel lbBackground;
     private JPanel pnTable;
     private StartGUI sgui;
+    private JLabel lbYS;
 
     public GameOverGUI(Score score, JFrame sgui) throws HeadlessException, IOException, SAXException, ParserConfigurationException {
         initComponents();
@@ -70,6 +71,8 @@ public class GameOverGUI extends JDialog{
         lbBackground = new JLabel();
         pnTable = new JPanel();
         cont.setLayout(null);
+        JPanel pnAnzeige = new JPanel();
+        lbYS = new JLabel();
 
         //String filename = System.getProperty("user.dir") + File.separator + "src" +
                 //File.separator + "res" + File.separator + "Game_Over.jpg";
@@ -82,21 +85,24 @@ public class GameOverGUI extends JDialog{
         }
         System.out.println("PanelWidth: "+width);
         System.out.println("Panelheight: "+height);
+
         lbBackground.setSize(width, height);
         lbBackground.setLayout(new BorderLayout());
         lbBackground.setOpaque(true);
         Image simg = img.getScaledInstance(width, height, Image.SCALE_SMOOTH);
         lbBackground.setIcon(new ImageIcon(simg));
 
-        tbTabelle.initTableColumns(new int[]{50,70,70});
-        tbTabelle.getStm().loadScores();
-        tbTabelle.getTableHeader().setBackground(new Color(48,54,44));
+
 
 
         /*Skalierung klappt noch nicht ganz */
-        tbTabelle.setSize(new Dimension(width-width/2, (int) (tbTabelle.getStm().getRowCount()*tbTabelle.getRowHeight()*2.5)));
-        pnTable.setSize(new Dimension(width-width/2, (int) (tbTabelle.getStm().getRowCount()*tbTabelle.getRowHeight()*2.5)));
-        psPane.setSize(new Dimension(width-width/2, (int) (tbTabelle.getStm().getRowCount()*tbTabelle.getRowHeight()*2.5)));
+        //tbTabelle.setSize(new Dimension(width-width/2, (int) (tbTabelle.getStm().getRowCount()*tbTabelle.getRowHeight()*2.5)));
+        pnTable.setSize(new Dimension(width , (int) (3*tbTabelle.getRowHeight()*2.5)));
+       // psPane.setSize(new Dimension(width-width/2, (int) (tbTabelle.getStm().getRowCount()*tbTabelle.getRowHeight()*2.5)));
+        int columnwidth = width/4;
+        tbTabelle.initTableColumns(columnwidth);
+        tbTabelle.getStm().loadScores();
+        tbTabelle.getTableHeader().setBackground(new Color(48,54,44));
 
 
         System.out.println("TableWidth: "+tbTabelle.getWidth());
@@ -109,12 +115,16 @@ public class GameOverGUI extends JDialog{
         psPane.getViewport().setOpaque(false);
 
         tbTabelle.setFont(new Font("Courier New", Font.BOLD, 14));                                              //BITTE SKALIEREN
-        pnTable.add(psPane);
+
         pnTable.setOpaque(false);
         pnTable.setBorder(tbTabelle.getNullBorder());
         psPane.setBorder(tbTabelle.getNullBorder());
+        psPane.setViewportView(tbTabelle);
+        psPane.setPreferredSize(new Dimension(width/4*3 , (int) (3*tbTabelle.getRowHeight()*2.5)));
+        psPane.revalidate();
+        pnTable.add(psPane);
 
-        pnTable.setLocation(width/2 - pnTable.getWidth()/2, height/3);
+        pnTable.setLocation(width/2 - pnTable.getWidth()/2, (int) (height/3.5));
         cont.add(pnTable);
 
         btExit.setText("Exit");
@@ -127,6 +137,19 @@ public class GameOverGUI extends JDialog{
         btBackToMenu.setSize(width/3, height/20);
         cont.add(btBackToMenu);
         btBackToMenu.setLocation(width/2 - btExit.getWidth()/2,height - height/4 + 10);
+
+        lbYS.setOpaque(false);
+        lbYS.setText("Dein Score: "+Score);
+        lbYS.setFont(new Font("Courier New", Font.BOLD, 28));
+        lbYS.setBackground(new Color(48,54,44));
+        lbYS.setForeground(Color.white);
+
+        pnAnzeige.setOpaque(false);
+        pnAnzeige.setSize(width,100);
+        pnAnzeige.add(lbYS);
+        pnAnzeige.setLocation(0, height/5);
+        cont.add(pnAnzeige);
+
 
         btExit.addActionListener(e -> {
             System.exit(0);

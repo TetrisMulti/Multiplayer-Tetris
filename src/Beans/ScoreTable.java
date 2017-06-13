@@ -18,16 +18,20 @@ import java.awt.*;
  */
 public class ScoreTable extends JTable {
 
-    private ScoreTableModel stm = new ScoreTableModel();
-    private ScoreTableCellRenderer stcr = new ScoreTableCellRenderer();
-    private DefaultTableColumnModel dtcm = new DefaultTableColumnModel();
-    private ScoreRenderer sc = new ScoreRenderer();
+    private ScoreTableModel stm;
+    private ScoreTableCellRenderer stcr;
+    private DefaultTableColumnModel dtcm;
+    private ScoreRenderer sc;
     private Border nullBorder = BorderFactory.createCompoundBorder(
             BorderFactory.createMatteBorder(0,0,1,0, Color.BLACK),
             BorderFactory.createEmptyBorder(2,2,1,2));
     private String[] sname = {"Rank", "User", "Score"};
 
     public ScoreTable() {
+        stm = new ScoreTableModel();
+        stcr = new ScoreTableCellRenderer();
+        dtcm = new DefaultTableColumnModel();
+        sc = new ScoreRenderer();
         this.setModel(stm);
         this.setColumnModel(dtcm);
         this.setOpaque(false);
@@ -48,18 +52,23 @@ public class ScoreTable extends JTable {
         stm.addScore(sc);
     }
 
-    public void initTableColumns(int[] columnwidth)
+    public void initTableColumns(int columnwidth)
     {
         int cnt = 0;
         for (String s:sname)
         {
-            TableColumn tc = new TableColumn(cnt, columnwidth[cnt++]);
+            TableColumn tc = new TableColumn(cnt++, columnwidth);
             tc.setHeaderRenderer(stcr);
             tc.setHeaderValue(s);
             tc.setResizable(false);
             tc.setCellRenderer(sc);
             dtcm.addColumn(tc);
         }
+        this.setColumnModel(dtcm);
+    }
+
+    public ScoreTableCellRenderer getStcr() {
+        return stcr;
     }
 
     public ScoreTableModel getStm() {
@@ -76,5 +85,9 @@ public class ScoreTable extends JTable {
 
     public void setNullBorder(Border nullBorder) {
         this.nullBorder = nullBorder;
+    }
+
+    public DefaultTableColumnModel getDtcm() {
+        return dtcm;
     }
 }

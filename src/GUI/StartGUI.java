@@ -194,9 +194,18 @@ public class StartGUI extends JFrame {
 
     private void onStart() {
         String nickname=JOptionPane.showInputDialog(this,"Bitte Nicknamen eingeben!");
-        TetrisGUI tGui = new TetrisGUI(nickname,gui,hmKeys);
-        tGui.setVisible(true);
-        this.setVisible(false);
+        if (nickname == null)
+        {}
+        else if(nickname.trim().length() >= 8 || nickname.trim().length() == 0)
+        {
+            JOptionPane.showMessageDialog(this, "Zur Info: der eingegebene Name darf max. 8 Buchstaben, aber mindestens 1 Buchstaben enthalten");
+        }
+        else
+        {
+            TetrisGUI tGui = new TetrisGUI(nickname,gui, hmKeys);
+            tGui.setVisible(true);
+            this.setVisible(false);
+        }
     }
 
     private void onExit() {
