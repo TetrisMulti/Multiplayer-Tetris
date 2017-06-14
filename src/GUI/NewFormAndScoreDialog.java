@@ -72,7 +72,7 @@ public class NewFormAndScoreDialog extends JFrame {
         JLabel lbNickName = new JLabel();
         JLabel lbLevelHeader = new JLabel();
         JLabel lbScoreHeader = new JLabel();
-
+       // JLabel lbFillerLabel = new JLabel();
 
         newFormPanel.setSize(screenWidth,screenHeight/2);
         scorePanel.setSize(screenWidth,screenHeight/2);
@@ -80,7 +80,7 @@ public class NewFormAndScoreDialog extends JFrame {
         scorePanel.setBackground(Color.DARK_GRAY);
         scorePanel.setOpaque(true);
 
-        lbLevelHeader.setForeground(Color.BLUE);
+        lbLevelHeader.setForeground(Color.YELLOW);
         lbLevelHeader.setText(score.getScore()+"");
         lbLevelHeader.setHorizontalAlignment(JLabel.CENTER);
         lbLevelHeader.setText("Level:");
@@ -90,17 +90,20 @@ public class NewFormAndScoreDialog extends JFrame {
         lbScoreHeader.setHorizontalAlignment(JLabel.CENTER);
         lbScoreHeader.setText("Score:");
 
-
         lbscorePoints.setForeground(Color.RED);
         lbscorePoints.setText(score.getScore()+"");
         lbscorePoints.setHorizontalAlignment(JLabel.CENTER);
+
         lbNickName.setForeground(Color.GREEN);
         lbNickName.setText(score.getUser());
         lbNickName.setHorizontalAlignment(JLabel.CENTER);
-        lbLevel.setForeground(Color.BLUE);
+
+        lbLevel.setForeground(Color.YELLOW);
         lbLevel.setText(score.getScore()+"");
         lbLevel.setHorizontalAlignment(JLabel.CENTER);
+
         lbLevel.setText("1");
+       // scorePanel.add(lbFillerLabel);
         scorePanel.add(lbNickName);
         scorePanel.add(lbLevelHeader);
         scorePanel.add(lbLevel);
