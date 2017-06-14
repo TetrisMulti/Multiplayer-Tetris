@@ -46,6 +46,8 @@ public class TetrisGUI extends JFrame implements ActionListener {
     public static Score score;
     private HashMap<String, Integer> hmKeys;
     private boolean gameover;
+    public static int time;
+    public static int level;
 
 
     public TetrisGUI(String nickName, JFrame startGUI, HashMap<String, Integer> hmKeys) {
@@ -62,6 +64,8 @@ public class TetrisGUI extends JFrame implements ActionListener {
         initialConfigs();
         this.hmKeys=hmKeys;
         gameover=false;
+        time =500;
+        level=1;
     }
 
     /**
@@ -191,7 +195,6 @@ public class TetrisGUI extends JFrame implements ActionListener {
     public void repaint(Graphics g) {
         g2 = (Graphics2D) g;
 
-
         for (int i = 0; i < colorField.length; i++) {
             for (int j = 0; j < colorField[i].length; j++) {
                     g2.setColor(colorField[i][j]);
@@ -215,7 +218,7 @@ public class TetrisGUI extends JFrame implements ActionListener {
         if (firstActive) {
             try {
                 newForm();
-                aktivForm = new TetrisForm(5, 0, widthOfOneField, heightOfOneField, formsQueue[0],colorField);
+                aktivForm = new TetrisForm(5, 0, widthOfOneField, heightOfOneField, formsQueue[0],colorField,time);
                 aktivForm.start();
 
             } catch (Exception ex) {
@@ -254,7 +257,13 @@ public class TetrisGUI extends JFrame implements ActionListener {
     public static void calculateScore(int x)
     {
         score.setScore(score.getScore()+ PunkteCalculator.calculateRowPoints(x));
-
+        if(score.getScore()/(100*level)>level) {
+            level++;
+            if(time>=50)
+            {
+                time-=50;
+            }
+        }
     }
 
     /**
@@ -279,6 +288,7 @@ public class TetrisGUI extends JFrame implements ActionListener {
             formsQueue[1]=Forms.values()[rand.nextInt(Forms.values().length)];
             dialog.setForm(formsQueue[1]);
             dialog.setScore(score);
+            dialog.setLevel(level);
         }
 
 

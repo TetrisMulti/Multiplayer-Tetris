@@ -24,9 +24,10 @@ public class TetrisForm extends Thread {
     private int index;
     private Point2D[] pointField;
     private Color[][] colorField;
+    private int timetoFall;
 
 
-    public TetrisForm(int xCoord, int yCoord, int widthOfBlock, int heightOfBlock, Forms form,Color[][] colorField) throws Exception {
+    public TetrisForm(int xCoord, int yCoord, int widthOfBlock, int heightOfBlock, Forms form,Color[][] colorField,int time) throws Exception {
         this.widthOfBlock = widthOfBlock;
         this.heightOfBlock = heightOfBlock;
         this.xCoord = xCoord;
@@ -36,6 +37,7 @@ public class TetrisForm extends Thread {
         this.index = 0;
         this.pointField = CoordinatesOfForms.getPointCoords(form);
         this.colorField=colorField;
+        this.timetoFall=time;
         if(collisionAvoidence(xCoord, yCoord+1)){
            throw  new Exception();
         }
@@ -129,7 +131,7 @@ public class TetrisForm extends Thread {
             setyCoord(1);
 
             try {
-                Thread.sleep(500);
+                Thread.sleep(timetoFall);
             } catch (InterruptedException e) {
                 this.interrupt();
             }

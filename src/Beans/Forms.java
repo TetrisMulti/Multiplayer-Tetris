@@ -8,13 +8,13 @@ import java.awt.*;
  */
 public enum Forms {
 
-    STICK(new Color(30,255,1)),
-    BLOCK(new Color(1,0,254)),
-    STAIRRIGHT(new Color(0,199,254)),
-    STAIRLEFT(Color.gray),
-    LEFTL(new Color(255,149,10)),
-    RIGHTL(new Color(254,0,2)),
-    POTEST(new Color(255,199,0))
+    STICK(new Color(0,240,240)),
+    BLOCK(new Color(249,240,0)),
+    STAIRRIGHT(new Color(0,240,0)),
+    STAIRLEFT(new Color(240,0,0)),
+    LEFTL(new Color(0,0,240)),
+    RIGHTL(new Color(240,160,0)),
+    POTEST(new Color(160,0,240))
     ;
 
 
@@ -30,5 +30,5 @@ public enum Forms {
         return c;
     }
 
-
+//
 }
