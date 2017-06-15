@@ -38,7 +38,7 @@ public class TetrisForm extends Thread {
         this.pointField = CoordinatesOfForms.getPointCoords(form);
         this.colorField=colorField;
         this.timetoFall=time;
-        if(collisionAvoidence(xCoord, yCoord+1)){
+        if(collisionAvoidence(xCoord, yCoord)){
            throw  new Exception();
         }
     }
@@ -102,24 +102,19 @@ public class TetrisForm extends Thread {
 
     /**
      * rotated forms
-     * @param i -> index for form
+     * @param i -> direction of rotation
      */
     public  void rotate(int i){
-        int newindex = (index + i) % 4;
 
-        if(newindex < 0){
-            newindex = 3;
-        }
-
+        if(form!=Forms.BLOCK)
+        {
         Point2D[] pointFieldtry = pointField;
-        pointField = CoordinatesOfForms.rotatetForm(form, newindex);
+        pointField = CoordinatesOfForms.rotateForm(pointField, i);
 
         if (collisionAvoidence(xCoord, yCoord)) {
             pointField = pointFieldtry;
 
-        }else {
-            index = newindex;
-        }
+        }}
     }
 
     /**
