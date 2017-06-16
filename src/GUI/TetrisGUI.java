@@ -151,10 +151,10 @@ public class TetrisGUI extends JFrame implements ActionListener {
                                 aktivForm.setxCoord(1);
                                 break;
                             case "rotateLeft":
-                                aktivForm.rotate(-1);
+                                aktivForm.rotate(1);
                                 break;
                             case "rotateRight":
-                                aktivForm.rotate(1);
+                                aktivForm.rotate(-1);
                                 break;
                             default:
                                 System.out.println("Error in void keyPressed");
@@ -268,6 +268,8 @@ public class TetrisGUI extends JFrame implements ActionListener {
      * creates 2 new random forms on first start
      * has always the next form in queue for the newformdialog
      * creates object of the dialog class
+     * set Score at Dialog
+     * set Level at Dialog
      */
     public void newForm() {
         Random rand = new Random();
