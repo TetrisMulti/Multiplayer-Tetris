@@ -5,6 +5,8 @@ import Beans.Forms;
 import BL.TetrisForm;
 import Beans.Score;
 import Renderer.PanelRenderer;
+import ch.aplu.xboxcontroller.XboxController;
+import ch.aplu.xboxcontroller.XboxControllerAdapter;
 
 
 import javax.swing.*;
@@ -45,10 +47,12 @@ public class TetrisGUI extends JFrame implements ActionListener {
     private boolean gameover;
     public static int time;
     public static int level;
+    private XboxController controller;
+    private boolean isControllerOn = false;
 
 
-    public TetrisGUI(String nickName, JFrame startGUI, HashMap<String, Integer> hmKeys) {
-
+    public TetrisGUI(String nickName, JFrame startGUI, HashMap<String, Integer> hmKeys, boolean isControllerOn) {
+        this.isControllerOn = isControllerOn;
         this.nickName = nickName;
         this.startGUI = startGUI;
         counter = 0;
@@ -68,8 +72,8 @@ public class TetrisGUI extends JFrame implements ActionListener {
     /**
      * set GUI size
      * calculate Height and Width of one Field
+     * if Controller is toggled in SettingsGUI call initController Method
      * call addListener Method
-     * ask for playing with a XBox Controller
      * initialize Colorfield
      * start timer
      */
@@ -87,7 +91,14 @@ public class TetrisGUI extends JFrame implements ActionListener {
         this.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         this.setLocationRelativeTo(null);
 
+
+        if (isControllerOn)
+            initController();
+
         addListener();
+
+
+
 
         this.rend = new PanelRenderer();
         this.add(rend);
@@ -107,6 +118,53 @@ public class TetrisGUI extends JFrame implements ActionListener {
             }
         }
         timer.start();
+    }
+
+    /**
+     * initialization of the XBox Controller
+     * setting the deadzones
+     */
+    private void initController() {
+        controller = new XboxController();
+        while(!controller.isConnected()){
+            controller.release();
+            JOptionPane.showMessageDialog(this, "Bitte schließen Sie ihren Controller an");
+            controller = new XboxController();
+        }
+
+        controller.setRightThumbDeadZone(0.8);
+        addControllerListener();
+    }
+
+    /**
+     * Adds a ControllerAdapter to the Controller, so we can easily use the Controller like ActionPerformed
+     * implements the actions to the controller
+     */
+    private void addControllerListener()
+    {
+        controller.addXboxControllerListener(new XboxControllerAdapter(){
+            @Override
+            public void leftShoulder(boolean pressed) {
+                if (pressed)
+                aktivForm.rotate(1);
+            }
+
+            @Override
+            public void rightShoulder(boolean pressed) {
+                if(pressed)
+                aktivForm.rotate(-1);
+            }
+
+            @Override
+            public void rightThumbDirection(double direction) {
+                if (direction >= 45 && direction <= 135)
+                    aktivForm.setxCoord(1);
+                else if(direction >= 135.1 && direction <= 225)
+                    aktivForm.setyCoord(1);
+                else if(direction >= 225.1 && direction <= 315)
+                    aktivForm.setxCoord(-1);
+            }
+        });
     }
 
     /**

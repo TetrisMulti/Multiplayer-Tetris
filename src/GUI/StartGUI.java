@@ -16,6 +16,8 @@ public class StartGUI extends JFrame {
     protected static StartGUI gui=new StartGUI();
     private SettingsLoader sl = new SettingsLoader();
     private HashMap<String, Integer> hmKeys = sl.getHmKeys();
+    private boolean isControllerOn = false;
+    private SettingsGUI setGUI;
 
     public StartGUI() {
         initComponents();
@@ -134,8 +136,8 @@ public class StartGUI extends JFrame {
         btSettings.addActionListener(e -> {
             try
             {
-                SettingsGUI gui1 = new SettingsGUI(sl);
-                gui1.setVisible(true);
+                setGUI = new SettingsGUI(sl);
+                setGUI.setVisible(true);
             }
             catch(Exception ex)
             {
@@ -202,7 +204,11 @@ public class StartGUI extends JFrame {
         }
         else
         {
-            TetrisGUI tGui = new TetrisGUI(nickname,gui, hmKeys);
+            if (setGUI != null)
+            {
+                isControllerOn = setGUI.isControllerOn();
+            }
+            TetrisGUI tGui = new TetrisGUI(nickname,gui, hmKeys, isControllerOn);
             tGui.setVisible(true);
             this.setVisible(false);
         }

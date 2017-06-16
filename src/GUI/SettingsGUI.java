@@ -9,6 +9,8 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.IOException;
@@ -23,11 +25,13 @@ public class SettingsGUI extends JDialog {
     private HashMap<String, Integer> hmNewKeys = new HashMap<>();
     private HashMap<String, Integer> hmKeys = new HashMap<>();
     private SettingsLoader sl;
+    private boolean isControllerOn;
 
 
 
 
     public SettingsGUI(SettingsLoader sl) {
+        isControllerOn = false;
         this.sl = sl;
         try {
             sl.ReadSettings();
@@ -290,6 +294,45 @@ public class SettingsGUI extends JDialog {
         tfrechtsdrehen.setHorizontalAlignment(tfrechtsdrehen.CENTER);
         tfrechtsdrehen.setFont(new Font("Arial", Font.BOLD, 30));
 
+        JPanel pnController = new JPanel(new GridLayout(1,1));
+        pnController.setSize(width/3, height/8);
+        pnController.setBackground(Color.black);
+        JToggleButton tbtController = new JToggleButton();
+        TitledBorder tbControllerBorder = new TitledBorder("Controller");
+        tbControllerBorder.setTitleColor(Color.white);
+        pnController.setBorder(tbControllerBorder);
+        tbtController.setText("Controller J/N");
+        pnController.setLocation((int) (width/3*1.7), height/8);
+        tbtController.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (tbtController.isSelected())
+                {
+                    steuerung.setEnabled(false);
+                    tflinks.setEnabled(false);
+                    tflinksdrehen.setEnabled(false);
+                    tfrechts.setEnabled(false);
+                    tfrechtsdrehen.setEnabled(false);
+                    tfrunter.setEnabled(false);
+                    isControllerOn = true;
+                }
+                else
+                {
+                    steuerung.setEnabled(true);
+                    tflinks.setEnabled(true);
+                    tflinksdrehen.setEnabled(true);
+                    tfrechts.setEnabled(true);
+                    tfrechtsdrehen.setEnabled(true);
+                    tfrunter.setEnabled(true);
+                    isControllerOn = false;
+                }
+            }
+        });
+        pnController.add(tbtController);
+        gesamtLabel.add(pnController);
+
+
+
 
         //Labels und Textfelder in das Panel hinzufügen
         steuerung.add(links);
@@ -340,5 +383,9 @@ public class SettingsGUI extends JDialog {
 
     public HashMap<String, Integer> getHmKeys() {
         return hmKeys;
+    }
+
+    public boolean isControllerOn() {
+        return isControllerOn;
     }
 }

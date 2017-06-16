@@ -37,7 +37,6 @@ public class XMLWriter {
 
         //Insert all Scores into the XML
         for (Score sc:scList) {
-            System.out.println("HALLLOOOOO");
             Element score = doc.createElement("score");
             Element user = doc.createElement("username");
             user.setTextContent(sc.getUser());
@@ -51,9 +50,10 @@ public class XMLWriter {
         Transformer trans = TransformerFactory.newInstance().newTransformer();
         trans.setOutputProperty(OutputKeys.INDENT, "yes");
         DOMSource source = new DOMSource(doc);
-        StreamResult result = new StreamResult(System.out);
+        StreamResult result = new StreamResult(new File(FILENAME));
 
         trans.transform(source, result);
+
 
         System.out.println("Stats saved");
 
@@ -67,23 +67,21 @@ public class XMLWriter {
 
         LinkedList<Score> liList = new LinkedList<>();
 
-        doc.getDocumentElement().normalize();       //To normalize the XML Document
+        doc.getDocumentElement().normalize();
 
-        String node = doc.getDocumentElement().getNodeName();       //To get the first element in the XML file
+        String node = doc.getDocumentElement().getNodeName();
         if (node.equals("tetrisscores"))
         {
             NodeList nlScores = doc.getElementsByTagName("score");
             for (int i = 0; i<nlScores.getLength(); i++)
             {
                 Node n = nlScores.item(i);
-                //System.out.println(n.getNodeName());
 
                 if (n.getNodeType() == Node.ELEMENT_NODE)
                 {
                     Element el = (Element)n;
                     Score sc = new Score(el.getElementsByTagName("username").item(0).getTextContent(),
                             Integer.parseInt(el.getElementsByTagName("points").item(0).getTextContent()));
-                    //System.out.println(sc.toString());
                     liList.add(sc);
                 }
             }
@@ -107,9 +105,5 @@ public class XMLWriter {
         } catch (TransformerException e) {
             e.printStackTrace();
         }
-    }
-    public static void AddScore()
-    {
-
     }
 }
