@@ -1,34 +1,65 @@
 /**
- * Created by ganleb13 on 13.06.2017.
+ * Created by Leonhard on 15.06.2017.
  */
 
-import com.ivan.xinput.*;
-import com.ivan.xinput.exceptions.XInputNotLoadedException;
 
-public class HelloWorld2 {
 
-    public static void main(String[] args) {
-        // check if XInput 1.4 is available
-        if (XInputDevice14.isAvailable()) {
-            System.out.println("XInput 1.4 is available on this platform.");
-            try {
-                XInputDevice14[] xi = XInputDevice14.getAllDevices();
+import ch.aplu.xboxcontroller.XboxController;
+import ch.aplu.xboxcontroller.XboxControllerAdapter;
 
-                XInputDevice14 dev = XInputDevice14.getDeviceFor(0);
-                if (dev.poll())
-                {
-                    XInputComponents comps = dev.getComponents();
-                    XInputButtons buttons = comps.getButtons();
-                    XInputAxes axes = comps.getAxes();
+import javax.swing.*;
 
-                    int leftMotor = 25000;
-                    int rightMotor = 25000;
-                    dev.setVibration(leftMotor, rightMotor);
-                }
-            } catch (XInputNotLoadedException e) {
-                e.printStackTrace();
+public class HelloWorld2 extends JFrame {
+
+    private XboxController xc;
+
+    public HelloWorld2()
+    {
+        initComponents();
+    }
+
+
+    private void initComponents()
+    {
+        xc = new XboxController();
+        if (!xc.isConnected())
+        {
+            System.out.println("NOT CONNECTED");
+            xc.release();
+            return;
+        }
+
+        xc.setRightThumbDeadZone(0.3);
+
+        xc.addXboxControllerListener(new XboxControllerAdapter(){
+            @Override
+            public void leftTrigger(double value) {
+                xc.vibrate(50000, 0);
             }
 
-        }
+            @Override
+            public void rightTrigger(double value) {
+                xc.vibrate(0, 50000);
+            }
+
+            @Override
+            public void start(boolean pressed) {
+                System.out.println("Hallo");
+            }
+
+            @Override
+            public void rightThumbDirection(double direction) {
+                System.out.println("Value: "+direction);
+            }
+        });
     }
+
+    public static void main(String[] args) {
+
+        HelloWorld2 hw = new HelloWorld2();
+        hw.setVisible(true);
+
+    }
+
+
 }

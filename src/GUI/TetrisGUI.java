@@ -5,17 +5,14 @@ import Beans.Forms;
 import BL.TetrisForm;
 import Beans.Score;
 import Renderer.PanelRenderer;
-import org.xml.sax.SAXException;
+
 
 import javax.swing.*;
-import javax.xml.parsers.ParserConfigurationException;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.RoundRectangle2D;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.Random;
 
 
@@ -72,6 +69,7 @@ public class TetrisGUI extends JFrame implements ActionListener {
      * set GUI size
      * calculate Height and Width of one Field
      * call addListener Method
+     * ask for playing with a XBox Controller
      * initialize Colorfield
      * start timer
      */

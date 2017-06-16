@@ -2,6 +2,7 @@ package GUI;
 
 import BL.SettingsLoader;
 import javafx.beans.property.adapter.JavaBeanObjectProperty;
+import javafx.scene.control.RadioButton;
 import res.Res;
 
 import javax.imageio.ImageIO;
@@ -22,6 +23,7 @@ public class SettingsGUI extends JDialog {
     private HashMap<String, Integer> hmNewKeys = new HashMap<>();
     private HashMap<String, Integer> hmKeys = new HashMap<>();
     private SettingsLoader sl;
+
 
 
 
@@ -130,6 +132,7 @@ public class SettingsGUI extends JDialog {
         steuerung.setBorder(tb);
         steuerung.setSize(gesamtPanel.getWidth() / 2, gesamtPanel.getHeight() / 2);
         steuerung.setLocation(gesamtPanel.getWidth() / 2 - steuerung.getWidth() + steuerung.getWidth() / 8, gesamtPanel.getHeight() / 2 - steuerung.getHeight() + steuerung.getHeight() / 2);
+
 
 
         //Label Links hinzufügen
