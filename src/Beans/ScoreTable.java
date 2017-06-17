@@ -14,6 +14,7 @@ import java.awt.*;
 
 /**
  * Created by ganleb13 on 08.05.2017.
+ * ScoreTable class to just add this Table to the GameOverGUI and HighScoreGUI
  *
  */
 public class ScoreTable extends JTable {
@@ -27,13 +28,17 @@ public class ScoreTable extends JTable {
             BorderFactory.createEmptyBorder(2,2,1,2));
     private String[] sname = {"Rank", "User", "Score"};
 
+    /**
+     * Method to initialize the Models and Renderers
+     * setting up the main configs
+     */
     public ScoreTable() {
         stm = new ScoreTableModel();
         stcr = new ScoreTableCellRenderer();
         dtcm = new DefaultTableColumnModel();
         sc = new ScoreRenderer();
+
         this.setModel(stm);
-        this.setColumnModel(dtcm);
         this.setOpaque(false);
         this.setShowGrid(false);
         this.getTableHeader().setReorderingAllowed(false);
@@ -47,11 +52,19 @@ public class ScoreTable extends JTable {
 
     }
 
+    /**
+     * Method to bring the Score from the game to the TableModel
+     * @param sc --> Score to add into the Table
+     */
     public void addScore(Score sc)
     {
         stm.addScore(sc);
     }
 
+    /**
+     * Method to initialize the TableColumns
+     * @param columnwidth --> width of the column
+     */
     public void initTableColumns(int columnwidth)
     {
         int cnt = 0;
@@ -75,19 +88,7 @@ public class ScoreTable extends JTable {
         return stm;
     }
 
-    public void setStm(ScoreTableModel stm) {
-        this.stm = stm;
-    }
-
     public Border getNullBorder() {
         return nullBorder;
-    }
-
-    public void setNullBorder(Border nullBorder) {
-        this.nullBorder = nullBorder;
-    }
-
-    public DefaultTableColumnModel getDtcm() {
-        return dtcm;
     }
 }

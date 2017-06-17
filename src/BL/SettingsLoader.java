@@ -8,17 +8,26 @@ import java.util.Iterator;
 
 /**
  * Created by ganleb13 on 12.05.2017.
+ * This class handles the Setting Saving and loading feature
  */
 public class SettingsLoader {
 
     private final String Path;
-    private HashMap<String, Integer> hmKeys;             //In dieser Map sind die Keywerte zu den Bewegungen gespeichert #HashtagMap
+    private HashMap<String, Integer> hmKeys;
 
+    /**
+     * Constructor to initialize the Property path and the Hashmap for the settings
+     */
     public SettingsLoader() {
         Path = System.getProperty("user.dir") +File.separator+ "src" + File.separator + "res" + File.separator + "Settings.properties";
         hmKeys = new HashMap<String, Integer>();
     }
 
+    /**
+     * Method to read the Settings from the property file
+     * key(function) and value(keyvalue) will be saved into the hmKeys
+     * @throws IOException
+     */
     public void ReadSettings() throws IOException {
         FileReader fr = new FileReader(new File(Path));
         BufferedReader br = new BufferedReader(fr);
@@ -26,7 +35,6 @@ public class SettingsLoader {
         String line = "";
         while ((line = br.readLine()) != null)
         {
-            System.out.println(line);
             String[] splittedLine = line.split("=");
             switch (splittedLine[0])
             {
@@ -37,9 +45,14 @@ public class SettingsLoader {
                 case "rotateRight": hmKeys.put("rotateRight", Integer.parseInt(splittedLine[1]));break;
             }
         }
-        outKeys();
     }
 
+    /**
+     * Method to write the setting onto the property file
+     *
+     * @param hmNewKeys --> Hashmap of Keysettings to write onto the property file
+     * @throws IOException
+     */
     public void WriteSettings(HashMap<String, Integer> hmNewKeys) throws IOException {
         FileWriter fw = new FileWriter(new File(Path));
         BufferedWriter bw = new BufferedWriter(fw);
@@ -53,28 +66,10 @@ public class SettingsLoader {
         bw.close();
     }
 
-    public void outKeys()
-    {
-        for (Iterator it = hmKeys.keySet().iterator();it.hasNext();)
-        {
-            String key = (String) it.next();
-            System.out.println(key+"="+hmKeys.get(key));
-            System.out.println(KeyEvent.getKeyText(hmKeys.get(key)));
-        }
-    }
-
-    public static void main(String[] args) {
-        try {
-            SettingsLoader se = new SettingsLoader();
-            se.ReadSettings();
-            se.outKeys();
-
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
+    /**
+     * Method that returns the Keys fresh from the Property file
+     * @return --> Hashmap of Keysettings
+     */
     public HashMap<String, Integer> getHmKeys() {
         try {
             ReadSettings();

@@ -2,7 +2,8 @@ package Beans;
 
 /**
  * Created by ganleb13 on 05.05.2017.
- * Enum for the fixpoints given, when the player has a complete row
+ * Enum for the Points given when you finish a row
+ * and it's multiplicator when you finish more than 1 row.
  */
 public enum PunkteEnum {
     FIXPUNKTE(25.0),

@@ -11,58 +11,53 @@ import java.util.HashMap;
 
 /**
  * Created by Hugo & Christoph on 13.03.2017.
+ * In this class we define the StartGUI
  */
 public class StartGUI extends JFrame {
-    protected static StartGUI gui=new StartGUI();
+    protected static StartGUI gui;
     private SettingsLoader sl = new SettingsLoader();
     private HashMap<String, Integer> hmKeys = sl.getHmKeys();
     private boolean isControllerOn = false;
     private SettingsGUI setGUI;
 
+    /**
+     * Contructor
+     */
     public StartGUI() {
         initComponents();
         this.setResizable(false);
     }
 
+    /**
+     * Method to initialize to Window
+     * Adds the buttons to settings, the game, highscore, credits and a button to close the program
+     */
     private void initComponents() {
         Dimension scrnSize = Toolkit.getDefaultToolkit().getScreenSize();
         Rectangle winSize = GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds();
         int taskBarHeight = scrnSize.height - winSize.height;
 
-
-        //Gesamtbreite und Gesamthöhe bestimmen
         int width = (int) Toolkit.getDefaultToolkit().getScreenSize().getWidth() / 3;
         int height = ((int) Toolkit.getDefaultToolkit().getScreenSize().getHeight() - taskBarHeight) / 2;
 
-
-        //Größe, Location und Methode zum Schliessen setzen
         this.setSize(width, height);
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         this.setLocationRelativeTo(null);
 
+        JPanel pnFullPanel = new JPanel();
+        pnFullPanel.setLayout(null);
+        pnFullPanel.setSize(width, height);
+        pnFullPanel.setBackground(Color.lightGray);
 
-        //Ein Panel für den ganzen Bildschirm erstellen (mit Layout, Background-Farbe und Größe
-        JPanel gesamtPanel = new JPanel();
-        gesamtPanel.setLayout(null);
-        gesamtPanel.setSize(width, height);
-        gesamtPanel.setBackground(Color.lightGray);
-
-
-        //Das Gesamtpanel in einen Container hinzufügen
         Container cont = this.getContentPane();
         cont.setLayout(new BorderLayout());
-        cont.add(gesamtPanel, BorderLayout.CENTER);
+        cont.add(pnFullPanel, BorderLayout.CENTER);
 
+        JLabel lbFullLabel = new JLabel();
+        lbFullLabel.setSize(width, height);
+        lbFullLabel.setOpaque(true);
+        lbFullLabel.setBackground(Color.red);
 
-        //Ein Label über den gesamten Bildschirm machen um ein Bild als Hintergrundbild zu setzen
-        JLabel gesamtLabel = new JLabel();
-        gesamtLabel.setSize(width, height);
-        gesamtLabel.setOpaque(true);
-        gesamtLabel.setBackground(Color.red);
-        System.out.println(width+"  "+height);
-
-
-        //Ein Image erstellen und das Hintergrundbild auf das Label setzen
         Image img = null;
         try {
             img = ImageIO.read(Res.class.getResourceAsStream("Tetris.jpg"));
@@ -71,83 +66,65 @@ public class StartGUI extends JFrame {
         }
         Image dimg = img.getScaledInstance(width, height, Image.SCALE_SMOOTH);
         ImageIcon icon = new ImageIcon(dimg);
-        gesamtLabel.setIcon(icon);
-        gesamtPanel.add(gesamtLabel);
+        lbFullLabel.setIcon(icon);
+        pnFullPanel.add(lbFullLabel);
 
+        JPanel pnButtonsPanel = new JPanel();
+        pnButtonsPanel.setBackground(Color.black);
+        pnButtonsPanel.setOpaque(false);
+        pnButtonsPanel.setSize(pnFullPanel.getWidth() / 2, pnFullPanel.getHeight() / 2);
+        pnButtonsPanel.setLocation(pnFullPanel.getWidth() / 2 - pnButtonsPanel.getWidth() / 2, pnFullPanel.getHeight() / 2 - pnButtonsPanel.getHeight() / 2);
+        pnButtonsPanel.setLayout(null);
 
-        //Ein JPanel erstellen um 3 Buttons hinzuzufügen (Start, Highscore und Beenden)
-        JPanel panel1 = new JPanel();
-        panel1.setBackground(Color.black);
-        panel1.setOpaque(false);
-        panel1.setSize(gesamtPanel.getWidth()/2,gesamtPanel.getHeight()/2);
-        panel1.setLocation(gesamtPanel.getWidth()/2-panel1.getWidth()/2,gesamtPanel.getHeight()/2-panel1.getHeight()/2);
-        panel1.setLayout(null);
-
-
-        //Start Button, bei Klicken -> onStart Methode aufrufen -> neues Objekt der Klasse TetrisGUI erstellen und das Spiel startet
         JButton btStart = new JButton();
         btStart.setText("Start");
-        panel1.add(btStart);
-        btStart.setSize(panel1.getWidth()/2,panel1.getHeight()/6);
-        btStart.setLocation(panel1.getWidth()/2-btStart.getWidth()/2, panel1.getHeight()/2-btStart.getHeight()-btStart.getHeight());
+        pnButtonsPanel.add(btStart);
+        btStart.setSize(pnButtonsPanel.getWidth() / 2, pnButtonsPanel.getHeight() / 6);
+        btStart.setLocation(pnButtonsPanel.getWidth() / 2 - btStart.getWidth() / 2, pnButtonsPanel.getHeight() / 2 - btStart.getHeight() - btStart.getHeight());
         btStart.addActionListener((e) -> onStart());
-        btStart.setFont(new Font("Arial", Font.BOLD, btStart.getHeight()/2));
+        btStart.setFont(new Font("Arial", Font.BOLD, btStart.getHeight() / 2));
 
-
-        //HighScore Button, bei Klicken -> Einen Action Listener in dem ein neues Objekt der Klasse HighScoreGUI erstellt wird
         JButton btHighScore = new JButton();
         btHighScore.setText("HighScore");
-        panel1.add(btHighScore);
-        btHighScore.setSize(panel1.getWidth()/2,panel1.getHeight()/6);
-        btHighScore.setLocation(panel1.getWidth()/2-btHighScore.getWidth()/2, panel1.getHeight()/2-btHighScore.getHeight()/2);
+        pnButtonsPanel.add(btHighScore);
+        btHighScore.setSize(pnButtonsPanel.getWidth() / 2, pnButtonsPanel.getHeight() / 6);
+        btHighScore.setLocation(pnButtonsPanel.getWidth() / 2 - btHighScore.getWidth() / 2, pnButtonsPanel.getHeight() / 2 - btHighScore.getHeight() / 2);
         btHighScore.addActionListener(e -> {
-            try
-            {
+            try {
                 HighScoreGUI gui = new HighScoreGUI();
                 gui.setVisible(true);
-            }
-            catch(Exception ex)
-            {
-                System.out.println("HighScoreGUI konnte nicht aufgerufen werden");
+            } catch (Exception ex) {
+                ex.printStackTrace();
             }
         });
-        btHighScore.setFont(new Font("Arial", Font.BOLD, btHighScore.getHeight()/2));
+        btHighScore.setFont(new Font("Arial", Font.BOLD, btHighScore.getHeight() / 2));
 
-
-        //Exit Button, bei Klicken -> Einen Action Listener in dem die Methode onExit aufgerufen wird und das Fenster geschlossen wird
         JButton btExit = new JButton();
         btExit.setText("Beenden");
-        panel1.add(btExit);
-        btExit.setSize(panel1.getWidth()/2,panel1.getHeight()/6);
-        btExit.setLocation(panel1.getWidth()/2-btExit.getWidth()/2, panel1.getHeight()/2+btExit.getHeight());
+        pnButtonsPanel.add(btExit);
+        btExit.setSize(pnButtonsPanel.getWidth() / 2, pnButtonsPanel.getHeight() / 6);
+        btExit.setLocation(pnButtonsPanel.getWidth() / 2 - btExit.getWidth() / 2, pnButtonsPanel.getHeight() / 2 + btExit.getHeight());
         btExit.addActionListener(e -> {
             try {
                 onExit();
             } catch (Exception ex) {
-                System.out.println("Programm konnte nicht beendet werden");
+                ex.printStackTrace();
             }
         });
-        btExit.setFont(new Font("Arial", Font.BOLD, btExit.getHeight()/2));
+        btExit.setFont(new Font("Arial", Font.BOLD, btExit.getHeight() / 2));
 
-
-        //Button Settings, bei Klicken -> Einen Action Listener in dem ein neues Objekt der Klasse SettingsGUI erstellt wird
         JButton btSettings = new JButton();
-        btSettings.setSize(gesamtPanel.getWidth()/18,gesamtPanel.getHeight()/15);
+        btSettings.setSize(pnFullPanel.getWidth() / 18, pnFullPanel.getHeight() / 15);
         btSettings.addActionListener(e -> {
-            try
-            {
+            try {
                 setGUI = new SettingsGUI(sl);
                 setGUI.setVisible(true);
-            }
-            catch(Exception ex)
-            {
-                System.out.println("SettingsGUI konnte nicht aufgerufen werden");
+            } catch (Exception ex) {
+                ex.printStackTrace();
             }
         });
-        btSettings.setLocation(panel1.getWidth()/2,panel1.getHeight()/2);
+        btSettings.setLocation(pnButtonsPanel.getWidth() / 2, pnButtonsPanel.getHeight() / 2);
 
-
-        //Ein Image erstellen und das Hintergrundbild auf den Button Settings setzen
         Image img1 = null;
         try {
             img1 = ImageIO.read(Res.class.getResourceAsStream("Settings.png"));
@@ -157,58 +134,48 @@ public class StartGUI extends JFrame {
         Image dimg1 = img1.getScaledInstance(btSettings.getWidth(), btSettings.getHeight(), Image.SCALE_SMOOTH);
         ImageIcon icon1 = new ImageIcon(dimg1);
         btSettings.setIcon(icon1);
-        gesamtLabel.add(btSettings);
+        lbFullLabel.add(btSettings);
 
-
-        //Credits Button, bei Klicken -> Einen Action Listener in dem ein neues Objekt der Klasse CreditsGUI erstellt wird
         JButton btCredits = new JButton();
-        btCredits.setSize(panel1.getWidth()/4,panel1.getHeight()/10);
-        btCredits.setLocation(gesamtLabel.getWidth()-btCredits.getWidth(), 0);
+        btCredits.setSize(pnButtonsPanel.getWidth() / 4, pnButtonsPanel.getHeight() / 10);
+        btCredits.setLocation(lbFullLabel.getWidth() - btCredits.getWidth(), 0);
         btCredits.setText("Credits");
-        btCredits.setFont(new Font("Arial", Font.BOLD, btHighScore.getHeight()/4));
+        btCredits.setFont(new Font("Arial", Font.BOLD, btHighScore.getHeight() / 4));
         btCredits.addActionListener(e -> {
-            try
-            {
+            try {
                 CreditsGUI gui1 = new CreditsGUI();
                 gui1.setVisible(true);
-            }
-            catch(Exception ex)
-            {
-                System.out.println("CreditsGUI konnte nicht aufgerufen werden");
+            } catch (Exception ex) {
+                ex.printStackTrace();
             }
         });
-        gesamtLabel.add(btCredits);
+        lbFullLabel.add(btCredits);
 
-
-        //Label für die Überschrift der StartGUI, wird gesetzt und formatiert, und dann hinzugefügt
-        JLabel ueberschrift = new JLabel();
-        ueberschrift.setText("Tetris");
-        ueberschrift.setForeground(Color.yellow);
-        ueberschrift.setSize(gesamtPanel.getWidth(),gesamtPanel.getHeight()/10);
-        ueberschrift.setFont(new Font("Arial", Font.BOLD, ueberschrift.getHeight()));
-        ueberschrift.setHorizontalAlignment(JLabel.CENTER);
-        gesamtLabel.add(ueberschrift);
-
-        //Panel mit den 3 Buttons in das GesamtLabel hinzufügen
-        gesamtLabel.add(panel1);
-        System.out.println(width+" "+height);
+        JLabel lbTitle = new JLabel();
+        lbTitle.setText("Tetris");
+        lbTitle.setForeground(Color.yellow);
+        lbTitle.setSize(pnFullPanel.getWidth(), pnFullPanel.getHeight() / 10);
+        lbTitle.setFont(new Font("Arial", Font.BOLD, lbTitle.getHeight()));
+        lbTitle.setHorizontalAlignment(JLabel.CENTER);
+        lbFullLabel.add(lbTitle);
+        lbFullLabel.add(pnButtonsPanel);
     }
 
+
+    /**
+     * Method to read and check the nickname
+     * After checking --> Forward to TetrisGUI
+     */
     private void onStart() {
-        String nickname=JOptionPane.showInputDialog(this,"Bitte Nicknamen eingeben!");
-        if (nickname == null)
-        {}
-        else if(nickname.trim().length() >= 8 || nickname.trim().length() == 0)
-        {
+        String nickname = JOptionPane.showInputDialog(this, "Bitte Nicknamen eingeben!");
+        if (nickname == null) {
+        } else if (nickname.trim().length() >= 8 || nickname.trim().length() == 0) {
             JOptionPane.showMessageDialog(this, "Zur Info: der eingegebene Name darf max. 8 Buchstaben, aber mindestens 1 Buchstaben enthalten");
-        }
-        else
-        {
-            if (setGUI != null)
-            {
+        } else {
+            if (setGUI != null) {
                 isControllerOn = setGUI.isControllerOn();
             }
-            TetrisGUI tGui = new TetrisGUI(nickname,gui, hmKeys, isControllerOn);
+            TetrisGUI tGui = new TetrisGUI(nickname, gui, hmKeys, isControllerOn);
             tGui.setVisible(true);
             this.setVisible(false);
         }
@@ -221,7 +188,7 @@ public class StartGUI extends JFrame {
 
 
     public static void main(String[] args) {
-
+        gui = new StartGUI();
         gui.setVisible(true);
     }
 }

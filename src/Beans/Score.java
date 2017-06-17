@@ -2,7 +2,7 @@ package Beans;
 
 /**
  * Created by ganleb13 on 16.03.2017.
- * This is our data-class Score
+ * Score Dataclass
  */
 public class Score {
 

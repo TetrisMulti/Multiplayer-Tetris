@@ -22,26 +22,37 @@ public class GameOverGUI extends JDialog{
     private JButton btExit;
     private JButton btBackToMenu;
     private JScrollPane psPane;
-    private ScoreTable tbTabelle;
-    private int Score;
+    private ScoreTable tbScTable;
     private JLabel lbBackground;
-    private JPanel pnTable;
+    private JPanel pnTablePanel;
+    private int score;
     private StartGUI sgui;
-    private JLabel lbYS;
+    private JLabel lbPlayersScore;
 
+    /**
+     * Call Method initComponents
+     * Call Method addScore
+     * Set StartGUI
+     * @param score
+     * @param sgui
+     * @throws HeadlessException
+     * @throws IOException
+     * @throws SAXException
+     * @throws ParserConfigurationException
+     */
     public GameOverGUI(Score score, JFrame sgui) throws HeadlessException, IOException, SAXException, ParserConfigurationException {
         initComponents();
-        tbTabelle.addScore(score);
+        tbScTable.addScore(score);
+        this.score = score.getScore();
         this.sgui = (StartGUI) sgui;
     }
 
-
-
-    public GameOverGUI() throws ParserConfigurationException, SAXException, IOException {
-        initComponents();
-    }
-
-
+    /**
+     * Method to initialize the Window
+     * @throws ParserConfigurationException
+     * @throws SAXException
+     * @throws IOException
+     */
     public void initComponents() throws ParserConfigurationException, SAXException, IOException {
         Dimension scrnSize = Toolkit.getDefaultToolkit().getScreenSize();
         Rectangle winSize = GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds();
@@ -60,16 +71,13 @@ public class GameOverGUI extends JDialog{
         Container cont = this.getContentPane();
         btExit = new JButton();
         btBackToMenu = new JButton();
-        tbTabelle = new ScoreTable();
-        psPane = new JScrollPane(tbTabelle);
+        tbScTable = new ScoreTable();
+        psPane = new JScrollPane(tbScTable);
         lbBackground = new JLabel();
-        pnTable = new JPanel();
+        pnTablePanel = new JPanel();
         cont.setLayout(null);
-        JPanel pnAnzeige = new JPanel();
-        lbYS = new JLabel();
-
-        //String filename = System.getProperty("user.dir") + File.separator + "src" +
-                //File.separator + "res" + File.separator + "Game_Over.jpg";
+        JPanel pnPSPanel = new JPanel();
+        lbPlayersScore = new JLabel();
 
         Image img = null;
         try {
@@ -86,40 +94,27 @@ public class GameOverGUI extends JDialog{
         Image simg = img.getScaledInstance(width, height, Image.SCALE_SMOOTH);
         lbBackground.setIcon(new ImageIcon(simg));
 
-
-
-
-        /*Skalierung klappt noch nicht ganz */
-        //tbTabelle.setSize(new Dimension(width-width/2, (int) (tbTabelle.getStm().getRowCount()*tbTabelle.getRowHeight()*2.5)));
-        pnTable.setSize(new Dimension(width , (int) (3*tbTabelle.getRowHeight()*2.5)));
-       // psPane.setSize(new Dimension(width-width/2, (int) (tbTabelle.getStm().getRowCount()*tbTabelle.getRowHeight()*2.5)));
+        pnTablePanel.setSize(new Dimension(width , (int) (3* tbScTable.getRowHeight()*2.5)));
         int columnwidth = width/4;
-        tbTabelle.initTableColumns(columnwidth);
-        tbTabelle.getStm().loadScores();
-        tbTabelle.getTableHeader().setBackground(new Color(48,54,44));
+        tbScTable.initTableColumns(columnwidth);
+        tbScTable.getStm().loadScores();
+        tbScTable.getTableHeader().setBackground(new Color(48,54,44));
 
-
-        System.out.println("TableWidth: "+tbTabelle.getWidth());
-        System.out.println("TableHeight: "+tbTabelle.getHeight());
-        System.out.println("PsPaneWidth: "+psPane.getWidth());
-        System.out.println("PsPaneHeight: "+psPane.getHeight());
-
-        //((DefaultTableCellRenderer)tbTabelle.getDefaultRenderer(Object.class)).setOpaque(false);
         psPane.setOpaque(false);
         psPane.getViewport().setOpaque(false);
 
-        tbTabelle.setFont(new Font("Courier New", Font.BOLD, 14));                                              //BITTE SKALIEREN
+        tbScTable.setFont(new Font("Courier New", Font.BOLD, 14));
 
-        pnTable.setOpaque(false);
-        pnTable.setBorder(tbTabelle.getNullBorder());
-        psPane.setBorder(tbTabelle.getNullBorder());
-        psPane.setViewportView(tbTabelle);
-        psPane.setPreferredSize(new Dimension(width/4*3 , (int) (3*tbTabelle.getRowHeight()*2.5)));
+        pnTablePanel.setOpaque(false);
+        pnTablePanel.setBorder(tbScTable.getNullBorder());
+        psPane.setBorder(tbScTable.getNullBorder());
+        psPane.setViewportView(tbScTable);
+        psPane.setPreferredSize(new Dimension(width/4*3 , (int) (3* tbScTable.getRowHeight()*2.5)));
         psPane.revalidate();
-        pnTable.add(psPane);
+        pnTablePanel.add(psPane);
 
-        pnTable.setLocation(width/2 - pnTable.getWidth()/2, (int) (height/3.5));
-        cont.add(pnTable);
+        pnTablePanel.setLocation(width/2 - pnTablePanel.getWidth()/2, (int) (height/3.5));
+        cont.add(pnTablePanel);
 
         btExit.setText("Exit");
         btBackToMenu.setText("Back to Menu");
@@ -132,17 +127,17 @@ public class GameOverGUI extends JDialog{
         cont.add(btBackToMenu);
         btBackToMenu.setLocation(width/2 - btExit.getWidth()/2,height - height/4 + 10);
 
-        lbYS.setOpaque(false);
-        lbYS.setText("Dein Score: "+Score);
-        lbYS.setFont(new Font("Courier New", Font.BOLD, 28));
-        lbYS.setBackground(new Color(48,54,44));
-        lbYS.setForeground(Color.white);
+        lbPlayersScore.setOpaque(false);
+        lbPlayersScore.setText("Dein Score: "+score);
+        lbPlayersScore.setFont(new Font("Courier New", Font.BOLD, 28));
+        lbPlayersScore.setBackground(new Color(48,54,44));
+        lbPlayersScore.setForeground(Color.white);
 
-        pnAnzeige.setOpaque(false);
-        pnAnzeige.setSize(width,100);
-        pnAnzeige.add(lbYS);
-        pnAnzeige.setLocation(0, height/5);
-        cont.add(pnAnzeige);
+        pnPSPanel.setOpaque(false);
+        pnPSPanel.setSize(width,100);
+        pnPSPanel.add(lbPlayersScore);
+        pnPSPanel.setLocation(0, height/5);
+        cont.add(pnPSPanel);
 
 
         btExit.addActionListener(e -> {
@@ -152,28 +147,12 @@ public class GameOverGUI extends JDialog{
 
 
         btBackToMenu.addActionListener(e -> {
-            //Back to Menu einfach mit neuem Object und set visible true oderwas?
             sgui.setVisible(true);
             this.dispose();
 
         });
 
     }
-
-    public static void main(String[] args) {
-        GameOverGUI go = null;
-        try {
-            go = new GameOverGUI();
-        } catch (ParserConfigurationException e) {
-            e.printStackTrace();
-        } catch (SAXException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        go.setVisible(true);
-    }
-
 }
 
 

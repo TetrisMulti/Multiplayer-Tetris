@@ -10,102 +10,92 @@ import java.io.IOException;
 
 /**
  * Created by Hugo on 28.04.2017.
+ * The Credits GUI only shows a small Sentence
  */
 public class CreditsGUI extends JDialog{
+
     public CreditsGUI() {
         initComponents();
         this.setResizable(false);
     }
 
+    /**
+     * This Method initializes everything
+      */
     private void initComponents() {
         Dimension scrnSize = Toolkit.getDefaultToolkit().getScreenSize();
         Rectangle winSize = GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds();
         int taskBarHeight = scrnSize.height - winSize.height;
 
 
-        //Gesamtbreite und Gesamthöhe bestimmen
         int width = (int) Toolkit.getDefaultToolkit().getScreenSize().getWidth() / 4;
         int height = ((int) Toolkit.getDefaultToolkit().getScreenSize().getHeight() - taskBarHeight) / 3;
 
 
-        //Größe, Location und Methode zum Schliessen setzen
         this.setSize(width, height);
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         this.setLocationRelativeTo(null);
 
 
-        //Ein Panel für den ganzen Bildschirm erstellen (mit Layout, Background-Farbe und Größe
-        JPanel gesamtPanel = new JPanel();
-        gesamtPanel.setBackground(Color.white);
-        gesamtPanel.setLayout(null);
-        gesamtPanel.setSize(width, height);
+        JPanel pnFullPanel = new JPanel();
+        pnFullPanel.setBackground(Color.white);
+        pnFullPanel.setLayout(null);
+        pnFullPanel.setSize(width, height);
 
 
-        //Das Gesamtpanel in einen Container hinzufügen
         Container cont = this.getContentPane();
         cont.setLayout(new BorderLayout());
-        cont.add(gesamtPanel, BorderLayout.CENTER);
+        cont.add(pnFullPanel, BorderLayout.CENTER);
 
 
-        //Label für die Überschrift erstelen und dieses dann formatieren
-        JLabel ueberschrift = new JLabel();
-        ueberschrift.setText("Credits");
-        ueberschrift.setSize(gesamtPanel.getWidth(),gesamtPanel.getHeight()/10);
-        ueberschrift.setFont(new Font("Arial", Font.BOLD, ueberschrift.getHeight()-ueberschrift.getHeight()/10));
-        ueberschrift.setHorizontalAlignment(JLabel.CENTER);
-        ueberschrift.setForeground(Color.yellow);
-        gesamtPanel.add(ueberschrift);
+        JLabel lbTitle = new JLabel();
+        lbTitle.setText("Credits");
+        lbTitle.setSize(pnFullPanel.getWidth(),pnFullPanel.getHeight()/10);
+        lbTitle.setFont(new Font("Arial", Font.BOLD, lbTitle.getHeight()-lbTitle.getHeight()/10));
+        lbTitle.setHorizontalAlignment(JLabel.CENTER);
+        lbTitle.setForeground(Color.yellow);
+        pnFullPanel.add(lbTitle);
 
 
-        //Ein Label über den gesamten Bildschirm machen um ein Bild als Hintergrundbild zu setzen
-        JLabel gesamtLabel = new JLabel();
-        gesamtLabel.setSize(width, height);
-        gesamtLabel.setBackground(Color.black);
-        gesamtLabel.setOpaque(true);
-        gesamtPanel.add(gesamtLabel);
+        JLabel lbFullLabel = new JLabel();
+        lbFullLabel.setSize(width, height);
+        lbFullLabel.setBackground(Color.black);
+        lbFullLabel.setOpaque(true);
+        pnFullPanel.add(lbFullLabel);
 
 
-        //Panel um ein Label in ein Layout zu geben
-        JPanel panel1 = new JPanel(new GridLayout(1,1));
-        panel1.setSize(gesamtLabel.getWidth(), gesamtLabel.getHeight()/2);
-        panel1.setLocation(gesamtLabel.getWidth()-panel1.getWidth(), gesamtLabel.getHeight()/2-panel1.getHeight()/2);
-        panel1.setOpaque(true);
-        panel1.setBackground(Color.black);
-        gesamtLabel.add(panel1);
+        JPanel pnCrPanel = new JPanel(new GridLayout(1,1));
+        pnCrPanel.setSize(lbFullLabel.getWidth(), lbFullLabel.getHeight()/2);
+        pnCrPanel.setLocation(lbFullLabel.getWidth()-pnCrPanel.getWidth(), lbFullLabel.getHeight()/2-pnCrPanel.getHeight()/2);
+        pnCrPanel.setOpaque(true);
+        pnCrPanel.setBackground(Color.black);
+        lbFullLabel.add(pnCrPanel);
 
 
-        //Label das in das Panel hinzugefügt wird
         JLabel lbCredits = new JLabel();
-        lbCredits.setText("Tetris made by 'fesche Kinder'");
-        lbCredits.setFont(new Font("Arial",Font.BOLD+Font.CENTER_BASELINE,gesamtLabel.getHeight()/10));
+        lbCredits.setText("Tetris made by Pommer, Hirzer, Gangl");
+        lbCredits.setFont(new Font("Arial",Font.BOLD+Font.CENTER_BASELINE,lbFullLabel.getHeight()/11));
         lbCredits.setForeground(Color.white);
         lbCredits.setHorizontalAlignment(JLabel.CENTER);
-        panel1.add(lbCredits);
+        pnCrPanel.add(lbCredits);
 
 
-        //Schliessen Button, bei Klicken -> onExit Methode aufrufen und dieses Fenster schliessen
-        JButton btSchliessen = new JButton();
-        btSchliessen.setText("Schließen");
-        btSchliessen.setSize(gesamtPanel.getWidth()/4,gesamtPanel.getHeight()/10);
-        btSchliessen.setLocation(gesamtPanel.getWidth()/2+btSchliessen.getWidth()-btSchliessen.getWidth()/3, gesamtPanel.getHeight()-2*btSchliessen.getHeight());
-        btSchliessen.addActionListener(e -> {
+        JButton btClose = new JButton();
+        btClose.setText("Schließen");
+        btClose.setSize(pnFullPanel.getWidth()/4,pnFullPanel.getHeight()/10);
+        btClose.setLocation(pnFullPanel.getWidth()/2+btClose.getWidth()-btClose.getWidth()/3, pnFullPanel.getHeight()-2*btClose.getHeight());
+        btClose.addActionListener(e -> {
             try {
                 onExit();
             } catch (Exception ex) {
                 System.out.println("Programm konnte nicht beendet werden");
             }
         });
-        btSchliessen.setFont(new Font("Arial", Font.BOLD, btSchliessen.getHeight()/3));
-        gesamtLabel.add(btSchliessen);
+        btClose.setFont(new Font("Arial", Font.BOLD, btClose.getHeight()/3));
+        lbFullLabel.add(btClose);
     }
 
     private void onExit() {
         this.dispose();
-    }
-
-
-    public static void main(String[] args) {
-        new CreditsGUI().setVisible(true);
-
     }
 }

@@ -122,7 +122,7 @@ public class TetrisGUI extends JFrame implements ActionListener {
 
     /**
      * initialization of the XBox Controller
-     * setting the deadzones
+     * setting the deadzone of the right stick
      */
     private void initController() {
         controller = new XboxController();

@@ -27,9 +27,13 @@ public class SettingsGUI extends JDialog {
     private SettingsLoader sl;
     private boolean isControllerOn;
 
-
-
-
+    /**
+     * Constructor
+     * Call ReadSettings
+     * Save Settings on HashMap
+     *
+     * @param sl
+     */
     public SettingsGUI(SettingsLoader sl) {
         isControllerOn = false;
         this.sl = sl;
@@ -45,43 +49,35 @@ public class SettingsGUI extends JDialog {
         this.setResizable(false);
 
     }
-    public SettingsGUI() {
-    }
 
+    /**
+     * Method to initialize the Window
+     * Adds the ToggleButton for Controller
+     * Adds the keyboard settingfields
+     */
     private void initComponents() {
         Dimension scrnSize = Toolkit.getDefaultToolkit().getScreenSize();
         Rectangle winSize = GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds();
         int taskBarHeight = scrnSize.height - winSize.height;
 
-
-        //Gesamtbreite und Gesamthöhe bestimmen
         int width = (int) Toolkit.getDefaultToolkit().getScreenSize().getWidth() / 4;
         int height = ((int) Toolkit.getDefaultToolkit().getScreenSize().getHeight() - taskBarHeight) / 3;
-
-
-        //Größe, Location und Methode zum Schliessen setzen
         this.setSize(width, height);
-        //this.setDefaultCloseOperation(EXIT_ON_CLOSE);
+
         this.setLocationRelativeTo(null);
 
+        JPanel pnFullPanel = new JPanel();
+        pnFullPanel.setBackground(Color.white);
+        pnFullPanel.setLayout(null);
+        pnFullPanel.setSize(width, height);
 
-        //Ein Panel für den ganzen Bildschirm erstellen (mit Layout, Background-Farbe und Größe
-        JPanel gesamtPanel = new JPanel();
-        gesamtPanel.setBackground(Color.white);
-        gesamtPanel.setLayout(null);
-        gesamtPanel.setSize(width, height);
-
-
-        //Das Gesamtpanel in einen Container hinzufügen
         Container cont = this.getContentPane();
         cont.setLayout(new BorderLayout());
-        cont.add(gesamtPanel, BorderLayout.CENTER);
+        cont.add(pnFullPanel, BorderLayout.CENTER);
 
-
-        //Label um das Hintergrundbild hinzuzufügen
-        JLabel gesamtLabel = new JLabel();
-        gesamtLabel.setSize(width, height);
-        gesamtLabel.setOpaque(true);
+        JLabel lbFullLabel = new JLabel();
+        lbFullLabel.setSize(width, height);
+        lbFullLabel.setOpaque(true);
         Image img = null;
         try {
             img = ImageIO.read(Res.class.getResourceAsStream("Tetris.jpg"));
@@ -90,61 +86,50 @@ public class SettingsGUI extends JDialog {
         }
         Image dimg = img.getScaledInstance(width, height, Image.SCALE_SMOOTH);
         ImageIcon icon = new ImageIcon(dimg);
-        gesamtLabel.setIcon(icon);
-        gesamtPanel.add(gesamtLabel);
+        lbFullLabel.setIcon(icon);
+        pnFullPanel.add(lbFullLabel);
 
+        JLabel lbTitle = new JLabel();
+        lbTitle.setText("Einstellungen");
+        lbTitle.setForeground(Color.yellow);
+        lbTitle.setSize(pnFullPanel.getWidth(), pnFullPanel.getHeight() / 10);
+        lbTitle.setFont(new Font("Arial", Font.BOLD, lbTitle.getHeight() - lbTitle.getHeight() / 10));
+        lbFullLabel.add(lbTitle);
 
-        //Label für die Überschrift erstelen und dieses dann formatieren
-        JLabel ueberschrift = new JLabel();
-        ueberschrift.setText("Einstellungen");
-        ueberschrift.setForeground(Color.yellow);
-        ueberschrift.setSize(gesamtPanel.getWidth(), gesamtPanel.getHeight() / 10);
-        ueberschrift.setFont(new Font("Arial", Font.BOLD, ueberschrift.getHeight() - ueberschrift.getHeight() / 10));
-        gesamtLabel.add(ueberschrift);
+        JButton btAccept = new JButton();
+        btAccept.setText("Übernehmen");
+        btAccept.setSize(pnFullPanel.getWidth() / 4, pnFullPanel.getHeight() / 10);
+        btAccept.setLocation(pnFullPanel.getWidth() / 2 - btAccept.getWidth() / 2, pnFullPanel.getHeight() - 2 * btAccept.getHeight());
+        btAccept.setFont(new Font("Arial", Font.BOLD, btAccept.getHeight() / 3));
+        lbFullLabel.add(btAccept);
 
-
-        //Button um die Settings zu übernehmen
-        JButton btUebernehmen = new JButton();
-        btUebernehmen.setText("Übernehmen");
-        btUebernehmen.setSize(gesamtPanel.getWidth() / 4, gesamtPanel.getHeight() / 10);
-        btUebernehmen.setLocation(gesamtPanel.getWidth() / 2 - btUebernehmen.getWidth() / 2, gesamtPanel.getHeight() - 2 * btUebernehmen.getHeight());
-        btUebernehmen.setFont(new Font("Arial", Font.BOLD, btUebernehmen.getHeight() / 3));
-        gesamtLabel.add(btUebernehmen);
-
-
-        //Button um dieses Fenster zu schliessen
-        JButton btAbbrechen = new JButton();
-        btAbbrechen.setText("Abbrechen");
-        btAbbrechen.setSize(gesamtPanel.getWidth() / 4, gesamtPanel.getHeight() / 10);
-        btAbbrechen.setLocation(gesamtPanel.getWidth() / 2 + btAbbrechen.getWidth() - btAbbrechen.getWidth() / 3, gesamtPanel.getHeight() - 2 * btAbbrechen.getHeight());
-        btAbbrechen.addActionListener(e -> {
+        JButton btAbort = new JButton();
+        btAbort.setText("Abbrechen");
+        btAbort.setSize(pnFullPanel.getWidth() / 4, pnFullPanel.getHeight() / 10);
+        btAbort.setLocation(pnFullPanel.getWidth() / 2 + btAbort.getWidth() - btAbort.getWidth() / 3, pnFullPanel.getHeight() - 2 * btAbort.getHeight());
+        btAbort.addActionListener(e -> {
             try {
                 onExit();
             } catch (Exception ex) {
                 System.out.println("Programm konnte nicht beendet werden");
             }
         });
-        btAbbrechen.setFont(new Font("Arial", Font.BOLD, btAbbrechen.getHeight() / 3));
-        gesamtLabel.add(btAbbrechen);
+        btAbort.setFont(new Font("Arial", Font.BOLD, btAbort.getHeight() / 3));
+        lbFullLabel.add(btAbort);
 
+        JPanel pnControls = new JPanel(new GridLayout(5, 2));
+        pnControls.setBackground(Color.black);
+        TitledBorder bdTitBord = new TitledBorder("Steuerung");
+        bdTitBord.setTitleColor(Color.white);
+        pnControls.setBorder(bdTitBord);
+        pnControls.setSize(pnFullPanel.getWidth() / 2, pnFullPanel.getHeight() / 2);
+        pnControls.setLocation(pnFullPanel.getWidth() / 2 - pnControls.getWidth() + pnControls.getWidth() / 8, pnFullPanel.getHeight() / 2 - pnControls.getHeight() + pnControls.getHeight() / 2);
 
-        //Panel um 5 Labels und 5 Textfelder hinzuzufügen in dem man Änderungen vornehmen kann
-        JPanel steuerung = new JPanel(new GridLayout(5, 2));
-        steuerung.setBackground(Color.black);
-        TitledBorder tb = new TitledBorder("Steuerung");
-        tb.setTitleColor(Color.white);
-        steuerung.setBorder(tb);
-        steuerung.setSize(gesamtPanel.getWidth() / 2, gesamtPanel.getHeight() / 2);
-        steuerung.setLocation(gesamtPanel.getWidth() / 2 - steuerung.getWidth() + steuerung.getWidth() / 8, gesamtPanel.getHeight() / 2 - steuerung.getHeight() + steuerung.getHeight() / 2);
-
-
-
-        //Label Links hinzufügen
-        JLabel links = new JLabel();
-        links.setForeground(Color.white);
-        links.setText("Links:");
-        JTextField tflinks = new JTextField(KeyEvent.getKeyText(hmKeys.get("left")));
-        tflinks.addKeyListener(new KeyListener() {
+        JLabel lbLeft = new JLabel();
+        lbLeft.setForeground(Color.white);
+        lbLeft.setText("Links:");
+        JTextField tfGoLeft = new JTextField(KeyEvent.getKeyText(hmKeys.get("left")));
+        tfGoLeft.addKeyListener(new KeyListener() {
             @Override
             public void keyTyped(KeyEvent e) {
 
@@ -157,25 +142,23 @@ public class SettingsGUI extends JDialog {
 
             @Override
             public void keyReleased(KeyEvent e) {
-                String text = tflinks.getText().toUpperCase();
-                if (tflinks.getText().length() > 1) {
-                    tflinks.getText();
-                    tflinks.setText("");
+                String text = tfGoLeft.getText().toUpperCase();
+                if (tfGoLeft.getText().length() > 1) {
+                    tfGoLeft.getText();
+                    tfGoLeft.setText("");
                 } else {
-                    tflinks.setText(text);
+                    tfGoLeft.setText(text);
                 }
             }
         });
-        tflinks.setHorizontalAlignment(tflinks.CENTER);
-        tflinks.setFont(new Font("Arial", Font.BOLD, 30));
+        tfGoLeft.setHorizontalAlignment(tfGoLeft.CENTER);
+        tfGoLeft.setFont(new Font("Arial", Font.BOLD, 30));
 
-
-        //Label Rechts hinzufügen
-        JLabel rechts = new JLabel();
-        rechts.setText("Rechts:");
-        rechts.setForeground(Color.white);
-        JTextField tfrechts = new JTextField(KeyEvent.getKeyText(hmKeys.get("right")));
-        tfrechts.addKeyListener(new KeyListener() {
+        JLabel lbRight = new JLabel();
+        lbRight.setText("Rechts:");
+        lbRight.setForeground(Color.white);
+        JTextField tfGoRight = new JTextField(KeyEvent.getKeyText(hmKeys.get("right")));
+        tfGoRight.addKeyListener(new KeyListener() {
             @Override
             public void keyTyped(KeyEvent e) {
 
@@ -188,25 +171,23 @@ public class SettingsGUI extends JDialog {
 
             @Override
             public void keyReleased(KeyEvent e) {
-                String text = tfrechts.getText().toUpperCase();
-                if (tfrechts.getText().length() > 1) {
-                    tfrechts.getText();
-                    tfrechts.setText("");
+                String text = tfGoRight.getText().toUpperCase();
+                if (tfGoRight.getText().length() > 1) {
+                    tfGoRight.getText();
+                    tfGoRight.setText("");
                 } else {
-                    tfrechts.setText(text);
+                    tfGoRight.setText(text);
                 }
             }
         });
-        tfrechts.setHorizontalAlignment(tfrechts.CENTER);
-        tfrechts.setFont(new Font("Arial", Font.BOLD, 30));
+        tfGoRight.setHorizontalAlignment(tfGoRight.CENTER);
+        tfGoRight.setFont(new Font("Arial", Font.BOLD, 30));
 
-
-        //Label Runter hinzufügen
-        JLabel runter = new JLabel();
-        runter.setText("Hinunter:");
-        runter.setForeground(Color.white);
-        JTextField tfrunter = new JTextField(KeyEvent.getKeyText(hmKeys.get("down")));
-        tfrunter.addKeyListener(new KeyListener() {
+        JLabel lbDown = new JLabel();
+        lbDown.setText("Hinunter:");
+        lbDown.setForeground(Color.white);
+        JTextField tfGoDown = new JTextField(KeyEvent.getKeyText(hmKeys.get("down")));
+        tfGoDown.addKeyListener(new KeyListener() {
             @Override
             public void keyTyped(KeyEvent e) {
 
@@ -219,26 +200,24 @@ public class SettingsGUI extends JDialog {
 
             @Override
             public void keyReleased(KeyEvent e) {
-                String text = tfrunter.getText().toUpperCase();
-                if (tfrunter.getText().length() > 1) {
-                    tfrunter.getText();
-                    tfrunter.setText("");
+                String text = tfGoDown.getText().toUpperCase();
+                if (tfGoDown.getText().length() > 1) {
+                    tfGoDown.getText();
+                    tfGoDown.setText("");
                 } else {
-                    tfrunter.setText(text);
+                    tfGoDown.setText(text);
                 }
 
             }
         });
-        tfrunter.setHorizontalAlignment(tfrunter.CENTER);
-        tfrunter.setFont(new Font("Arial", Font.BOLD, 30));
+        tfGoDown.setHorizontalAlignment(tfGoDown.CENTER);
+        tfGoDown.setFont(new Font("Arial", Font.BOLD, 30));
 
-
-        //Label Links Drehen hinzufügen
-        JLabel linksdrehen = new JLabel();
-        linksdrehen.setText("Links drehen:");
-        linksdrehen.setForeground(Color.white);
-        JTextField tflinksdrehen = new JTextField(KeyEvent.getKeyText(hmKeys.get("rotateLeft")));
-        tflinksdrehen.addKeyListener(new KeyListener() {
+        JLabel lbRotLeft = new JLabel();
+        lbRotLeft.setText("Links drehen:");
+        lbRotLeft.setForeground(Color.white);
+        JTextField tfRotateLeft = new JTextField(KeyEvent.getKeyText(hmKeys.get("rotateLeft")));
+        tfRotateLeft.addKeyListener(new KeyListener() {
             @Override
             public void keyTyped(KeyEvent e) {
 
@@ -251,25 +230,23 @@ public class SettingsGUI extends JDialog {
 
             @Override
             public void keyReleased(KeyEvent e) {
-                String text = tflinksdrehen.getText().toUpperCase();
-                if (tflinksdrehen.getText().length() > 1) {
-                    tflinksdrehen.getText();
-                    tflinksdrehen.setText("");
+                String text = tfRotateLeft.getText().toUpperCase();
+                if (tfRotateLeft.getText().length() > 1) {
+                    tfRotateLeft.getText();
+                    tfRotateLeft.setText("");
                 } else {
-                    tflinksdrehen.setText(text);
+                    tfRotateLeft.setText(text);
                 }
             }
         });
-        tflinksdrehen.setHorizontalAlignment(tflinksdrehen.CENTER);
-        tflinksdrehen.setFont(new Font("Arial", Font.BOLD, 30));
+        tfRotateLeft.setHorizontalAlignment(tfRotateLeft.CENTER);
+        tfRotateLeft.setFont(new Font("Arial", Font.BOLD, 30));
 
-
-        //Label Rechts Drehen hinzufügen
-        JLabel rechtsdrehen = new JLabel();
-        rechtsdrehen.setText("Rechts drehen:");
-        rechtsdrehen.setForeground(Color.white);
-        JTextField tfrechtsdrehen = new JTextField(KeyEvent.getKeyText(hmKeys.get("rotateRight")));
-        tfrechtsdrehen.addKeyListener(new KeyListener() {
+        JLabel lbRotRight = new JLabel();
+        lbRotRight.setText("Rechts drehen:");
+        lbRotRight.setForeground(Color.white);
+        JTextField tfRotateRight = new JTextField(KeyEvent.getKeyText(hmKeys.get("rotateRight")));
+        tfRotateRight.addKeyListener(new KeyListener() {
             @Override
             public void keyTyped(KeyEvent e) {
 
@@ -282,80 +259,81 @@ public class SettingsGUI extends JDialog {
 
             @Override
             public void keyReleased(KeyEvent e) {
-                String text = tfrechtsdrehen.getText().toUpperCase();
-                if (tfrechtsdrehen.getText().length() > 1) {
-                    tfrechtsdrehen.getText();
-                    tfrechtsdrehen.setText("");
+                String text = tfRotateRight.getText().toUpperCase();
+                if (tfRotateRight.getText().length() > 1) {
+                    tfRotateRight.getText();
+                    tfRotateRight.setText("");
                 } else {
-                    tfrechtsdrehen.setText(text);
+                    tfRotateRight.setText(text);
                 }
             }
         });
-        tfrechtsdrehen.setHorizontalAlignment(tfrechtsdrehen.CENTER);
-        tfrechtsdrehen.setFont(new Font("Arial", Font.BOLD, 30));
+        tfRotateRight.setHorizontalAlignment(tfRotateRight.CENTER);
+        tfRotateRight.setFont(new Font("Arial", Font.BOLD, 30));
 
-        JPanel pnController = new JPanel(new GridLayout(1,1));
-        pnController.setSize(width/3, height/8);
+        JPanel pnController = new JPanel(new GridLayout(1, 1));
+        pnController.setSize(width / 3, height / 8);
         pnController.setBackground(Color.black);
         JToggleButton tbtController = new JToggleButton();
         TitledBorder tbControllerBorder = new TitledBorder("Controller");
         tbControllerBorder.setTitleColor(Color.white);
         pnController.setBorder(tbControllerBorder);
         tbtController.setText("Controller J/N");
-        pnController.setLocation((int) (width/3*1.7), height/8);
+        pnController.setLocation((int) (width / 3 * 1.7), height / 8);
         tbtController.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (tbtController.isSelected())
-                {
-                    steuerung.setEnabled(false);
-                    tflinks.setEnabled(false);
-                    tflinksdrehen.setEnabled(false);
-                    tfrechts.setEnabled(false);
-                    tfrechtsdrehen.setEnabled(false);
-                    tfrunter.setEnabled(false);
+                if (tbtController.isSelected()) {
+                    pnControls.setEnabled(false);
+                    tfGoLeft.setEnabled(false);
+                    tfRotateLeft.setEnabled(false);
+                    tfGoRight.setEnabled(false);
+                    tfRotateRight.setEnabled(false);
+                    tfGoDown.setEnabled(false);
+                    lbDown.setEnabled(false);
+                    lbLeft.setEnabled(false);
+                    lbRight.setEnabled(false);
+                    lbRotLeft.setEnabled(false);
+                    lbRotRight.setEnabled(false);
                     isControllerOn = true;
-                }
-                else
-                {
-                    steuerung.setEnabled(true);
-                    tflinks.setEnabled(true);
-                    tflinksdrehen.setEnabled(true);
-                    tfrechts.setEnabled(true);
-                    tfrechtsdrehen.setEnabled(true);
-                    tfrunter.setEnabled(true);
+                } else {
+                    pnControls.setEnabled(true);
+                    tfGoLeft.setEnabled(true);
+                    tfRotateLeft.setEnabled(true);
+                    tfGoRight.setEnabled(true);
+                    tfRotateRight.setEnabled(true);
+                    tfGoDown.setEnabled(true);
                     isControllerOn = false;
+                    lbDown.setEnabled(true);
+                    lbLeft.setEnabled(true);
+                    lbRight.setEnabled(true);
+                    lbRotLeft.setEnabled(true);
+                    lbRotRight.setEnabled(true);
                 }
             }
         });
         pnController.add(tbtController);
-        gesamtLabel.add(pnController);
+        lbFullLabel.add(pnController);
 
+        pnControls.add(lbLeft);
+        pnControls.add(tfGoLeft);
+        pnControls.add(lbRight);
+        pnControls.add(tfGoRight);
+        pnControls.add(lbDown);
+        pnControls.add(tfGoDown);
+        pnControls.add(lbRotLeft);
+        pnControls.add(tfRotateLeft);
+        pnControls.add(lbRotRight);
+        pnControls.add(tfRotateRight);
+        lbFullLabel.add(pnControls);
 
-
-
-        //Labels und Textfelder in das Panel hinzufügen
-        steuerung.add(links);
-        steuerung.add(tflinks);
-        steuerung.add(rechts);
-        steuerung.add(tfrechts);
-        steuerung.add(runter);
-        steuerung.add(tfrunter);
-        steuerung.add(linksdrehen);
-        steuerung.add(tflinksdrehen);
-        steuerung.add(rechtsdrehen);
-        steuerung.add(tfrechtsdrehen);
-        gesamtLabel.add(steuerung);
-
-
-        //Methode zum Überprüfen der eingegebenen Sachen
-        btUebernehmen.addActionListener(e -> {
+        btAccept.addActionListener(e -> {
             hmNewKeys.clear();
-            hmNewKeys.put("left", KeyEvent.getExtendedKeyCodeForChar(tflinks.getText().charAt(0)));
-            hmNewKeys.put("right", KeyEvent.getExtendedKeyCodeForChar(tfrechts.getText().charAt(0)));
-            hmNewKeys.put("down", KeyEvent.getExtendedKeyCodeForChar(tfrunter.getText().charAt(0)));
-            hmNewKeys.put("rotateLeft", KeyEvent.getExtendedKeyCodeForChar(tflinksdrehen.getText().charAt(0)));
-            hmNewKeys.put("rotateRight", KeyEvent.getExtendedKeyCodeForChar(tfrechtsdrehen.getText().charAt(0)));
+            hmNewKeys.put("left", KeyEvent.getExtendedKeyCodeForChar(tfGoLeft.getText().charAt(0)));
+            hmNewKeys.put("right", KeyEvent.getExtendedKeyCodeForChar(tfGoRight.getText().charAt(0)));
+            hmNewKeys.put("down", KeyEvent.getExtendedKeyCodeForChar(tfGoDown.getText().charAt(0)));
+            hmNewKeys.put("rotateLeft", KeyEvent.getExtendedKeyCodeForChar(tfRotateLeft.getText().charAt(0)));
+            hmNewKeys.put("rotateRight", KeyEvent.getExtendedKeyCodeForChar(tfRotateRight.getText().charAt(0)));
 
             try {
                 sl.WriteSettings(hmNewKeys);
@@ -373,13 +351,6 @@ public class SettingsGUI extends JDialog {
     private void onExit() {
         this.dispose();
     }
-
-
-    public static void main(String[] args) {
-        SettingsGUI gui = new SettingsGUI();
-        gui.setVisible(true);
-    }
-
 
     public HashMap<String, Integer> getHmKeys() {
         return hmKeys;
