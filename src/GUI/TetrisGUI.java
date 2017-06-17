@@ -37,7 +37,6 @@ public class TetrisGUI extends JFrame implements ActionListener {
     private Timer timer;
     private boolean firstActive = true;
     public Graphics2D g2;
-    public int counter;
     public Color[][] colorField;
     private Forms[] formsQueue;
     private Boolean firstTime;
@@ -55,7 +54,6 @@ public class TetrisGUI extends JFrame implements ActionListener {
         this.isControllerOn = isControllerOn;
         this.nickName = nickName;
         this.startGUI = startGUI;
-        counter = 0;
         colorField = new Color[20][12];
         tetrisGui = this;
         timer = new Timer(20, this);
@@ -308,6 +306,8 @@ public class TetrisGUI extends JFrame implements ActionListener {
 
     /**
      * Calculate Score and write it to the score object
+     * if a specific score is reached the level will increase
+     * if the level increases, the timetofall (sleepTime) will be decreased
      * @param x -> rowcount
      */
     public static void calculateScore(int x)

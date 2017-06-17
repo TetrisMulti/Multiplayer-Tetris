@@ -21,7 +21,6 @@ public class TetrisForm extends Thread {
     private int widthOfBlock;
     private int heightOfBlock;
     public Forms form;
-    private int index;
     private Point2D[] pointField;
     private Color[][] colorField;
     private int timetoFall;
@@ -34,7 +33,6 @@ public class TetrisForm extends Thread {
         this.yCoord = yCoord;
         this.falling = true;
         this.form = form;
-        this.index = 0;
         this.pointField = CoordinatesOfForms.getPointCoords(form);
         this.colorField=colorField;
         this.timetoFall=time;
