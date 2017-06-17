@@ -1,6 +1,7 @@
 package GUI;
 
 import BL.SettingsLoader;
+import ch.aplu.xboxcontroller.XboxController;
 import res.Res;
 
 import javax.imageio.ImageIO;
@@ -19,6 +20,7 @@ public class StartGUI extends JFrame {
     private HashMap<String, Integer> hmKeys = sl.getHmKeys();
     private boolean isControllerOn = false;
     private SettingsGUI setGUI;
+    private XboxController controller = null;
 
     /**
      * Contructor
@@ -26,6 +28,7 @@ public class StartGUI extends JFrame {
     public StartGUI() {
         initComponents();
         this.setResizable(false);
+        this.setGUI = new SettingsGUI(sl);
     }
 
     /**
@@ -117,7 +120,6 @@ public class StartGUI extends JFrame {
         btSettings.setSize(pnFullPanel.getWidth() / 18, pnFullPanel.getHeight() / 15);
         btSettings.addActionListener(e -> {
             try {
-                setGUI = new SettingsGUI(sl);
                 setGUI.setVisible(true);
             } catch (Exception ex) {
                 ex.printStackTrace();
@@ -168,6 +170,7 @@ public class StartGUI extends JFrame {
      */
     private void onStart() {
         String nickname = JOptionPane.showInputDialog(this, "Bitte Nicknamen eingeben!");
+
         if (nickname == null) {
         } else if (nickname.trim().length() >= 8 || nickname.trim().length() == 0) {
             JOptionPane.showMessageDialog(this, "Zur Info: der eingegebene Name darf max. 8 Buchstaben, aber mindestens 1 Buchstaben enthalten");
@@ -175,9 +178,23 @@ public class StartGUI extends JFrame {
             if (setGUI != null) {
                 isControllerOn = setGUI.isControllerOn();
             }
-            TetrisGUI tGui = new TetrisGUI(nickname, gui, hmKeys, isControllerOn);
-            tGui.setVisible(true);
-            this.setVisible(false);
+            if (isControllerOn)
+            {
+                controller = new XboxController();
+                if (!controller.isConnected())
+                {
+                    JOptionPane.showMessageDialog(this, "Bitte schließen Sie Ihren Controller an und starten Sie das Spiel neu");
+
+                }
+            }
+            if ((isControllerOn && controller.isConnected())||!isControllerOn) {
+                TetrisGUI tGui = new TetrisGUI(nickname, gui, hmKeys, controller);
+                tGui.setVisible(true);
+                this.setVisible(false);
+            }
+
+
+
         }
     }
 

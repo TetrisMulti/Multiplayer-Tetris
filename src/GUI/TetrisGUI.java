@@ -47,11 +47,10 @@ public class TetrisGUI extends JFrame implements ActionListener {
     public static int time;
     public static int level;
     private XboxController controller;
-    private boolean isControllerOn = false;
 
 
-    public TetrisGUI(String nickName, JFrame startGUI, HashMap<String, Integer> hmKeys, boolean isControllerOn) {
-        this.isControllerOn = isControllerOn;
+    public TetrisGUI(String nickName, JFrame startGUI, HashMap<String, Integer> hmKeys, XboxController controller) {
+        this.controller = controller;
         this.nickName = nickName;
         this.startGUI = startGUI;
         colorField = new Color[20][12];
@@ -90,7 +89,7 @@ public class TetrisGUI extends JFrame implements ActionListener {
         this.setLocationRelativeTo(null);
 
 
-        if (isControllerOn)
+        if (controller != null)
             initController();
 
         addListener();
@@ -123,15 +122,16 @@ public class TetrisGUI extends JFrame implements ActionListener {
      * setting the deadzone of the right stick
      */
     private void initController() {
-        controller = new XboxController();
-        while(!controller.isConnected()){
+        if(!controller.isConnected()){
             controller.release();
-            JOptionPane.showMessageDialog(this, "Bitte schließen Sie ihren Controller an");
-            controller = new XboxController();
-        }
+            JOptionPane.showMessageDialog(this, "Bitte schließen Sie ihren Controller an und starten sie das Spiel neu");
 
-        controller.setRightThumbDeadZone(0.8);
-        addControllerListener();
+        }
+        else
+        {
+            controller.setRightThumbDeadZone(0.8);
+            addControllerListener();
+        }
     }
 
     /**
