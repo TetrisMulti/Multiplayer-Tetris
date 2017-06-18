@@ -2,16 +2,12 @@ package GUI;
 
 import Beans.ScoreTable;
 import org.xml.sax.SAXException;
-import res.Res;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
-import javax.swing.border.LineBorder;
-import javax.swing.border.TitledBorder;
-import javax.swing.table.DefaultTableColumnModel;
-import javax.swing.table.JTableHeader;
 import javax.xml.parsers.ParserConfigurationException;
 import java.awt.*;
+import java.io.File;
 import java.io.IOException;
 
 /**
@@ -20,6 +16,7 @@ import java.io.IOException;
  */
 public class HighScoreGUI extends JDialog {
 
+    private final String path = ""+System.getProperty("user.dir")+ File.separator+"src"+File.separator+"res"+File.separator;
     /**
      * Constructor
      */
@@ -65,7 +62,7 @@ public class HighScoreGUI extends JDialog {
         lbFullLabel.setOpaque(true);
         Image img = null;
         try {
-            img = ImageIO.read(Res.class.getResourceAsStream("Tetris.jpg"));
+            img = ImageIO.read(new File(path+"Tetris.jpg"));
         } catch (IOException e) {
             e.printStackTrace();
         }

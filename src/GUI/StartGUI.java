@@ -2,11 +2,11 @@ package GUI;
 
 import BL.SettingsLoader;
 import ch.aplu.xboxcontroller.XboxController;
-import res.Res;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 
@@ -21,6 +21,7 @@ public class StartGUI extends JFrame {
     private boolean isControllerOn = false;
     private SettingsGUI setGUI;
     private XboxController controller = null;
+    private final String path = ""+System.getProperty("user.dir")+ File.separator+"src"+File.separator+"res"+File.separator;
 
     /**
      * Contructor
@@ -63,7 +64,7 @@ public class StartGUI extends JFrame {
 
         Image img = null;
         try {
-            img = ImageIO.read(Res.class.getResourceAsStream("Tetris.jpg"));
+            img = ImageIO.read(new File(path+"Tetris.jpg"));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -129,7 +130,7 @@ public class StartGUI extends JFrame {
 
         Image img1 = null;
         try {
-            img1 = ImageIO.read(Res.class.getResourceAsStream("Settings.png"));
+            img1 = ImageIO.read(new File(path+"Tetris.jpg"));
         } catch (IOException e) {
             e.printStackTrace();
         }

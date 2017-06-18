@@ -1,12 +1,7 @@
 package GUI;
 
-import res.Res;
-
-import javax.imageio.ImageIO;
 import javax.swing.*;
-import javax.swing.border.TitledBorder;
 import java.awt.*;
-import java.io.IOException;
 
 /**
  * Created by Hugo on 28.04.2017.

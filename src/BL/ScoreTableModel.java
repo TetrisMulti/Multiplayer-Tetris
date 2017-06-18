@@ -24,8 +24,7 @@ public class ScoreTableModel extends AbstractTableModel {
      * Call saveScores --> Save all Scores in a XML File
      * @param sc --> Score to add into the list
      */
-    public void addScore(Score sc)
-    {
+    public void addScore(Score sc) {
         scList.add(sc);
         sortAndRankList();
         try {
@@ -52,6 +51,7 @@ public class ScoreTableModel extends AbstractTableModel {
 
     /**
      * Call XMLSave to sav all Scores into a XML File
+     *
      * @throws TransformerException
      * @throws ParserConfigurationException
      */
@@ -63,15 +63,13 @@ public class ScoreTableModel extends AbstractTableModel {
      * Method to sort the Scores comparing the Points
      * The Method also ranks the Scores
      */
-    public void sortAndRankList()
-    {
+    public void sortAndRankList() {
         scList.sort(Comparator.comparing(Score::getScore).reversed());
         int counter = 1;
-        for (Score sc:scList) {
+        for (Score sc : scList) {
             sc.setRank(counter++);
         }
     }
-
 
 
     @Override
@@ -88,23 +86,26 @@ public class ScoreTableModel extends AbstractTableModel {
 
     /**
      * Method to tell the table what to show in the specific column
+     *
      * @param rowIndex
      * @param columnIndex
      * @return
      */
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
-        switch (columnIndex)
-        {
-            case 0: return scList.get(rowIndex).getRank();
-            case 1: return scList.get(rowIndex).getUser();
-            case 2: return scList.get(rowIndex).getScore();
-            default: return null;
+        switch (columnIndex) {
+            case 0:
+                return scList.get(rowIndex).getRank();
+            case 1:
+                return scList.get(rowIndex).getUser();
+            case 2:
+                return scList.get(rowIndex).getScore();
+            default:
+                return null;
         }
     }
 
-    public LinkedList<Score> getScList()
-    {
+    public LinkedList<Score> getScList() {
         return scList;
     }
 

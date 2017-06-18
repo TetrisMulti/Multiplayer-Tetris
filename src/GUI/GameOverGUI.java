@@ -4,12 +4,12 @@ package GUI;
 
 import Beans.ScoreTable;
 import org.xml.sax.SAXException;
-import res.Res;
 import Beans.Score;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.xml.parsers.ParserConfigurationException;
 import java.awt.*;
+import java.io.File;
 import java.io.IOException;
 
 
@@ -28,6 +28,7 @@ public class GameOverGUI extends JDialog{
     private int score;
     private StartGUI sgui;
     private JLabel lbPlayersScore;
+    private final String path = ""+System.getProperty("user.dir")+File.separator+"src"+File.separator+"res"+File.separator;
 
     /**
      * Call Method initComponents
@@ -81,7 +82,7 @@ public class GameOverGUI extends JDialog{
 
         Image img = null;
         try {
-             img = ImageIO.read(Res.class.getResourceAsStream("Game_Over.png"));
+             img = ImageIO.read(new File(path+"Game_Over.png"));
         } catch (IOException e) {
             e.printStackTrace();
         }
