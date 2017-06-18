@@ -30,7 +30,6 @@ public class CoordinatesOfForms {
                 return new Point2D[]{new Point2D.Double(1, 1), new Point2D.Double(0, 2), new Point2D.Double(1, 0), new Point2D.Double(1, 2)};
             case POTEST:
                 return new Point2D[]{new Point2D.Double(1, 1), new Point2D.Double(0, 1), new Point2D.Double(1, 0), new Point2D.Double(2, 1)};
-
             default:
                 return new Point2D[]{new Point2D.Double(0, 0), new Point2D.Double(0, 1), new Point2D.Double(0, 2), new Point2D.Double(0, 3)};
         }
@@ -48,7 +47,6 @@ public class CoordinatesOfForms {
      * @param direction -> direction of rotation
      * @return
      */
-
     public static Point2D[] rotateForm(Point2D[] aktPoint, int direction) {
 
         Point2D[] tempField;
