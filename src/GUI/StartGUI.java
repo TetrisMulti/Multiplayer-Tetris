@@ -130,7 +130,7 @@ public class StartGUI extends JFrame {
 
         Image img1 = null;
         try {
-            img1 = ImageIO.read(new File(path+"Tetris.jpg"));
+            img1 = ImageIO.read(new File(path+"Settings.png"));
         } catch (IOException e) {
             e.printStackTrace();
         }
