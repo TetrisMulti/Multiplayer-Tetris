@@ -167,13 +167,13 @@ public class StartGUI extends JFrame {
 
     /**
      * Method to read and check the nickname
+     * Also checks if the player wants to play with a controller
      * After checking --> Forward to TetrisGUI
      */
     private void onStart() {
         String nickname = JOptionPane.showInputDialog(this, "Bitte Nicknamen eingeben!");
 
-        if (nickname == null) {
-        } else if (nickname.trim().length() >= 8 || nickname.trim().length() == 0) {
+        if (nickname.trim().length() >= 8 || nickname.trim().length() == 0 || nickname == null) {
             JOptionPane.showMessageDialog(this, "Zur Info: der eingegebene Name darf max. 8 Buchstaben, aber mindestens 1 Buchstaben enthalten");
         } else {
             if (setGUI != null) {
